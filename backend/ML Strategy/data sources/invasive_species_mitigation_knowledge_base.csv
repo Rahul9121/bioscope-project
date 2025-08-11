@@ -1,0 +1,11 @@
+Risk Type,Threat Level,Regulation Reference,Mitigation Action
+Invasive Species,High,"NJDEP – mit_054.pdf, Sec. 3.5.2","Implement Mechanical Control: Hand-pulling, mowing, cutting, prescribed burns."
+Invasive Species,Moderate,"NJDEP – mit_054.pdf, Sec. 3.5.2","Biological control via approved insects (e.g., weevil Ceutorhynchus scrobicollis for garlic mustard)."
+Invasive Species,Moderate,"NJDEP – mit_054.pdf, Sec. 3.5.2",Chemical control via herbicides with NJDEP permit & certified applicator.
+Invasive Species,Low,"IUCN – Rep-2000-052.pdf, Sec. 6.3–6.5",Target small populations manually to reduce habitat disturbance.
+Invasive Species,High,IUCN – Rep-2000-052.pdf,"Eradicate alien herbivores (e.g., rabbits, pigs) in isolated biodiversity-rich areas."
+Invasive Species,High,"IUCN – Rep-2000-052.pdf, Sec. 6.4",Use biological agents only after screening and monitoring; avoid persistent chemicals.
+Invasive Species,Moderate,"NJDEP – mit_054.pdf, p. 77",Use native dense planting to outcompete invasive species.
+Invasive Species,High,invasivereport.pdf,Avoid herbicide use near aquatic systems; favor manual/mechanical methods.
+Invasive Species,High,invasivereport.pdf,Control early before population gets large to reduce costs and habitat damage.
+Invasive Species,Moderate,IUCN Translocation Guidelines (2024),"For invasive vertebrates: use buffer crops, zoning, nighttime enclosures, and prey base management."

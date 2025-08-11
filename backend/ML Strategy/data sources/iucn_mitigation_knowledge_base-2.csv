@@ -1,0 +1,7 @@
+risk_type,threat_level,description,mitigation_action,source
+IUCN,HIGH,Climate-displaced species with no suitable habitat within native range,Consider assisted colonization in line with IUCN Conservation Translocation Group protocols,IUCN-guidelines-on-Responsible-Translocation-of-displaced-Organisms_Feb-2024-2.pdf
+IUCN,HIGH,"Conflict with humans, e.g. carnivores attacking livestock","Implement zoning, buffer crops, livestock fencing, and night enclosures",IUCN-guidelines-on-Responsible-Translocation-of-displaced-Organisms_Feb-2024-2.pdf
+IUCN,MODERATE,Displacement due to non-lethal human disturbance,"Prioritize rescue and return to original range, avoid translocation if possible",IUCN-guidelines-on-Responsible-Translocation-of-displaced-Organisms_Feb-2024-2.pdf
+IUCN,HIGH,Individuals captured or restrained due to human development,Reintroduce near original habitat to minimize genetic and disease risk to local populations,IUCN-guidelines-on-Responsible-Translocation-of-displaced-Organisms_Feb-2024-2.pdf
+IUCN,HIGH,Problem individuals posing danger to people or property,"Use hazing, improve natural prey base, or relocate human communities",IUCN-guidelines-on-Responsible-Translocation-of-displaced-Organisms_Feb-2024-2.pdf
+IUCN,ALL,Any live animal transport or reintroduction,"Follow WOAH sanitary protocols during care, transport, and release",IUCN-guidelines-on-Responsible-Translocation-of-displaced-Organisms_Feb-2024-2.pdf

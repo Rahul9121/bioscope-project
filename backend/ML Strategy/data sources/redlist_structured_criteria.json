@@ -1,0 +1,37 @@
+{
+  "threat_categories": {
+    "Critically Endangered": {
+      "criteria": [
+        "B",
+        "A",
+        "C",
+        "D"
+      ],
+      "description": "Critically Endangered in a short time."
+    },
+    "Endangered": {
+      "criteria": [
+        "B",
+        "A",
+        "C",
+        "D"
+      ],
+      "description": "endangered species. Ecological Monographs 61: 115\u2013143."
+    },
+    "Vulnerable": {
+      "criteria": [
+        "B",
+        "A",
+        "C",
+        "D"
+      ],
+      "description": "Vulnerable thresholds, especially when there is a high degree of uncertainty, or possibly meet"
+    }
+  },
+  "criteria_definitions": {
+    "B": "has been designed to identify populations with restricted distributions that are also",
+    "A": "is based only on population reduction.  The reason the IUCN criteria (except for E)",
+    "C": "2a covers both of these situations: (i) is for the first case, where even the largest",
+    "D": "2 is provided for taxa that may not be declining, but are characterized by an acute"
+  }
+}
