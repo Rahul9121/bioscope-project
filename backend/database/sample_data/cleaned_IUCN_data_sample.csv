@@ -1,0 +1,6 @@
+latitude,longitude,species_name,threat_status,habitat
+40.0583,-74.4057,"American Robin","Least Concern","Forest"
+40.1583,-74.3057,"Red Cardinal","Least Concern","Urban"
+40.2583,-74.2057,"Blue Jay","Near Threatened","Forest"
+39.9583,-74.5057,"Bald Eagle","Vulnerable","Wetland"
+40.3583,-74.1057,"Great Blue Heron","Least Concern","Wetland"

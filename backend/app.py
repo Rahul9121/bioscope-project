@@ -1,4 +1,5 @@
 import json
+import os
 import psycopg2
 from flask import Flask, request, jsonify, session, send_file, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,10 +29,16 @@ from backend.mitigation_action import (
 app = Flask(__name__)
 app.config["CACHE_TYPE"] = "simple"
 cache = Cache(app)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+
+# Get allowed origins from environment or default to localhost
+allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
+
 app.register_blueprint(account_bp, url_prefix="/account")
 app.register_blueprint(location_bp, url_prefix="/locations")
-app.secret_key = 'your_secret_key'
+
+# Use environment variable for secret key
+app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_change_in_production')
 logging.basicConfig(level=logging.DEBUG)
 
 app.config.update({
@@ -48,14 +55,36 @@ app.config.update({
 
 Session(app)
 
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'postgres',
-    'password': 'Marvin20nisan21.',
-    'dbname': 'postgres'
-}
+# Database configuration from environment variables
+def get_db_config():
+    database_url = os.getenv('DATABASE_URL')
+    if database_url:
+        # Parse DATABASE_URL for services like Railway, Heroku
+        import urllib.parse as urlparse
+        url = urlparse.urlparse(database_url)
+        return {
+            'host': url.hostname,
+            'user': url.username,
+            'password': url.password,
+            'dbname': url.path[1:],
+            'port': url.port or 5432
+        }
+    else:
+        # Fallback to individual environment variables
+        return {
+            'host': os.getenv('DB_HOST', 'localhost'),
+            'user': os.getenv('DB_USER', 'postgres'),
+            'password': os.getenv('DB_PASSWORD', 'password'),
+            'dbname': os.getenv('DB_NAME', 'postgres'),
+            'port': os.getenv('DB_PORT', 5432)
+        }
 
 GEOCODING_API_URL = "https://nominatim.openstreetmap.org/search"
+
+# Health check endpoint for deployment
+@app.route("/health", methods=["GET"])
+def health_check():
+    return jsonify({"status": "healthy", "message": "Bioscope API is running"}), 200
 
 @app.route("/session-risks", methods=["GET"])
 def get_session_risks():
@@ -69,7 +98,8 @@ def log_request():
 
 def connect_db():
     try:
-        return psycopg2.connect(**DB_CONFIG)
+        db_config = get_db_config()
+        return psycopg2.connect(**db_config)
     except Exception as err:
         print(f"DB connection error: {err}")
         return None
@@ -567,4 +597,6 @@ def download_report_direct():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.getenv('PORT', 5001))
+    debug_mode = os.getenv('FLASK_ENV') != 'production'
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)
