@@ -1,0 +1,101 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+
+# Flask
+instance/
+.flaskenv
+flask_session/
+
+# Database
+*.db
+*.sqlite3
+chroma_storage/
+chroma_storage_rag/
+
+# Node modules and build files
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+build/
+dist/
+
+# React
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# API keys and secrets
+.env
+config.py
+secrets.json
+
+# Temporary files
+*.tmp
+*.temp
+
+# Large data files (over 100MB)
+backend/database/cleaned_IUCN_data.csv
+backend/database/iucn_cleaned_data.csv
+backend/database/marine_risk_updated-2.csv
+backend/database/terrestrial_human_coexistence_nj.csv
+
+# Large data files samples (keep smaller versions)
+# Use sample data for development/testing

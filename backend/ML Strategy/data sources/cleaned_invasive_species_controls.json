@@ -1,0 +1,3672 @@
+[
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common buckthorn, European buckthorn",
+    "scientific_name": "RHCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "chocolate vine",
+    "scientific_name": "AKQU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "European black alder",
+    "scientific_name": "ALGL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common buckthorn, European buckthorn",
+    "scientific_name": "RHCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese maple",
+    "scientific_name": "ACPA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "common buckthorn, European buckthorn",
+    "scientific_name": "RHCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "chocolate vine",
+    "scientific_name": "AKQU",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "chocolate vine",
+    "scientific_name": "AKQU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "European black alder",
+    "scientific_name": "ALGL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "common buckthorn, European buckthorn",
+    "scientific_name": "RHCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Siebold's arrowwood",
+    "scientific_name": "VISI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "largehead sedge",
+    "scientific_name": "CAMA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "glossy buckthorn",
+    "scientific_name": "FRAL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "glossy buckthorn",
+    "scientific_name": "FRAL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "glossy buckthorn",
+    "scientific_name": "FRAL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "winter creeper",
+    "scientific_name": "EUFO",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "winter creeper",
+    "scientific_name": "EUFO",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "winter creeper",
+    "scientific_name": "EUFO",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "glossy buckthorn",
+    "scientific_name": "FRAL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Boston ivy",
+    "scientific_name": "PATR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese maple",
+    "scientific_name": "ACPA",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Boston ivy",
+    "scientific_name": "PATR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common buckthorn, European buckthorn",
+    "scientific_name": "RHCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "common buckthorn, European buckthorn",
+    "scientific_name": "RHCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "jetbead",
+    "scientific_name": "RHSC",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "jetbead",
+    "scientific_name": "RHSC",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Siebold's arrowwood",
+    "scientific_name": "VISI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese maple",
+    "scientific_name": "ACPA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "jetbead",
+    "scientific_name": "RHSC",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "jetbead",
+    "scientific_name": "RHSC",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese hop",
+    "scientific_name": "HUJA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese hop",
+    "scientific_name": "HUJA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Siebold's arrowwood",
+    "scientific_name": "VISI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Siebold's arrowwood",
+    "scientific_name": "VISI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "glossy buckthorn",
+    "scientific_name": "FRAL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "glossy buckthorn",
+    "scientific_name": "FRAL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "glossy buckthorn",
+    "scientific_name": "FRAL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "glossy buckthorn",
+    "scientific_name": "FRAL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "European water chestnut",
+    "scientific_name": "TRNA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese snowbell",
+    "scientific_name": "STJA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "pale yellow iris, yellow flag iris",
+    "scientific_name": "IRPS",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "jetbead",
+    "scientific_name": "RHSC",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "indigobush",
+    "scientific_name": "AMFR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese maple",
+    "scientific_name": "ACPA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese maple",
+    "scientific_name": "ACPA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese maple",
+    "scientific_name": "ACPA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese maple",
+    "scientific_name": "ACPA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common buckthorn, European buckthorn",
+    "scientific_name": "RHCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Oriental photinia",
+    "scientific_name": "PHVI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "winged burning bush",
+    "scientific_name": "EUAL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese maple",
+    "scientific_name": "ACPA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "linden viburnum",
+    "scientific_name": "VIDI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "tree-of-heaven",
+    "scientific_name": "AIAL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese angelica tree",
+    "scientific_name": "AREL",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mugwort",
+    "scientific_name": "ARVU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese knotweed",
+    "scientific_name": "FAJA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese knotweed",
+    "scientific_name": "FAJA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese knotweed",
+    "scientific_name": "FAJA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "garlic mustard",
+    "scientific_name": "ALPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "garlic mustard",
+    "scientific_name": "ALPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "Japanese wisteria",
+    "scientific_name": "WIFL",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Japanese maple",
+    "scientific_name": "ACPA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mugwort",
+    "scientific_name": "ARVU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mugwort",
+    "scientific_name": "ARVU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "multiflora rose",
+    "scientific_name": "ROMU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "multiflora rose",
+    "scientific_name": "ROMU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "multiflora rose",
+    "scientific_name": "ROMU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "multiflora rose",
+    "scientific_name": "ROMU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "multiflora rose",
+    "scientific_name": "ROMU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "common reed",
+    "scientific_name": "PHAU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "spotted knapweed",
+    "scientific_name": "CEBI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "multiflora rose",
+    "scientific_name": "ROMU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "multiflora rose",
+    "scientific_name": "ROMU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese honeysuckle",
+    "scientific_name": "LOJA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese honeysuckle",
+    "scientific_name": "LOJA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Japanese honeysuckle",
+    "scientific_name": "LOJA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sericea lespedeza",
+    "scientific_name": "LECU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "sweet autumn virginsbower",
+    "scientific_name": "CLTE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "round leaf bittersweet",
+    "scientific_name": "CEOR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mile-a-minute vine, Asiatic tearthumb",
+    "scientific_name": "PEPE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mugwort",
+    "scientific_name": "ARVU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mugwort",
+    "scientific_name": "ARVU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "common barberry",
+    "scientific_name": "BEVU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "common barberry",
+    "scientific_name": "BEVU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "southern waxmyrtle",
+    "scientific_name": "MIVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "southern waxmyrtle",
+    "scientific_name": "MIVI",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Chinese wisteria",
+    "scientific_name": "WISI",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "autumn olive",
+    "scientific_name": "ELUM",
+    "control_action": "Cut only"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "common reed",
+    "scientific_name": "PHAU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common reed",
+    "scientific_name": "PHAU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common reed",
+    "scientific_name": "PHAU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common reed",
+    "scientific_name": "PHAU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common reed",
+    "scientific_name": "PHAU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common reed",
+    "scientific_name": "PHAU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common reed",
+    "scientific_name": "PHAU",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "common reed",
+    "scientific_name": "PHAU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "autumn olive",
+    "scientific_name": "ELUM",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "autumn olive",
+    "scientific_name": "ELUM",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "autumn olive",
+    "scientific_name": "ELUM",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "autumn olive",
+    "scientific_name": "ELUM",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "English ivy",
+    "scientific_name": "HEHE",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "Callery pear (Bradford pear)",
+    "scientific_name": "PYCA",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "mimosa",
+    "scientific_name": "ALJU",
+    "control_action": "Hand pull"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "kudzu",
+    "scientific_name": "PUMO",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "autumn olive",
+    "scientific_name": "ELUM",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "autumn olive",
+    "scientific_name": "ELUM",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "autumn olive",
+    "scientific_name": "ELUM",
+    "control_action": "Cut & Treat"
+  },
+  {
+    "species": "porcelain-berry",
+    "scientific_name": "AMBR",
+    "control_action": "Cut & Treat"
+  }
+]

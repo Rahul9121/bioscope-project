@@ -1,0 +1,71 @@
+{
+  "title": "Freshwater Wetlands Protection Act (N.J.S.A. 13:9B)",
+  "sections": {
+    "purpose": {
+      "summary": "To protect freshwater wetlands in NJ by controlling activities that may alter or destroy them.",
+      "goals": [
+        "Protect drinking water",
+        "Prevent flooding and storm damage",
+        "Provide wildlife habitat",
+        "Prevent soil erosion",
+        "Maintain baseflow during drought"
+      ]
+    },
+    "definitions": {
+      "freshwater_wetland": "An area saturated enough to support hydrophytic vegetation, based on hydrology, soils, and vegetation.",
+      "regulated_activity": [
+        "Excavation or dredging",
+        "Dumping/filling materials",
+        "Driving pilings or placing obstructions",
+        "Cutting vegetation that alters wetland character"
+      ],
+      "transition_area": "Land adjacent to wetlands minimizing adverse impacts or serving as a part of the ecosystem"
+    },
+    "permitting": {
+      "requirement": "Permit required for regulated activities unless exempt.",
+      "process": {
+        "public_comment_period": "Yes",
+        "evaluation_criteria": [
+          "Is the project water-dependent?",
+          "Are there practicable alternatives?",
+          "Will it jeopardize endangered species?",
+          "Is it in public interest?"
+        ],
+        "letter_of_interpretation": "Available to determine if site is a wetland"
+      },
+      "exemptions": [
+        "Normal farming/ranching on pre-1988 farmed wetlands",
+        "Forest harvesting with approved plan",
+        "Certain approved projects prior to 1987"
+      ]
+    },
+    "classification": {
+      "exceptional_value": [
+        "Wetlands that discharge into FW-1, FW-2 trout production waters",
+        "Habitat for endangered or threatened species"
+      ],
+      "ordinary_value": "Man-made or isolated wetlands not fitting other criteria",
+      "intermediate_value": "All others"
+    },
+    "mitigation": {
+      "requirements": [
+        "Restore vegetation and habitats",
+        "Minimize area of disturbance",
+        "Compliance with federal wetlands law"
+      ],
+      "options": [
+        "Onsite or offsite restoration",
+        "Donation to Wetlands Mitigation Bank",
+        "Protection of transition/upland areas"
+      ]
+    },
+    "enforcement": {
+      "violations": [
+        "Civil penalties up to $25,000/day",
+        "Criminal penalties for false statements or reckless violations",
+        "Restoration orders",
+        "Recording of violations on property deeds"
+      ]
+    }
+  }
+}

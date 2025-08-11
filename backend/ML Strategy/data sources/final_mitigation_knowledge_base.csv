@@ -1,0 +1,61 @@
+risk_type,threat_level,mitigation_action
+freshwater,high,Install or retrofit stormwater treatment systems to reduce pollutant runoff.
+freshwater,high,Restore riparian vegetation buffers along streambanks to filter contaminants.
+freshwater,high,Restrict use of nutrient-rich fertilizers near water bodies.
+freshwater,moderate,Implement rain gardens and bioswales in surrounding landscapes.
+freshwater,moderate,Inspect and maintain septic systems to prevent leakage into freshwater systems.
+freshwater,low,Encourage public education on reducing household runoff and water use.
+freshwater,low,Monitor freshwater quality bi-annually and report anomalies.
+invasive,high,"Implement Mechanical Control: Hand-pulling, mowing, cutting, prescribed burns."
+invasive,moderate,"Biological control via approved insects (e.g., weevil Ceutorhynchus scrobicollis for garlic mustard)."
+invasive,moderate,Chemical control via herbicides with NJDEP permit & certified applicator.
+invasive,low,Target small populations manually to reduce habitat disturbance.
+invasive,high,"Eradicate alien herbivores (e.g., rabbits, pigs) in isolated biodiversity-rich areas."
+invasive,high,Use biological agents only after screening and monitoring; avoid persistent chemicals.
+invasive,moderate,Use native dense planting to outcompete invasive species.
+invasive,high,Avoid herbicide use near aquatic systems; favor manual/mechanical methods.
+invasive,high,Control early before population gets large to reduce costs and habitat damage.
+invasive,moderate,"For invasive vertebrates: use buffer crops, zoning, nighttime enclosures, and prey base management."
+iucn,high,Consider assisted colonization in line with IUCN Conservation Translocation Group protocols
+iucn,high,"Implement zoning, buffer crops, livestock fencing, and night enclosures"
+iucn,moderate,"Prioritize rescue and return to original range, avoid translocation if possible"
+iucn,high,Reintroduce near original habitat to minimize genetic and disease risk to local populations
+iucn,high,"Use hazing, improve natural prey base, or relocate human communities"
+iucn,all,"Follow WOAH sanitary protocols during care, transport, and release"
+marine,high,Establish Marine Protected Areas (MPAs) to limit human interference in high-risk zones. Enforce seasonal restrictions on commercial fishing and offshore drilling activities.
+marine,high,Mandate the use of low-impact marine vessels and enforce no-discharge zones to reduce pollution in sensitive marine habitats.
+marine,moderate,"Implement mandatory marine spatial planning tools to balance marine recreation, fishing, and conservation priorities."
+marine,moderate,"Promote green port initiatives to reduce harbor and vessel pollution (e.g., cold-ironing, alternative fuels)."
+marine,low,Conduct periodic monitoring of marine water quality and promote stakeholder education in coastal communities.
+marine,low,Encourage sustainable tourism and habitat restoration grants for small-scale coastal conservation projects.
+terrestrial,high,"1. Enforce strict zoning and habitat protection measures.
+2. Establish ecological corridors.
+3. Implement buffer zones near sensitive areas like wetlands or reserves.
+4. Restrict land conversion near protected regions.
+5. Conduct monthly biodiversity impact monitoring.
+6. Follow NJAC 7:50-6.21(b) for critical wildlife habitats."
+terrestrial,moderate,"1. Promote sustainable land use through agroforestry and low-impact development.
+2. Implement incentive programs for forest conservation.
+3. Support native vegetation regeneration.
+4. Monitor semi-annually and collaborate with NJDEP regional plans.
+5. Align with NJ State Development and Redevelopment Plan (SDRP) policies."
+terrestrial,low,"1. Maintain natural cover and low-impact usage.
+2. Promote awareness in landowners about biodiversity stewardship.
+3. Encourage participation in Green Acres Program.
+4. Monitor land use annually for ecological change.
+5. Use NJDEP's Landscape Project as a guide for land prioritization."
+freshwater,high,1. Replace single-use plastic bottles and containers with refillable dispensers made of glass or biodegradable materials. 2. Implement compostable packaging throughout hotel operations to prevent plastic runoff into freshwater ecosystems.
+freshwater,moderate,1. Install water refill stations throughout the hotel to reduce bottled water use. 2. Source food and beverage supplies from local purveyors to minimize freshwater pollution associated with packaging waste.
+invasive,high,1. Landscape hotel grounds exclusively with native plant species. 2. Monitor and remove invasive species introduced through external landscaping contractors or suppliers.
+invasive,moderate,"Vet all supply chains to prevent the importation of ornamental species known to become invasive, such as exotic frogs or mollusks."
+iucn,high,1. Design all hotel-sponsored excursions to avoid interaction with IUCN-listed Critically Endangered species. 2. Provide educational alternatives such as guided conservation tours or virtual wildlife presentations.
+iucn,moderate,"1. Ensure all wood, seafood, and souvenir products offered at the hotel are certified by sustainable standards (e.g., FSC, MSC). 2. Prohibit the sale or use of materials derived from IUCN-listed species."
+marine,high,1. Avoid construction or expansion projects that require dredging near sensitive marine habitats. 2. Establish ecological buffer zones around coral reefs and seagrass beds to prevent degradation.
+marine,moderate,1. Offer reef-safe interpretive tours that exclude feeding or touching marine wildlife. 2. Train tour guides in marine conservation and safe snorkeling/diving practices.
+terrestrial,high,"1. Implement habitat restoration programs within hotel grounds, including reforestation with native trees. 2. Control soil erosion using natural barriers and maintain corridors for wildlife movement."
+terrestrial,moderate,Schedule landscaping and ground maintenance to avoid key breeding and migration periods of local terrestrial wildlife.
+terrestrial,moderate,"1. Use native and drought-resistant species in hotel landscaping to conserve water and support biodiversity. 2. Consult local greenhouses and botanical gardens to ensure all plants are nursery-grown and legally sourced. 3. Avoid ornamental plants listed as invasive, and replace them with indigenous alternatives."
+terrestrial,high,"1. Partner with conservation organizations to restore degraded lands by planting native trees and removing invasive species. 2. Provide biodiversity education to guests through interpretive signage, nature trails, and interactive garden maps."
+marine,moderate,1. Implement reef-safe landscaping and lighting to protect nearby turtle nesting beaches. 2. Train staff to manage noise and lighting impacts that may disrupt marine or coastal wildlife near hotel properties.
+iucn,high,"1. Align procurement with FSC-certified wood and MSC-certified seafood. 2. Prohibit the use of species listed as threatened on the IUCN Red List in souvenirs, menus, or decorative elements."
+invasive,moderate,"1. Conduct an audit of current landscaping and decorative plants to identify invasive species. 2. Replace any non-native ornamental plants or animals with sustainable, local alternatives in consultation with ecologists."

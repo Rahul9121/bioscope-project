@@ -1,0 +1,6 @@
+Flask==2.2.3
+Flask-Cors==3.0.10
+Flask-SQLAlchemy==2.5.1
+requests==2.31.0
+psycopg2-binary
+reportlab

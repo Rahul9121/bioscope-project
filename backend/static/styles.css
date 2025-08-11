@@ -1,0 +1,235 @@
+/* General Reset */
+body, h1, h2, p, ul, li, a, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e8f5e9; /* Light green */
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2e7d32; /* Green color */
+    padding: 10px 20px;
+    color: #fff;
+}
+
+header .logo img {
+    height: 50px;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Main Content */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+}
+
+/* Register Page Styling */
+.register-page .register-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.register-page .register-container h2 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.register-page .register-container p {
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.register-page .register-container form {
+    display: flex;
+    flex-direction: column; /* Stack fields vertically */
+    gap: 7px; /* Add spacing between fields */
+}
+
+.register-page .register-container label {
+    font-size: 14px;
+    text-align: left;
+}
+
+.register-page .register-container input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.register-page .register-container input:focus {
+    outline: none;
+    border-color: #2e7d32;
+}
+
+.register-page .register-container button {
+    padding: 10px;
+    border: none;
+    background-color: #2e7d32;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.register-page .register-container button:hover {
+    background-color: #1b5e20;
+}
+
+.register-page .register-container .login-link p {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #2e7d32;
+}
+
+.register-page .register-container .login-link a {
+    color: #2e7d32;
+    text-decoration: none;
+}
+
+.register-page .register-container .login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Login Page Styling */
+.login-page .login-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px; /* Slightly smaller than register page */
+    text-align: center;
+}
+
+.login-page .login-container h2 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.login-page .login-container p {
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.login-page .login-container form {
+    display: flex;
+    flex-direction: column; /* Stack fields vertically */
+    gap: 15px; /* Add spacing between fields */
+}
+
+.login-page .login-container label {
+    font-size: 14px;
+    text-align: left;
+}
+
+.login-page .login-container input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.login-page .login-container input:focus {
+    outline: none;
+    border-color: #2e7d32;
+}
+
+.login-page .login-container button {
+    padding: 10px;
+    border: none;
+    background-color: #2e7d32;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-page .login-container button:hover {
+    background-color: #1b5e20;
+}
+
+.login-page .login-container .forgot-password {
+    font-size: 12px;
+    color: #2e7d32;
+    text-decoration: none;
+    text-align: left;
+}
+
+.login-page .login-container .forgot-password:hover {
+    text-decoration: underline;
+}
+
+.login-page .login-container p a {
+    color: #2e7d32;
+    text-decoration: none;
+}
+
+.login-page .login-container p a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #2e7d32;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer .footer-links {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+footer .footer-links a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer .footer-links a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    background-color: #ffe6e6;
+    color: #d9534f;
+    border: 1px solid #d9534f;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+}
