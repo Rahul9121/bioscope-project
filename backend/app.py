@@ -30,8 +30,8 @@ app = Flask(__name__)
 app.config["CACHE_TYPE"] = "simple"
 cache = Cache(app)
 
-# Get allowed origins from environment or default to localhost
-allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+# Get allowed origins from environment or default to localhost and Vercel
+allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,https://bioscope-project.vercel.app').split(',')
 CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
 
 app.register_blueprint(account_bp, url_prefix="/account")
@@ -213,7 +213,7 @@ def standardize_threat_status(status):
 def register():
     if request.method == "OPTIONS":
         response = make_response(jsonify({"message": "CORS preflight successful"}), 200)
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
         response.headers.add("Access-Control-Allow-Credentials", "true")
@@ -227,14 +227,14 @@ def register():
 
         if not hotel_name or not email or not password:
             response = jsonify({"error": "All fields are required."})
-            response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+            response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
             response.headers.add("Access-Control-Allow-Credentials", "true")
             return response, 400
 
         conn = connect_db()
         if conn is None:
             response = jsonify({"error": "Failed to connect to the database."})
-            response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+            response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
             response.headers.add("Access-Control-Allow-Credentials", "true")
             return response, 500
 
@@ -242,12 +242,12 @@ def register():
         cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
         if cursor.fetchone():
             response = jsonify({"error": "Email is already registered."})
-            response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+            response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
             response.headers.add("Access-Control-Allow-Credentials", "true")
             return response, 400
 
         hashed_password = generate_password_hash(password)
-        cursor.execute("INSERT INTO users (hotel_name, email, password_hash) VALUES (%s, %s, %s)",
+        cursor.execute("INSERT INTO users (hotel_name, email, password) VALUES (%s, %s, %s)",
                        (hotel_name, email, hashed_password))
         conn.commit()
 
@@ -255,13 +255,13 @@ def register():
         conn.close()
 
         response = jsonify({"message": "Registration successful!"})
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
         response.headers.add("Access-Control-Allow-Credentials", "true")
         return response, 201
 
     except Exception as e:
         response = jsonify({"error": str(e)})
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
         response.headers.add("Access-Control-Allow-Credentials", "true")
         return response, 500
 
@@ -313,7 +313,9 @@ def login():
         })
 
         # ✅ Explicit CORS headers
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        origin = request.headers.get('Origin', 'http://localhost:3000')
+        allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000'
+        response.headers.add("Access-Control-Allow-Origin", allowed_origin)
         response.headers.add("Access-Control-Allow-Credentials", "true")
 
         return response, 200
@@ -328,7 +330,9 @@ def logout():
     if request.method == "OPTIONS":
         # Handle CORS preflight
         response = jsonify({"message": "CORS preflight success"})
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        origin = request.headers.get('Origin', 'http://localhost:3000')
+        allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000'
+        response.headers.add("Access-Control-Allow-Origin", allowed_origin)
         response.headers.add("Access-Control-Allow-Credentials", "true")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type")
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
@@ -338,7 +342,9 @@ def logout():
     print("🧹 Session cleared on logout")
 
     response = jsonify({"message": "Logout successful"})
-    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+    origin = request.headers.get('Origin', 'http://localhost:3000')
+    allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000'
+    response.headers.add("Access-Control-Allow-Origin", allowed_origin)
     response.headers.add("Access-Control-Allow-Credentials", "true")
     return response, 200
 
