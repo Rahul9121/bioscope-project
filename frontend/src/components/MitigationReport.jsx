@@ -45,7 +45,8 @@ const MitigationReport = () => {
   useEffect(() => {
     const fetchMitigation = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5001/session-risks", {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5001';
+        const response = await fetch(`${apiUrl}/session-risks`, {
           credentials: "include"
         });
         let data = await response.json();
