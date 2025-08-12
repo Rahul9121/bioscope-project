@@ -41,8 +41,9 @@ const RegisterForm = () => {
     setLoading(true);
 
     try {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
       const response = await axios.post(
-        "http://localhost:5001/register",
+        `${apiUrl}/register`,
         { hotel_name: hotelName, email, password },
         { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
