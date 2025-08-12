@@ -1,15 +1,30 @@
 import pandas as pd
+import os
 from chromadb import PersistentClient
 from sentence_transformers import SentenceTransformer
 
-# Connect to existing ChromaDB
-chroma_client = PersistentClient(path="./ML Strategy/chroma_storage_rag")
-chroma_collection = chroma_client.get_or_create_collection(name="mitigation_knowledge")
-embedder = SentenceTransformer("all-MiniLM-L6-v2")
-# Optional peek
-print("🔎 Sample entries from ChromaDB:")
-print(chroma_collection.peek(3))
-print("📦 Total embeddings:", chroma_collection.count())
+# Connect to existing ChromaDB - handle both local and deployment paths
+chroma_path = os.path.join(os.path.dirname(__file__), "ML Strategy", "chroma_storage_rag")
+if not os.path.exists(chroma_path):
+    # Fallback path for deployment
+    chroma_path = os.path.join(os.path.dirname(__file__), "chroma_storage_rag")
+    
+try:
+    chroma_client = PersistentClient(path=chroma_path)
+    chroma_collection = chroma_client.get_or_create_collection(name="mitigation_knowledge")
+    embedder = SentenceTransformer("all-MiniLM-L6-v2")
+    
+    # Optional peek
+    print("🔎 Sample entries from ChromaDB:")
+    print(chroma_collection.peek(3))
+    print("📦 Total embeddings:", chroma_collection.count())
+except Exception as e:
+    print(f"⚠️ ChromaDB initialization failed: {e}")
+    print("📝 Running in fallback mode without ChromaDB")
+    # Initialize with empty collection as fallback
+    chroma_client = None
+    chroma_collection = None
+    embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
 def threat_level_from_code(threat_code):
     mapping = {
@@ -22,6 +37,19 @@ def threat_level_from_code(threat_code):
 def query_mitigation_action(risk_type, threat_level, description=None):
     risk_type = risk_type.strip().lower()
     threat_level = threat_level.strip().lower()
+
+    # Skip ChromaDB queries if not available
+    if chroma_collection is None:
+        print("📝 ChromaDB not available, using fallback response")
+        fallback_desc = description or f"{risk_type} ({threat_level})"
+        return {
+            "score": 1,
+            "action": (
+                f"{fallback_desc.title()} —\n"
+                "1. Monitor the area periodically for potential risks.\n"
+                "2. Record observations and reassess priority if spread increases."
+            )
+        }
 
     # 1️⃣ Try metadata query
     try:
