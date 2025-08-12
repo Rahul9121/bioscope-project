@@ -31,7 +31,8 @@ const Layout = ({ children }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5001/logout", {}, { withCredentials: true });
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      await axios.post(`${apiUrl}/logout`, {}, { withCredentials: true });
       localStorage.removeItem("user");
       setIsLoggedIn(false);
       navigate("/");
