@@ -86,6 +86,48 @@ GEOCODING_API_URL = "https://nominatim.openstreetmap.org/search"
 def health_check():
     return jsonify({"status": "healthy", "message": "Bioscope API is running"}), 200
 
+# Database debug endpoint
+@app.route("/db-status", methods=["GET"])
+def db_status():
+    try:
+        conn = connect_db()
+        if conn is None:
+            return jsonify({
+                "status": "error", 
+                "message": "Cannot connect to database",
+                "database_url_exists": bool(os.getenv('DATABASE_URL'))
+            }), 500
+        
+        cursor = conn.cursor()
+        cursor.execute("SELECT version();")
+        version = cursor.fetchone()
+        
+        # Check if users table exists
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'users'
+            );
+        """)
+        users_table_exists = cursor.fetchone()[0]
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify({
+            "status": "connected",
+            "postgres_version": version[0] if version else "unknown",
+            "users_table_exists": users_table_exists,
+            "database_url_configured": bool(os.getenv('DATABASE_URL'))
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "error": str(e),
+            "database_url_configured": bool(os.getenv('DATABASE_URL'))
+        }), 500
+
 @app.route("/session-risks", methods=["GET"])
 def get_session_risks():
     return jsonify({"risks": session.get("risks", [])})
@@ -99,9 +141,18 @@ def log_request():
 def connect_db():
     try:
         db_config = get_db_config()
+        print(f"🔗 Attempting database connection to: {db_config.get('host', 'unknown')}:{db_config.get('port', 'unknown')}")
         return psycopg2.connect(**db_config)
+    except psycopg2.OperationalError as err:
+        print(f"❌ PostgreSQL Operational Error: {err}")
+        print("This usually means connection/authentication issues")
+        return None
+    except psycopg2.DatabaseError as err:
+        print(f"❌ PostgreSQL Database Error: {err}")
+        return None
     except Exception as err:
-        print(f"DB connection error: {err}")
+        print(f"❌ Unexpected database connection error: {err}")
+        print(f"Error type: {type(err).__name__}")
         return None
 
 # Get Latitude, Longitude from ZIP Code
