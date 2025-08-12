@@ -1,30 +1,51 @@
 import pandas as pd
 import os
-from chromadb import PersistentClient
-from sentence_transformers import SentenceTransformer
 
-# Connect to existing ChromaDB - handle both local and deployment paths
-chroma_path = os.path.join(os.path.dirname(__file__), "ML Strategy", "chroma_storage_rag")
-if not os.path.exists(chroma_path):
-    # Fallback path for deployment
-    chroma_path = os.path.join(os.path.dirname(__file__), "chroma_storage_rag")
+# Try to import optional ML dependencies
+try:
+    from chromadb import PersistentClient
+    CHROMADB_AVAILABLE = True
+except ImportError:
+    print("📝 ChromaDB not available")
+    CHROMADB_AVAILABLE = False
     
 try:
-    chroma_client = PersistentClient(path=chroma_path)
-    chroma_collection = chroma_client.get_or_create_collection(name="mitigation_knowledge")
-    embedder = SentenceTransformer("all-MiniLM-L6-v2")
-    
-    # Optional peek
-    print("🔎 Sample entries from ChromaDB:")
-    print(chroma_collection.peek(3))
-    print("📦 Total embeddings:", chroma_collection.count())
-except Exception as e:
-    print(f"⚠️ ChromaDB initialization failed: {e}")
-    print("📝 Running in fallback mode without ChromaDB")
-    # Initialize with empty collection as fallback
-    chroma_client = None
-    chroma_collection = None
-    embedder = SentenceTransformer("all-MiniLM-L6-v2")
+    from sentence_transformers import SentenceTransformer
+    SENTENCE_TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    print("📝 sentence-transformers not available")
+    SENTENCE_TRANSFORMERS_AVAILABLE = False
+
+# Initialize ML components only if available
+chroma_client = None
+chroma_collection = None
+embedder = None
+
+if CHROMADB_AVAILABLE and SENTENCE_TRANSFORMERS_AVAILABLE:
+    # Connect to existing ChromaDB - handle both local and deployment paths
+    chroma_path = os.path.join(os.path.dirname(__file__), "ML Strategy", "chroma_storage_rag")
+    if not os.path.exists(chroma_path):
+        # Fallback path for deployment
+        chroma_path = os.path.join(os.path.dirname(__file__), "chroma_storage_rag")
+        
+    try:
+        chroma_client = PersistentClient(path=chroma_path)
+        chroma_collection = chroma_client.get_or_create_collection(name="mitigation_knowledge")
+        embedder = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+        
+        # Optional peek
+        print("🔎 Sample entries from ChromaDB:")
+        print(chroma_collection.peek(3))
+        print("📦 Total embeddings:", chroma_collection.count())
+        print("🎆 ML components initialized successfully")
+    except Exception as e:
+        print(f"⚠️ ChromaDB initialization failed: {e}")
+        print("📝 Running in fallback mode without ML components")
+        chroma_client = None
+        chroma_collection = None
+        embedder = None
+else:
+    print("📝 ML dependencies not available, running in basic mode")
 
 def threat_level_from_code(threat_code):
     mapping = {
