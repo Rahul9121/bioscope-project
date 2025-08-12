@@ -30,8 +30,9 @@ const LoginForm = () => {
     setLoading(true);
 
 try {
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
   const response = await axios.post(
-    "http://localhost:5001/login",
+    `${apiUrl}/login`,
     { email, password },
     {
       withCredentials: true,
