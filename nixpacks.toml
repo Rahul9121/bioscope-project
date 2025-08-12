@@ -1,0 +1,8 @@
+[providers]
+python = "3.11"
+
+[variables]
+NIXPACKS_PYTHON_VERSION = "3.11"
+
+[phases.start]
+cmd = "python start.py"
