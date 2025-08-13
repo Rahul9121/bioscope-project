@@ -142,8 +142,18 @@ def connect_db():
     try:
         db_config = get_db_config()
         
+        # Debug the parsed config
+        print(f"🔍 Raw DATABASE_URL exists: {bool(os.getenv('DATABASE_URL'))}")
+        print(f"🔍 Parsed db_config: {db_config}")
+        
+        # Check for None values
+        if not db_config.get('host'):
+            print("❌ Error: Database host is None - DATABASE_URL parsing failed")
+            return None
+            
         # Enhanced SSL configuration for production databases
-        if 'supabase.com' in db_config.get('host', '') or 'railway.app' in db_config.get('host', ''):
+        host = db_config.get('host', '')
+        if host and ('supabase.com' in host or 'railway.app' in host):
             db_config['sslmode'] = 'require'
             # Additional SSL settings for Railway/Supabase compatibility
             db_config['sslcert'] = None
