@@ -53,14 +53,14 @@ def change_password():
         conn = connect_db()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT password_hash FROM users WHERE id=%s", (user_id,))
+        cursor.execute("SELECT password FROM users WHERE id=%s", (user_id,))
         stored_hash = cursor.fetchone()[0]
 
         if not check_password_hash(stored_hash, data["currentPassword"]):
             return jsonify({"error": "Incorrect current password"}), 400
 
         hashed_new = generate_password_hash(data["newPassword"])
-        cursor.execute("UPDATE users SET password_hash=%s WHERE id=%s", (hashed_new, user_id))
+        cursor.execute("UPDATE users SET password=%s WHERE id=%s", (hashed_new, user_id))
         conn.commit()
         cursor.close()
         conn.close()

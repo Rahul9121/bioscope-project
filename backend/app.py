@@ -141,6 +141,11 @@ def log_request():
 def connect_db():
     try:
         db_config = get_db_config()
+        
+        # Add SSL mode for production (Supabase requires SSL)
+        if 'supabase.com' in db_config.get('host', ''):
+            db_config['sslmode'] = 'require'
+        
         print(f"🔗 Attempting database connection to: {db_config.get('host', 'unknown')}:{db_config.get('port', 'unknown')}")
         return psycopg2.connect(**db_config)
     except psycopg2.OperationalError as err:
@@ -260,15 +265,11 @@ def standardize_threat_status(status):
     return mapping.get(status.lower(), "low")
 
 # API Endpoint: Registration
-@app.route('/register', methods=['POST', 'OPTIONS'])  # Allow OPTIONS for preflight
+@app.route('/register', methods=['POST', 'OPTIONS'])
 def register():
+    # Handle CORS preflight
     if request.method == "OPTIONS":
-        response = make_response(jsonify({"message": "CORS preflight successful"}), 200)
-        response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
-        response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        response.headers.add("Access-Control-Allow-Credentials", "true")
-        return response
+        return jsonify({"message": "CORS preflight successful"}), 200
 
     try:
         data = request.json
@@ -276,45 +277,44 @@ def register():
         email = data.get('email')
         password = data.get('password')
 
+        # Validate required fields
         if not hotel_name or not email or not password:
-            response = jsonify({"error": "All fields are required."})
-            response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
-            response.headers.add("Access-Control-Allow-Credentials", "true")
-            return response, 400
+            return jsonify({"error": "All fields are required."}), 400
 
+        # Validate password strength
+        if len(password) < 6:
+            return jsonify({"error": "Password must be at least 6 characters long."}), 400
+
+        # Connect to database
         conn = connect_db()
         if conn is None:
-            response = jsonify({"error": "Failed to connect to the database."})
-            response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
-            response.headers.add("Access-Control-Allow-Credentials", "true")
-            return response, 500
+            return jsonify({"error": "Failed to connect to the database."}), 500
 
         cursor = conn.cursor()
+        
+        # Check if email already exists
         cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
         if cursor.fetchone():
-            response = jsonify({"error": "Email is already registered."})
-            response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
-            response.headers.add("Access-Control-Allow-Credentials", "true")
-            return response, 400
+            cursor.close()
+            conn.close()
+            return jsonify({"error": "Email is already registered."}), 400
 
+        # Hash password and create user
         hashed_password = generate_password_hash(password)
-        cursor.execute("INSERT INTO users (hotel_name, email, password) VALUES (%s, %s, %s)",
-                       (hotel_name, email, hashed_password))
+        cursor.execute(
+            "INSERT INTO users (hotel_name, email, password) VALUES (%s, %s, %s)",
+            (hotel_name, email, hashed_password)
+        )
         conn.commit()
-
         cursor.close()
         conn.close()
 
-        response = jsonify({"message": "Registration successful!"})
-        response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
-        response.headers.add("Access-Control-Allow-Credentials", "true")
-        return response, 201
+        return jsonify({"message": "Registration successful!"}), 201
 
+    except psycopg2.Error as e:
+        return jsonify({"error": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        response = jsonify({"error": str(e)})
-        response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin', 'http://localhost:3000') if request.headers.get('Origin') in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000')
-        response.headers.add("Access-Control-Allow-Credentials", "true")
-        return response, 500
+        return jsonify({"error": f"Registration failed: {str(e)}"}), 500
 
 # Ensure all responses include CORS headers
 def _build_cors_response(response, status_code=200):

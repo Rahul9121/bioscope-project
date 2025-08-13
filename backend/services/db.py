@@ -29,6 +29,11 @@ def connect_db():
     """Connect to the database using environment configuration"""
     try:
         db_config = get_db_config()
+        
+        # Add SSL mode for production (Supabase requires SSL)
+        if 'supabase.com' in db_config.get('host', ''):
+            db_config['sslmode'] = 'require'
+            
         return psycopg2.connect(**db_config)
     except Exception as err:
         print(f"Database connection error: {err}")
