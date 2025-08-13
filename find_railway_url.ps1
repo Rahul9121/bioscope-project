@@ -40,18 +40,18 @@ Write-Host "• Any other test scripts" -ForegroundColor Cyan
 Write-Host "`n✅ Quick Health Test:" -ForegroundColor Green
 $testUrl = Read-Host "Enter your Railway URL (or press Enter to skip)"
 
-if ($testUrl -and $testUrl -ne "") {
-    Write-Host "`n🔍 Testing: $testUrl/health" -ForegroundColor Cyan
+if ([string]::IsNullOrWhiteSpace($testUrl) -eq $false) {
+    Write-Host "`nTesting: $testUrl/health" -ForegroundColor Cyan
     try {
         $response = Invoke-RestMethod -Uri "$testUrl/health" -Method GET -TimeoutSec 10
-        Write-Host "✅ Success! Your backend is running" -ForegroundColor Green
+        Write-Host "SUCCESS! Your backend is running" -ForegroundColor Green
         Write-Host "   Message: $($response.message)" -ForegroundColor White
         Write-Host "   Status: $($response.status)" -ForegroundColor White
         
-        Write-Host "`n🎯 Update your scripts with this URL:" -ForegroundColor Yellow
+        Write-Host "`nUpdate your scripts with this URL:" -ForegroundColor Yellow
         Write-Host "$testUrl" -ForegroundColor Green
     } catch {
-        Write-Host "❌ Failed to connect" -ForegroundColor Red
+        Write-Host "Failed to connect" -ForegroundColor Red
         Write-Host "   Error: $($_.Exception.Message)" -ForegroundColor Red
         Write-Host "   Double-check the URL and try again" -ForegroundColor Yellow
     }
