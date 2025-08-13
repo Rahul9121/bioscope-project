@@ -142,22 +142,39 @@ def connect_db():
     try:
         db_config = get_db_config()
         
-        # Add SSL mode for production (Supabase requires SSL)
-        if 'supabase.com' in db_config.get('host', ''):
+        # Enhanced SSL configuration for production databases
+        if 'supabase.com' in db_config.get('host', '') or 'railway.app' in db_config.get('host', ''):
             db_config['sslmode'] = 'require'
+            # Additional SSL settings for Railway/Supabase compatibility
+            db_config['sslcert'] = None
+            db_config['sslkey'] = None
+            db_config['sslrootcert'] = None
         
         print(f"🔗 Attempting database connection to: {db_config.get('host', 'unknown')}:{db_config.get('port', 'unknown')}")
-        return psycopg2.connect(**db_config)
+        print(f"🔗 Database name: {db_config.get('dbname', 'unknown')}")
+        print(f"🔗 Username: {db_config.get('user', 'unknown')}")
+        print(f"🔗 SSL mode: {db_config.get('sslmode', 'not set')}")
+        
+        # Try connection with timeout
+        db_config['connect_timeout'] = 30
+        
+        conn = psycopg2.connect(**db_config)
+        print("✅ Database connection successful!")
+        return conn
+        
     except psycopg2.OperationalError as err:
         print(f"❌ PostgreSQL Operational Error: {err}")
         print("This usually means connection/authentication issues")
+        print(f"Full error details: {str(err)}")
         return None
     except psycopg2.DatabaseError as err:
         print(f"❌ PostgreSQL Database Error: {err}")
+        print(f"Full error details: {str(err)}")
         return None
     except Exception as err:
         print(f"❌ Unexpected database connection error: {err}")
         print(f"Error type: {type(err).__name__}")
+        print(f"Full error details: {str(err)}")
         return None
 
 # Get Latitude, Longitude from ZIP Code

@@ -5,7 +5,7 @@ Write-Host "🔍 Bioscope Deployment Verification Started" -ForegroundColor Cyan
 
 # Configuration - Update these URLs based on your actual deployments
 $FRONTEND_URL = "https://bioscope-project.vercel.app"
-$BACKEND_URL = "https://bioscope-project-production.up.railway.app"  # Update this with your actual Railway URL
+$BACKEND_URL = "https://bioscope-project-production.up.railway.app"
 
 # Alternative common Railway URL patterns to try if the above doesn't work
 $RAILWAY_URL_PATTERNS = @(
