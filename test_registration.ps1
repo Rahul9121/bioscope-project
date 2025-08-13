@@ -1,7 +1,7 @@
 # PowerShell script to test the registration endpoint
 
 $backendUrl = "https://bioscope-project-production.up.railway.app"
-$frontendUrl = "https://bioscope-project.vercel.app"
+$frontendUrl = "https://bioscope-project-radatlkov-rahul9121s-projects.vercel.app"
 
 Write-Host "🧪 Testing Registration Endpoint" -ForegroundColor Green
 Write-Host "=" * 50
