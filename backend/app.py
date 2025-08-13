@@ -31,7 +31,7 @@ app.config["CACHE_TYPE"] = "simple"
 cache = Cache(app)
 
 # Get allowed origins from environment or default to localhost and Vercel
-allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,https://bioscope-project-radatlkov-rahul9121s-projects.vercel.app').split(',')
+allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,https://bioscope-project.vercel.app').split(',')
 CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
 
 app.register_blueprint(account_bp, url_prefix="/account")
@@ -365,7 +365,7 @@ def login():
 
         # ✅ Explicit CORS headers
         origin = request.headers.get('Origin', 'http://localhost:3000')
-        allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project-radatlkov-rahul9121s-projects.vercel.app'] else 'http://localhost:3000'
+        allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000'
         response.headers.add("Access-Control-Allow-Origin", allowed_origin)
         response.headers.add("Access-Control-Allow-Credentials", "true")
 
@@ -382,7 +382,7 @@ def logout():
         # Handle CORS preflight
         response = jsonify({"message": "CORS preflight success"})
         origin = request.headers.get('Origin', 'http://localhost:3000')
-        allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project-radatlkov-rahul9121s-projects.vercel.app'] else 'http://localhost:3000'
+        allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000'
         response.headers.add("Access-Control-Allow-Origin", allowed_origin)
         response.headers.add("Access-Control-Allow-Credentials", "true")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type")
@@ -394,7 +394,7 @@ def logout():
 
     response = jsonify({"message": "Logout successful"})
     origin = request.headers.get('Origin', 'http://localhost:3000')
-    allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project-radatlkov-rahul9121s-projects.vercel.app'] else 'http://localhost:3000'
+    allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000'
     response.headers.add("Access-Control-Allow-Origin", allowed_origin)
     response.headers.add("Access-Control-Allow-Credentials", "true")
     return response, 200
