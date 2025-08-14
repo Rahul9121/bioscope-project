@@ -55,29 +55,24 @@ app.config.update({
 
 Session(app)
 
-# Database configuration from environment variables
-def get_db_config():
+# Simple database connection - no complex parsing
+def get_db_connection_string():
+    """Get database connection string directly"""
     database_url = os.getenv('DATABASE_URL')
     if database_url:
-        # Parse DATABASE_URL for services like Railway, Heroku
-        import urllib.parse as urlparse
-        url = urlparse.urlparse(database_url)
-        return {
-            'host': url.hostname,
-            'user': url.username,
-            'password': url.password,
-            'dbname': url.path[1:],
-            'port': url.port or 5432
-        }
-    else:
-        # Fallback to individual environment variables
-        return {
-            'host': os.getenv('DB_HOST', 'localhost'),
-            'user': os.getenv('DB_USER', 'postgres'),
-            'password': os.getenv('DB_PASSWORD', 'password'),
-            'dbname': os.getenv('DB_NAME', 'postgres'),
-            'port': os.getenv('DB_PORT', 5432)
-        }
+        # Ensure SSL for Supabase
+        if 'supabase.com' in database_url and '?sslmode=' not in database_url:
+            database_url += '?sslmode=require'
+        return database_url
+    
+    # Fallback - build connection string from individual variables
+    host = os.getenv('DB_HOST', 'localhost')
+    user = os.getenv('DB_USER', 'postgres')
+    password = os.getenv('DB_PASSWORD', 'password')
+    dbname = os.getenv('DB_NAME', 'postgres')
+    port = os.getenv('DB_PORT', 5432)
+    
+    return f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
 
 GEOCODING_API_URL = "https://nominatim.openstreetmap.org/search"
 
@@ -139,52 +134,29 @@ def log_request():
         print(f"Body: {request.get_data(as_text=True)}")
 
 def connect_db():
+    """Simple database connection without complex parsing"""
     try:
-        db_config = get_db_config()
+        # Get the connection string directly
+        connection_string = get_db_connection_string()
         
-        # Debug the parsed config
-        print(f"🔍 Raw DATABASE_URL exists: {bool(os.getenv('DATABASE_URL'))}")
-        print(f"🔍 Parsed db_config: {db_config}")
+        print(f"🔍 DATABASE_URL exists: {bool(os.getenv('DATABASE_URL'))}")
+        print(f"🔗 Connecting to database...")
         
-        # Check for None values
-        if not db_config.get('host'):
-            print("❌ Error: Database host is None - DATABASE_URL parsing failed")
-            return None
-            
-        # Enhanced SSL configuration for production databases
-        host = db_config.get('host', '')
-        if host and ('supabase.com' in host or 'railway.app' in host):
-            db_config['sslmode'] = 'require'
-            # Additional SSL settings for Railway/Supabase compatibility
-            db_config['sslcert'] = None
-            db_config['sslkey'] = None
-            db_config['sslrootcert'] = None
-        
-        print(f"🔗 Attempting database connection to: {db_config.get('host', 'unknown')}:{db_config.get('port', 'unknown')}")
-        print(f"🔗 Database name: {db_config.get('dbname', 'unknown')}")
-        print(f"🔗 Username: {db_config.get('user', 'unknown')}")
-        print(f"🔗 SSL mode: {db_config.get('sslmode', 'not set')}")
-        
-        # Try connection with timeout
-        db_config['connect_timeout'] = 30
-        
-        conn = psycopg2.connect(**db_config)
+        # Connect directly using the connection string
+        conn = psycopg2.connect(connection_string)
         print("✅ Database connection successful!")
         return conn
         
     except psycopg2.OperationalError as err:
         print(f"❌ PostgreSQL Operational Error: {err}")
         print("This usually means connection/authentication issues")
-        print(f"Full error details: {str(err)}")
         return None
     except psycopg2.DatabaseError as err:
         print(f"❌ PostgreSQL Database Error: {err}")
-        print(f"Full error details: {str(err)}")
         return None
     except Exception as err:
         print(f"❌ Unexpected database connection error: {err}")
         print(f"Error type: {type(err).__name__}")
-        print(f"Full error details: {str(err)}")
         return None
 
 # Get Latitude, Longitude from ZIP Code
@@ -681,6 +653,6 @@ def download_report_direct():
 
 
 if __name__ == "__main__":
-    port = int(os.getenv('PORT', 5001))
-    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
-    app.run(host='0.0.0.0', port=port, debug=debug_mode)
+    # Railway automatically sets PORT environment variable
+    port = int(os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
