@@ -25,9 +25,9 @@
     "web-vitals": "^4.2.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "vercel-build": "npm run build"
   },
   "eslintConfig": {
