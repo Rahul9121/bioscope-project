@@ -40,10 +40,10 @@ const RegisterForm = () => {
 
     setLoading(true);
 
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+    console.log('Attempting to connect to:', apiUrl);
+
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-      console.log('Attempting to connect to:', apiUrl);
-      
       const response = await axios.post(
         `${apiUrl}/register`,
         { hotel_name: hotelName, email, password },
