@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Button, Grid, Container, Card, CardContent, IconButton } from "@mui/material";
-import { Eco, Science, Assessment, TrendingUp, LocationOn, Shield } from "@mui/icons-material";
+import { Nature, Science, Assessment, TrendingUp, LocationOn, Security } from "@mui/icons-material";
 import Layout from "./Layout";
 import { motion } from "framer-motion";
 
@@ -22,7 +22,7 @@ const HomePage = () => {
 
   const features = [
     {
-      icon: <Eco sx={{ fontSize: 50, color: "#4CAF50" }} />,
+      icon: <Nature sx={{ fontSize: 50, color: "#4CAF50" }} />,
       title: "Biodiversity Analysis",
       description: "Advanced algorithms to assess ecosystem health and species diversity patterns."
     },
@@ -47,7 +47,7 @@ const HomePage = () => {
       description: "Monitor changes over time with comprehensive temporal data analysis."
     },
     {
-      icon: <Shield sx={{ fontSize: 50, color: "#F44336" }} />,
+      icon: <Security sx={{ fontSize: 50, color: "#F44336" }} />,
       title: "Compliance Reports",
       description: "Generate regulatory compliance reports for environmental assessments."
     }
