@@ -131,9 +131,14 @@ def get_session_risks():
 
 @app.before_request
 def log_request():
-    print(f"🔍 Request: {request.method} {request.path}")
-    if request.method in ["POST", "PUT"]:
-        print(f"Body: {request.get_data(as_text=True)}")
+    try:
+        # Use logging instead of print to avoid Windows pipe issues
+        app.logger.info(f"🔍 Request: {request.method} {request.path}")
+        if request.method in ["POST", "PUT"]:
+            app.logger.info(f"Body: {request.get_data(as_text=True)}")
+    except (OSError, BrokenPipeError) as e:
+        # Silently handle pipe errors that occur in Windows environments
+        pass
 
 def connect_db():
     """Simple database connection without complex parsing"""
@@ -141,24 +146,24 @@ def connect_db():
         # Get the connection string directly
         connection_string = get_db_connection_string()
         
-        print(f"🔍 DATABASE_URL exists: {bool(os.getenv('DATABASE_URL'))}")
-        print(f"🔗 Connecting to database...")
+        app.logger.info(f"🔍 DATABASE_URL exists: {bool(os.getenv('DATABASE_URL'))}")
+        app.logger.info(f"🔗 Connecting to database...")
         
         # Connect directly using the connection string
         conn = psycopg2.connect(connection_string)
-        print("✅ Database connection successful!")
+        app.logger.info("✅ Database connection successful!")
         return conn
         
     except psycopg2.OperationalError as err:
-        print(f"❌ PostgreSQL Operational Error: {err}")
-        print("This usually means connection/authentication issues")
+        app.logger.error(f"❌ PostgreSQL Operational Error: {err}")
+        app.logger.error("This usually means connection/authentication issues")
         return None
     except psycopg2.DatabaseError as err:
-        print(f"❌ PostgreSQL Database Error: {err}")
+        app.logger.error(f"❌ PostgreSQL Database Error: {err}")
         return None
     except Exception as err:
-        print(f"❌ Unexpected database connection error: {err}")
-        print(f"Error type: {type(err).__name__}")
+        app.logger.error(f"❌ Unexpected database connection error: {err}")
+        app.logger.error(f"Error type: {type(err).__name__}")
         return None
 
 # Get Latitude, Longitude from ZIP Code
