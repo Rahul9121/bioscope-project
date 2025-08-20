@@ -40,19 +40,38 @@ const RegisterForm = () => {
 
     setLoading(true);
 
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+    console.log('Attempting to connect to:', apiUrl);
+
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
       const response = await axios.post(
         `${apiUrl}/register`,
         { hotel_name: hotelName, email, password },
-        { headers: { "Content-Type": "application/json" }, withCredentials: true }
+        { 
+          headers: { "Content-Type": "application/json" }, 
+          withCredentials: true,
+          timeout: 10000 // 10 second timeout
+        }
       );
 
       setSuccess(true);
       setMessage(response.data.message || "Registration successful! You can now log in.");
     } catch (err) {
       setSuccess(false);
-      const errorMessage = err.response?.data?.error || "An error occurred during registration.";
+      console.error('Registration error:', err);
+      
+      let errorMessage = "An error occurred during registration.";
+      
+      if (err.code === 'ECONNABORTED' || err.code === 'NETWORK_ERROR') {
+        errorMessage = "⚠️ Backend server is currently unavailable. The server might be starting up or experiencing issues. Please try again in a few minutes.";
+      } else if (err.response?.status === 404) {
+        errorMessage = "⚠️ Registration endpoint not found. Backend server may not be properly deployed.";
+      } else if (err.response?.data?.error) {
+        errorMessage = err.response.data.error;
+      } else if (err.message && err.message.includes('Network Error')) {
+        errorMessage = "🌐 Cannot connect to server. Please check if the backend is running at: " + apiUrl;
+      }
+      
       setMessage(errorMessage);
     } finally {
       setLoading(false);

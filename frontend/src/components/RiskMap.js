@@ -13,6 +13,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
 import axios from "axios";
 import Layout from "./Layout";
+import { getMockLocationFromZip, getMockBiodiversityRisks, checkBackendAvailability } from "../services/mockDataService";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PublicIcon from "@mui/icons-material/Public";       // Marine
@@ -327,19 +328,76 @@ const downloadReport = async () => {
       setError("");
       setOffset(0);
       setLoadedAreas([]);
+      
+      // Check if input is a ZIP code (5 digits)
+      const zipMatch = inputText.match(/\b\d{5}\b/);
+      
+      if (zipMatch) {
+        const zipCode = zipMatch[0];
+        console.log('🔍 Searching for ZIP code:', zipCode);
+        
+        // Try mock data first for ZIP codes
+        const mockLocationResult = getMockLocationFromZip(zipCode);
+        
+        if (mockLocationResult.success) {
+          const locationData = mockLocationResult.data;
+          setLocation({
+            latitude: locationData.latitude,
+            longitude: locationData.longitude
+          });
+          
+          // Get biodiversity risks for this location
+          const mockRisksResult = getMockBiodiversityRisks(
+            locationData.latitude, 
+            locationData.longitude, 
+            5
+          );
+          
+          if (mockRisksResult.success) {
+            setRisks(mockRisksResult.data.risks);
+            localStorage.setItem("mitigation_risks", JSON.stringify(mockRisksResult.data.risks));
+            console.log('✅ Using mock data for ZIP:', zipCode);
+            console.log('📍 Location:', locationData);
+            console.log('🦋 Risks found:', mockRisksResult.data.risks.length);
+            setError(""); // Clear any previous errors
+            return;
+          }
+        } else {
+          setError(mockLocationResult.error);
+          return;
+        }
+      }
+      
+      // Try backend API if not a ZIP code or mock data failed
       const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5001';
-      const response = await axios.post(`${apiUrl}/search`, { input_text: inputText }, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      setLocation(response.data.center);
-      setRisks(response.data.risks);
-      localStorage.setItem("mitigation_risks", JSON.stringify(response.data.risks));
-      console.log("✅ Risks stored in localStorage:", response.data.risks);
-
-
+      
+      try {
+        const response = await axios.post(`${apiUrl}/search`, { input_text: inputText }, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+          timeout: 10000
+        });
+        
+        setLocation(response.data.center);
+        setRisks(response.data.risks);
+        localStorage.setItem("mitigation_risks", JSON.stringify(response.data.risks));
+        console.log("✅ Using backend data");
+        
+      } catch (backendError) {
+        console.log('❌ Backend unavailable, falling back to mock data');
+        
+        // If backend fails, show helpful error with instructions
+        setError(
+          "🌐 Backend server unavailable. Try these New Jersey ZIP codes for demo: " +
+          "07001 (Avenel), 08540 (Princeton), 08701 (Lakewood), 08902 (North Brunswick)"
+        );
+        setLocation(null);
+        setRisks([]);
+      }
+      
     } catch (err) {
-      setError(err.response?.data?.error || "An error occurred while fetching data.");
+      console.error('Search error:', err);
+      setError("An error occurred while searching. Please try a New Jersey ZIP code like 08540.");
       setLocation(null);
       setRisks([]);
     }
@@ -350,6 +408,17 @@ const downloadReport = async () => {
       <Box sx={{ display: "flex", minHeight: "calc(100vh - 64px)", width: "100vw" }}>
         <Box sx={{ width: { xs: "100%", md: "25%" }, maxHeight: "calc(100vh - 64px)", overflowY: "auto", backgroundColor: "#f9f9f9", padding: 3, borderRight: "2px solid #ddd", boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)" }}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>Search for Biodiversity Risk</Typography>
+          
+          <Box sx={{ mb: 2, p: 2, backgroundColor: "#e3f2fd", borderRadius: 2 }}>
+            <Typography variant="body2" sx={{ fontWeight: "bold", color: "#1976d2" }}>
+              🎆 Try these New Jersey ZIP codes:
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 0.5 }}>
+              • 08540 (Princeton) • 07001 (Avenel)<br/>
+              • 08701 (Lakewood) • 08902 (North Brunswick)
+            </Typography>
+          </Box>
+          
           <TextField label="Enter Address or ZIP Code" value={inputText} onChange={(e) => {
             setInputText(e.target.value);
             fetchAddressSuggestions(e.target.value);
@@ -369,6 +438,14 @@ const downloadReport = async () => {
           >
             Search
           </Button>
+
+          {error && (
+            <Box sx={{ mt: 2, p: 2, backgroundColor: "#ffebee", borderRadius: 2, border: "1px solid #f44336" }}>
+              <Typography variant="body2" sx={{ color: "#d32f2f" }}>
+                {error}
+              </Typography>
+            </Box>
+          )}
 
           <Paper sx={{ p: 2, mb: 2, backgroundColor: "#f9f9f9", borderRadius: 2 }}>
 
