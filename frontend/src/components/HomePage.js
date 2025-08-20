@@ -1,9 +1,16 @@
 import React from "react";
 import { Box, Typography, Button, Grid, Container } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import { motion } from "framer-motion";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/map');
+  };
+
   return (
     <Layout>
       {/* ✅ Hero Section - Perfectly Centered */}
@@ -39,7 +46,11 @@ const HomePage = () => {
           <Typography variant="h5" sx={{ mt: 2, opacity: 0.9 }}>
             Discover biodiversity insights and protect your environment with data-driven assessments.
           </Typography>
-          <Button variant="contained" sx={{ mt: 3, background: "#4CAF50", fontSize: "1.2rem" }}>
+          <Button 
+            variant="contained" 
+            onClick={handleGetStarted}
+            sx={{ mt: 3, background: "#4CAF50", fontSize: "1.2rem", cursor: "pointer" }}
+          >
             Get Started
           </Button>
         </Box>

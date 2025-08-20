@@ -1,30 +1,61 @@
 import json
 import os
-import psycopg2
-from flask import Flask, request, jsonify, session, send_file, make_response
-from werkzeug.security import generate_password_hash, check_password_hash
-import requests
-import logging
-from flask_cors import CORS
-from flask_session import Session
-from datetime import timedelta
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from flask_caching import Cache
-import pandas as pd
-from backend.routes.account_routes import account_bp
-from backend.routes.location_routes import location_bp
+import sys
 
+# Add startup logging
+print("🚀 Starting Bioscope Backend...")
+print(f"🐍 Python version: {sys.version}")
+print(f"📁 Current directory: {os.getcwd()}")
+print(f"🌍 Environment variables: PORT={os.getenv('PORT')}, DATABASE_URL exists={bool(os.getenv('DATABASE_URL'))}")
 
+try:
+    print("📦 Loading core imports...")
+    import psycopg2
+    from flask import Flask, request, jsonify, session, send_file, make_response
+    from werkzeug.security import generate_password_hash, check_password_hash
+    import requests
+    import logging
+    from flask_cors import CORS
+    from flask_session import Session
+    from datetime import timedelta
+    print("✅ Core imports successful")
+except ImportError as e:
+    print(f"❌ Core import failed: {e}")
+    sys.exit(1)
 
+try:
+    print("📦 Loading reporting imports...")
+    from reportlab.lib.pagesizes import letter
+    from reportlab.pdfgen import canvas
+    from flask_caching import Cache
+    import pandas as pd
+    import xlsxwriter
+    import traceback
+    print("✅ Reporting imports successful")
+except ImportError as e:
+    print(f"⚠️ Reporting import failed: {e} - continuing with basic functionality")
 
-import xlsxwriter
-import traceback
-from backend.mitigation_action import (
-    generate_mitigation_report,
-    query_mitigation_action,
-    threat_level_from_code
-)
+try:
+    print("📦 Loading mitigation action module...")
+    from mitigation_action import (
+        generate_mitigation_report,
+        query_mitigation_action,
+        threat_level_from_code
+    )
+    print("✅ Mitigation action imports successful")
+except ImportError as e:
+    print(f"⚠️ Mitigation action import failed: {e} - using fallback functions")
+    
+    # Fallback functions
+    def query_mitigation_action(risk_type, threat_level, description=None):
+        return {"action": f"Monitor {risk_type} with {threat_level} threat level", "score": 1}
+    
+    def threat_level_from_code(threat_code):
+        mapping = {"high": 8, "moderate": 6, "medium": 4, "low": 2}
+        return mapping.get(threat_code.lower(), 1)
+    
+    def generate_mitigation_report(risks):
+        return pd.DataFrame(risks) if 'pandas' in sys.modules else []
 
 app = Flask(__name__)
 app.config["CACHE_TYPE"] = "simple"
@@ -34,8 +65,9 @@ cache = Cache(app)
 allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,https://bioscope-project.vercel.app').split(',')
 CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
 
-app.register_blueprint(account_bp, url_prefix="/account")
-app.register_blueprint(location_bp, url_prefix="/locations")
+# app.register_blueprint(account_bp, url_prefix="/account")
+# app.register_blueprint(location_bp, url_prefix="/locations")
+# Note: Commenting out blueprint registrations until routes are fixed
 
 # Use environment variable for secret key
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_change_in_production')
@@ -129,9 +161,14 @@ def get_session_risks():
 
 @app.before_request
 def log_request():
-    print(f"🔍 Request: {request.method} {request.path}")
-    if request.method in ["POST", "PUT"]:
-        print(f"Body: {request.get_data(as_text=True)}")
+    try:
+        # Use logging instead of print to avoid Windows pipe issues
+        app.logger.info(f"🔍 Request: {request.method} {request.path}")
+        if request.method in ["POST", "PUT"]:
+            app.logger.info(f"Body: {request.get_data(as_text=True)}")
+    except (OSError, BrokenPipeError) as e:
+        # Silently handle pipe errors that occur in Windows environments
+        pass
 
 def connect_db():
     """Simple database connection without complex parsing"""
@@ -139,24 +176,24 @@ def connect_db():
         # Get the connection string directly
         connection_string = get_db_connection_string()
         
-        print(f"🔍 DATABASE_URL exists: {bool(os.getenv('DATABASE_URL'))}")
-        print(f"🔗 Connecting to database...")
+        app.logger.info(f"🔍 DATABASE_URL exists: {bool(os.getenv('DATABASE_URL'))}")
+        app.logger.info(f"🔗 Connecting to database...")
         
         # Connect directly using the connection string
         conn = psycopg2.connect(connection_string)
-        print("✅ Database connection successful!")
+        app.logger.info("✅ Database connection successful!")
         return conn
         
     except psycopg2.OperationalError as err:
-        print(f"❌ PostgreSQL Operational Error: {err}")
-        print("This usually means connection/authentication issues")
+        app.logger.error(f"❌ PostgreSQL Operational Error: {err}")
+        app.logger.error("This usually means connection/authentication issues")
         return None
     except psycopg2.DatabaseError as err:
-        print(f"❌ PostgreSQL Database Error: {err}")
+        app.logger.error(f"❌ PostgreSQL Database Error: {err}")
         return None
     except Exception as err:
-        print(f"❌ Unexpected database connection error: {err}")
-        print(f"Error type: {type(err).__name__}")
+        app.logger.error(f"❌ Unexpected database connection error: {err}")
+        app.logger.error(f"Error type: {type(err).__name__}")
         return None
 
 # Get Latitude, Longitude from ZIP Code
@@ -301,7 +338,7 @@ def register():
         # Hash password and create user
         hashed_password = generate_password_hash(password)
         cursor.execute(
-            "INSERT INTO users (hotel_name, email, password) VALUES (%s, %s, %s)",
+            "INSERT INTO users (hotel_name, email, password_hash) VALUES (%s, %s, %s)",
             (hotel_name, email, hashed_password)
         )
         conn.commit()
@@ -333,7 +370,7 @@ def login():
 
         conn = connect_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT id, hotel_name, email, password FROM users WHERE email = %s", (email,))
+        cursor.execute("SELECT id, hotel_name, email, password_hash FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
 
         if not user:
@@ -420,7 +457,7 @@ def forgot_password():
         cursor = conn.cursor()
 
         # Check if the email exists
-        cursor.execute("SELECT id, password FROM users WHERE email = %s", (email,))
+        cursor.execute("SELECT id, password_hash FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
 
         if not user:
@@ -436,7 +473,7 @@ def forgot_password():
         hashed_new_password = generate_password_hash(new_password)
 
         # Update the password in the database
-        cursor.execute("UPDATE users SET password = %s WHERE id = %s", (hashed_new_password, user_id))
+        cursor.execute("UPDATE users SET password_hash = %s WHERE id = %s", (hashed_new_password, user_id))
         conn.commit()
 
         cursor.close()
