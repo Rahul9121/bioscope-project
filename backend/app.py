@@ -308,7 +308,7 @@ def register():
         # Hash password and create user
         hashed_password = generate_password_hash(password)
         cursor.execute(
-            "INSERT INTO users (hotel_name, email, password) VALUES (%s, %s, %s)",
+            "INSERT INTO users (hotel_name, email, password_hash) VALUES (%s, %s, %s)",
             (hotel_name, email, hashed_password)
         )
         conn.commit()
@@ -340,7 +340,7 @@ def login():
 
         conn = connect_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT id, hotel_name, email, password FROM users WHERE email = %s", (email,))
+        cursor.execute("SELECT id, hotel_name, email, password_hash FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
 
         if not user:
@@ -427,7 +427,7 @@ def forgot_password():
         cursor = conn.cursor()
 
         # Check if the email exists
-        cursor.execute("SELECT id, password FROM users WHERE email = %s", (email,))
+        cursor.execute("SELECT id, password_hash FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
 
         if not user:
@@ -443,7 +443,7 @@ def forgot_password():
         hashed_new_password = generate_password_hash(new_password)
 
         # Update the password in the database
-        cursor.execute("UPDATE users SET password = %s WHERE id = %s", (hashed_new_password, user_id))
+        cursor.execute("UPDATE users SET password_hash = %s WHERE id = %s", (hashed_new_password, user_id))
         conn.commit()
 
         cursor.close()
