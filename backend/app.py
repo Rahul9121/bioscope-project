@@ -1,31 +1,61 @@
 import json
 import os
-import psycopg2
-from flask import Flask, request, jsonify, session, send_file, make_response
-from werkzeug.security import generate_password_hash, check_password_hash
-import requests
-import logging
-from flask_cors import CORS
-from flask_session import Session
-from datetime import timedelta
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from flask_caching import Cache
-import pandas as pd
-# from backend.routes.account_routes import account_bp
-# from backend.routes.location_routes import location_bp
-# Note: Commenting out route imports as they may not exist or need to be created
+import sys
 
+# Add startup logging
+print("🚀 Starting Bioscope Backend...")
+print(f"🐍 Python version: {sys.version}")
+print(f"📁 Current directory: {os.getcwd()}")
+print(f"🌍 Environment variables: PORT={os.getenv('PORT')}, DATABASE_URL exists={bool(os.getenv('DATABASE_URL'))}")
 
+try:
+    print("📦 Loading core imports...")
+    import psycopg2
+    from flask import Flask, request, jsonify, session, send_file, make_response
+    from werkzeug.security import generate_password_hash, check_password_hash
+    import requests
+    import logging
+    from flask_cors import CORS
+    from flask_session import Session
+    from datetime import timedelta
+    print("✅ Core imports successful")
+except ImportError as e:
+    print(f"❌ Core import failed: {e}")
+    sys.exit(1)
 
+try:
+    print("📦 Loading reporting imports...")
+    from reportlab.lib.pagesizes import letter
+    from reportlab.pdfgen import canvas
+    from flask_caching import Cache
+    import pandas as pd
+    import xlsxwriter
+    import traceback
+    print("✅ Reporting imports successful")
+except ImportError as e:
+    print(f"⚠️ Reporting import failed: {e} - continuing with basic functionality")
 
-import xlsxwriter
-import traceback
-from mitigation_action import (
-    generate_mitigation_report,
-    query_mitigation_action,
-    threat_level_from_code
-)
+try:
+    print("📦 Loading mitigation action module...")
+    from mitigation_action import (
+        generate_mitigation_report,
+        query_mitigation_action,
+        threat_level_from_code
+    )
+    print("✅ Mitigation action imports successful")
+except ImportError as e:
+    print(f"⚠️ Mitigation action import failed: {e} - using fallback functions")
+    
+    # Fallback functions
+    def query_mitigation_action(risk_type, threat_level, description=None):
+        return {"action": f"Monitor {risk_type} with {threat_level} threat level", "score": 1}
+    
+    def threat_level_from_code(threat_code):
+        mapping = {"high": 8, "moderate": 6, "medium": 4, "low": 2}
+        return mapping.get(threat_code.lower(), 1)
+    
+    def generate_mitigation_report(risks):
+        return pd.DataFrame(risks) if 'pandas' in sys.modules else []
 
 app = Flask(__name__)
 app.config["CACHE_TYPE"] = "simple"
