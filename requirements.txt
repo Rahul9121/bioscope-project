@@ -14,3 +14,7 @@ openpyxl==3.1.2
 gunicorn==21.2.0
 SQLAlchemy==2.0.25
 python-dotenv==1.0.0
+# ML Dependencies
+chromadb==0.4.15
+sentence-transformers==2.2.2
+torch==2.1.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
