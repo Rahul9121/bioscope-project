@@ -27,7 +27,7 @@ const AddLocation = () => {
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:5001/locations/add", formData, {
+      const response = await axios.post("https://bioscope-project-production.up.railway.app/locations/add", formData, {
         withCredentials: true
       });
 

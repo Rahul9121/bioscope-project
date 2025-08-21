@@ -14,6 +14,7 @@ import L from "leaflet";
 import axios from "axios";
 import Layout from "./Layout";
 import { getMockLocationFromZip, getMockBiodiversityRisks, checkBackendAvailability } from "../services/mockDataService";
+import AdvancedRiskAnalysis from "./AdvancedRiskAnalysis";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PublicIcon from "@mui/icons-material/Public";       // Marine
@@ -356,6 +357,7 @@ const downloadReport = async () => {
           if (mockRisksResult.success) {
             setRisks(mockRisksResult.data.risks);
             localStorage.setItem("mitigation_risks", JSON.stringify(mockRisksResult.data.risks));
+            localStorage.setItem("current_location", JSON.stringify(locationData));
             console.log('✅ Using mock data for ZIP:', zipCode);
             console.log('📍 Location:', locationData);
             console.log('🦋 Risks found:', mockRisksResult.data.risks.length);
@@ -448,9 +450,18 @@ const downloadReport = async () => {
           )}
 
           <Paper sx={{ p: 2, mb: 2, backgroundColor: "#f9f9f9", borderRadius: 2 }}>
-
             <ClusterLegend />
           </Paper>
+
+          {/* Advanced Risk Analysis */}
+          {risks.length > 0 && (
+            <Paper sx={{ p: 2, mb: 2, backgroundColor: "#fff", borderRadius: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2, color: "#1B3A57" }}>
+                📊 Advanced Analysis
+              </Typography>
+              <AdvancedRiskAnalysis risks={risks} location={location} />
+            </Paper>
+          )}
 
           <Box sx={{ mt: 3 }}>
             {/* 🔹 Mitigation Report Scrollable Preview */}
