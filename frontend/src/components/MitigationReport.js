@@ -10,7 +10,7 @@ import {
   Assessment as AssessmentIcon,
   Download as DownloadIcon,
   TrendingUp as TrendingUpIcon,
-  Eco as EcoIcon,
+  Nature as EcoIcon,
   CheckCircle as CheckCircleIcon,
   Warning as WarningIcon,
   Error as ErrorIcon,
