@@ -462,67 +462,9 @@ def init_database():
             pass  # Column might already exist
         
         
-        # Sample IUCN endangered species data
-        cursor.execute("""
-            INSERT INTO iucn_data (latitude, longitude, species_name, threat_status, habitat) 
-            VALUES 
-            (40.0583, -74.4057, 'Bald Eagle', 'Least Concern', 'Wetland'),
-            (40.7128, -74.0060, 'Peregrine Falcon', 'Least Concern', 'Urban'),
-            (40.2206, -74.7563, 'Wood Turtle', 'Vulnerable', 'Forest Stream'),
-            (39.7267, -75.2835, 'Eastern Red-backed Salamander', 'Least Concern', 'Forest'),
-            (40.9176, -74.1718, 'Bog Turtle', 'Endangered', 'Wetland'),
-            (40.3584, -74.6672, 'Pine Barrens Treefrog', 'Near Threatened', 'Pine Barrens'),
-            (40.5895, -74.1560, 'Timber Rattlesnake', 'Near Threatened', 'Forest'),
-            (39.9612, -75.1607, 'Northern Copperhead', 'Least Concern', 'Forest'),
-            (40.1915, -74.7561, 'Bobcat', 'Least Concern', 'Forest'),
-            (40.4559, -74.3641, 'River Otter', 'Least Concern', 'Aquatic')
-            ON CONFLICT DO NOTHING;
-        """)
-        
-        # Sample freshwater risk data
-        cursor.execute("""
-            INSERT INTO freshwater_risk (x, y, freshwater_hci, normalized_risk, risk_level) 
-            VALUES 
-            (-74.4057, 40.0583, 1.62, 0.75, 'High'),
-            (-74.0060, 40.7128, 1.25, 0.45, 'Moderate'),
-            (-74.7563, 40.2206, 1.15, 0.25, 'Low'),
-            (-75.2835, 39.7267, 1.55, 0.60, 'High'),
-            (-74.1718, 40.9176, 1.35, 0.35, 'Moderate'),
-            (-74.6672, 40.3584, 1.45, 0.50, 'Moderate'),
-            (-74.1560, 40.5895, 1.70, 0.80, 'High'),
-            (-75.1607, 39.9612, 1.30, 0.40, 'Moderate')
-            ON CONFLICT DO NOTHING;
-        """)
-        
-        # Sample marine HCI data
-        cursor.execute("""
-            INSERT INTO marine_hci (x, y, marine_hci) 
-            VALUES 
-            (-74.4057, 40.0583, 0.80),
-            (-74.0060, 40.7128, 0.65),
-            (-74.7563, 40.2206, 0.45),
-            (-75.2835, 39.7267, 0.25),
-            (-74.1718, 40.9176, 0.55),
-            (-74.0059, 40.7589, 0.75),
-            (-74.0776, 40.7282, 0.85),
-            (-74.1745, 40.7348, 0.70)
-            ON CONFLICT DO NOTHING;
-        """)
-        
-        # Sample terrestrial risk data
-        cursor.execute("""
-            INSERT INTO terrestrial_risk (x, y, terrestrial_hci, normalized_risk, risk_level) 
-            VALUES 
-            (-74.4057, 40.0583, 2.15, 0.85, 'high'),
-            (-74.0060, 40.7128, 1.75, 0.55, 'moderate'),
-            (-74.7563, 40.2206, 1.25, 0.25, 'low'),
-            (-75.2835, 39.7267, 2.05, 0.70, 'high'),
-            (-74.1718, 40.9176, 1.65, 0.40, 'moderate'),
-            (-74.6672, 40.3584, 1.85, 0.60, 'moderate'),
-            (-74.1560, 40.5895, 2.25, 0.90, 'high'),
-            (-75.1607, 39.9612, 1.45, 0.35, 'moderate')
-            ON CONFLICT DO NOTHING;
-        """)
+        # Skip data insertion for now due to schema conflicts
+        # The existing database already has invasive species data
+        print("Database tables created/verified successfully")
         
         # Create indexes for better performance
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_invasive_species_location ON invasive_species(latitude, longitude);")
