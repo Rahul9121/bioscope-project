@@ -13,7 +13,7 @@ import {
   Info as InfoIcon,
   TrendingUp as TrendingUpIcon,
   Assessment as AssessmentIcon,
-  EcoIcon,
+  Eco as EcoIcon,
   LocationOn as LocationIcon
 } from '@mui/icons-material';
 
