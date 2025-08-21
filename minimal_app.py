@@ -20,6 +20,19 @@ except ImportError as e:
     print(f"⚠️ Database dependencies not available: {e}")
     DATABASE_AVAILABLE = False
 
+# Try to import report generation dependencies
+try:
+    from reportlab.lib.pagesizes import letter
+    from reportlab.pdfgen import canvas
+    from flask import send_file
+    import io
+    import tempfile
+    REPORTS_AVAILABLE = True
+    print("✅ Report generation dependencies loaded successfully")
+except ImportError as e:
+    print(f"⚠️ Report generation dependencies not available: {e}")
+    REPORTS_AVAILABLE = False
+
 # Constants
 GEOCODING_API_URL = "https://nominatim.openstreetmap.org/search"
 NJ_BOUNDS = {"north": 41.36, "south": 38.92, "west": -75.58, "east": -73.90}
@@ -439,6 +452,110 @@ def search():
 def get_session_risks():
     """Get risks from current session"""
     return jsonify({"risks": session.get("risks", [])})
+
+# Report Generation Routes
+@app.route("/download-report-direct", methods=["POST"])
+def download_report_direct():
+    """Generate and download biodiversity risk reports"""
+    if not REPORTS_AVAILABLE:
+        return jsonify({"error": "Report generation not available"}), 500
+    
+    try:
+        data = request.get_json()
+        risks = data.get("risks", [])
+        file_format = data.get("format", "pdf")
+        
+        if not risks:
+            # Use session risks if no risks provided
+            risks = session.get("risks", [])
+            
+        if not risks:
+            return jsonify({"error": "No risks data available for report."}), 400
+        
+        if file_format == "pdf":
+            # Create PDF report
+            buffer = io.BytesIO()
+            c = canvas.Canvas(buffer, pagesize=letter)
+            width, height = letter
+            
+            # PDF Header
+            c.setFont("Helvetica-Bold", 16)
+            c.drawString(50, height - 50, "Biodiversity Risk Assessment Report")
+            c.setFont("Helvetica", 10)
+            c.drawString(50, height - 70, f"Generated from BiodivProScope - {len(risks)} risk(s) identified")
+            
+            # Add search location info if available
+            last_search = session.get("last_search", {})
+            if last_search:
+                c.drawString(50, height - 90, f"Location: {last_search.get('zip', 'Unknown')} ({last_search.get('lat', 'N/A')}, {last_search.get('lon', 'N/A')})")
+            
+            c.setFont("Helvetica", 12)
+            y = height - 130
+            
+            # Add risks to PDF
+            for idx, risk in enumerate(risks[:20]):  # Limit to 20 risks for PDF
+                if y < 100:  # Start new page if needed
+                    c.showPage()
+                    y = height - 50
+                
+                c.setFont("Helvetica-Bold", 12)
+                c.drawString(50, y, f"{idx + 1}. {risk.get('risk_type', 'Unknown Risk')}")
+                y -= 20
+                
+                c.setFont("Helvetica", 10)
+                c.drawString(70, y, f"Threat Level: {risk.get('threat_code', 'unknown').title()}")
+                y -= 15
+                
+                description = risk.get('description', 'No description available')
+                # Wrap long descriptions
+                if len(description) > 80:
+                    description = description[:80] + "..."
+                c.drawString(70, y, f"Description: {description}")
+                y -= 15
+                
+                c.drawString(70, y, f"Location: ({risk.get('latitude', 'N/A')}, {risk.get('longitude', 'N/A')})")
+                y -= 25
+            
+            c.save()
+            buffer.seek(0)
+            
+            return send_file(
+                io.BytesIO(buffer.read()),
+                mimetype='application/pdf',
+                as_attachment=True,
+                download_name='biodiversity_risk_report.pdf'
+            )
+            
+        else:
+            return jsonify({"error": "Only PDF format supported currently"}), 400
+            
+    except Exception as e:
+        print(f"Report generation error: {e}")
+        return jsonify({"error": f"Failed to generate report: {str(e)}"}), 500
+
+@app.route("/generate-report", methods=["POST"])
+def generate_report():
+    """Generate report from session data or provided risks"""
+    if not REPORTS_AVAILABLE:
+        return jsonify({"error": "Report generation not available"}), 500
+    
+    try:
+        # Get risks from session or request
+        risks = session.get("risks", [])
+        search_info = session.get("last_search", {})
+        
+        if not risks:
+            return jsonify({"error": "No risk data available. Please perform a search first."}), 400
+        
+        return jsonify({
+            "message": "Report ready for generation",
+            "risks_count": len(risks),
+            "location": search_info,
+            "available_formats": ["pdf"]
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Report preparation failed: {str(e)}"}), 500
 
 if __name__ == "__main__":
     port = int(os.getenv('PORT', 5000))
