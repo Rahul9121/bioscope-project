@@ -462,20 +462,29 @@ def init_database():
             pass  # Column might already exist
         
         # Insert sample biodiversity data for New Jersey
-        # Sample invasive species data (use only existing columns first)
-        cursor.execute("""
-            INSERT INTO invasive_species (latitude, longitude, common_name, threat_code) 
-            VALUES 
-            (40.0583, -74.4057, 'Purple Loosestrife', 'high'),
-            (40.7128, -74.0060, 'Japanese Knotweed', 'high'),
-            (40.2206, -74.7563, 'Autumn Olive', 'moderate'),
-            (39.7267, -75.2835, 'Multiflora Rose', 'moderate'),
-            (40.9176, -74.1718, 'Norway Maple', 'moderate'),
-            (40.3584, -74.6672, 'Japanese Barberry', 'moderate'),
-            (40.5895, -74.1560, 'Tree of Heaven', 'high'),
-            (39.9612, -75.1607, 'Oriental Bittersweet', 'moderate')
-            ON CONFLICT DO NOTHING;
-        """)
+        # Sample invasive species data (check if data already exists first)
+        cursor.execute("SELECT COUNT(*) FROM invasive_species;")
+        existing_count = cursor.fetchone()[0]
+        
+        if existing_count == 0:
+            # Generate unique IDs and insert data
+            invasive_data = [
+                (1, 40.0583, -74.4057, 'Purple Loosestrife', 'Lythrum salicaria', 'high'),
+                (2, 40.7128, -74.0060, 'Japanese Knotweed', 'Fallopia japonica', 'high'),
+                (3, 40.2206, -74.7563, 'Autumn Olive', 'Elaeagnus umbellata', 'moderate'),
+                (4, 39.7267, -75.2835, 'Multiflora Rose', 'Rosa multiflora', 'moderate'),
+                (5, 40.9176, -74.1718, 'Norway Maple', 'Acer platanoides', 'moderate'),
+                (6, 40.3584, -74.6672, 'Japanese Barberry', 'Berberis thunbergii', 'moderate'),
+                (7, 40.5895, -74.1560, 'Tree of Heaven', 'Ailanthus altissima', 'high'),
+                (8, 39.9612, -75.1607, 'Oriental Bittersweet', 'Celastrus orbiculatus', 'moderate')
+            ]
+            
+            for data_row in invasive_data:
+                cursor.execute("""
+                    INSERT INTO invasive_species (unique_id, latitude, longitude, common_name, scientific_name, threat_code) 
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (unique_id) DO NOTHING;
+                """, data_row)
         
         # Sample IUCN endangered species data
         cursor.execute("""
