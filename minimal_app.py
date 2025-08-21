@@ -13,11 +13,16 @@ from datetime import timedelta
 try:
     import psycopg2
     from werkzeug.security import generate_password_hash, check_password_hash
+    import requests
     DATABASE_AVAILABLE = True
     print("✅ Database dependencies loaded successfully")
 except ImportError as e:
     print(f"⚠️ Database dependencies not available: {e}")
     DATABASE_AVAILABLE = False
+
+# Constants
+GEOCODING_API_URL = "https://nominatim.openstreetmap.org/search"
+NJ_BOUNDS = {"north": 41.36, "south": 38.92, "west": -75.58, "east": -73.90}
 
 # Create Flask app
 app = Flask(__name__)
@@ -59,6 +64,52 @@ def connect_db():
     except Exception as e:
         print(f"Database connection failed: {e}")
         return None
+
+# Geocoding helper functions
+def get_lat_lon_from_zip(zipcode):
+    """Get coordinates from ZIP code"""
+    try:
+        response = requests.get(
+            GEOCODING_API_URL,
+            params={"postalcode": zipcode, "countrycodes": "us", "format": "json"},
+            headers={"User-Agent": "BiodivProScopeApp/1.0"}
+        )
+
+        if response.status_code == 200 and response.json():
+            data = response.json()[0]
+            latitude = float(data["lat"])
+            longitude = float(data["lon"])
+            return latitude, longitude
+        else:
+            return 40.0583, -74.4057  # Default coordinates for New Jersey
+
+    except Exception as e:
+        print(f"Error fetching ZIP code data: {e}")
+        return 40.0583, -74.4057  # Default fallback coordinates
+
+def get_lat_lon_from_address(address):
+    """Get coordinates from address string"""
+    try:
+        response = requests.get(
+            GEOCODING_API_URL,
+            params={"q": address, "countrycodes": "us", "format": "json"},
+            headers={"User-Agent": "BiodivProScopeApp/1.0"}
+        )
+
+        if response.status_code == 200 and response.json():
+            data = response.json()[0]
+            latitude = float(data["lat"])
+            longitude = float(data["lon"])
+            # Extract ZIP code from display name
+            address_parts = data.get("display_name", "").split(",")
+            zip_code = address_parts[-2].strip() if len(address_parts) > 1 else "Unknown"
+            return latitude, longitude, zip_code
+        else:
+            return None, None, None
+
+    except Exception as e:
+        print(f"Error fetching address data: {e}")
+        return None, None, None
 
 @app.route("/", methods=["GET"])
 def root():
@@ -289,6 +340,105 @@ def session_status():
     if 'user_id' in session:
         return jsonify({"active": True, "message": "Session is active"}), 200
     return jsonify({"active": False, "message": "Session expired"}), 401
+
+# Location and Search Routes
+@app.route("/address-autocomplete", methods=["GET"])
+def address_autocomplete():
+    """Address autocomplete for search"""
+    query = request.args.get('query', '').strip()
+    if not query:
+        return jsonify([])
+
+    try:
+        response = requests.get(
+            GEOCODING_API_URL,
+            params={"q": query, "countrycodes": "us", "format": "json", "limit": 5},
+            headers={"User-Agent": "BiodivProScopeApp/1.0"}
+        )
+
+        if response.status_code == 200:
+            suggestions = [
+                {"display_name": item.get("display_name", "")}
+                for item in response.json()
+                if "New Jersey" in item.get("display_name", "")
+            ]
+            return jsonify(suggestions)
+        else:
+            return jsonify([])
+    except Exception as e:
+        print(f"Error fetching autocomplete data: {e}")
+        return jsonify([])
+
+@app.route("/search", methods=["POST"])
+def search():
+    """Main search endpoint for location-based risk analysis"""
+    if not DATABASE_AVAILABLE:
+        return jsonify({"error": "Database not available"}), 500
+    
+    try:
+        data = request.json
+        input_text = data.get("input_text")
+        
+        if not input_text:
+            return jsonify({"error": "Input text is required"}), 400
+        
+        lat, lon, zip_code = None, None, ""
+        
+        # Determine if input is coordinates, ZIP code, or address
+        if input_text.replace(",", "").replace(".", "").replace(" ", "").isdigit():
+            if "," in input_text:
+                # Coordinates input
+                lat, lon = map(float, input_text.split(","))
+                zip_code = "Unknown"
+            elif len(input_text) == 5:
+                # ZIP code input
+                lat, lon = get_lat_lon_from_zip(input_text)
+                zip_code = input_text
+        else:
+            # Address input
+            lat, lon, zip_code = get_lat_lon_from_address(input_text)
+        
+        if lat is None or lon is None:
+            return jsonify({"error": "Could not determine location."}), 400
+        
+        # Check if location is within New Jersey bounds
+        if not (NJ_BOUNDS["south"] <= lat <= NJ_BOUNDS["north"] and 
+                NJ_BOUNDS["west"] <= lon <= NJ_BOUNDS["east"]):
+            return jsonify({"error": "The location is outside of New Jersey."}), 400
+        
+        # For now, return basic location info (we'll add risk data in next step)
+        # This simulates risk data without requiring all the database tables
+        sample_risks = [
+            {
+                "latitude": lat + 0.01,
+                "longitude": lon + 0.01,
+                "risk_type": "Sample Risk",
+                "description": "This is sample risk data for testing",
+                "threat_code": "moderate"
+            }
+        ]
+        
+        # Store in session for later use
+        session["risks"] = sample_risks
+        session["last_search"] = {"lat": lat, "lon": lon, "zip": zip_code}
+        
+        return jsonify({
+            "center": {
+                "latitude": lat,
+                "longitude": lon,
+                "zipcode": zip_code
+            },
+            "risks": sample_risks,
+            "message": "Location found successfully"
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Search failed: {str(e)}"}), 500
+
+@app.route("/session-risks", methods=["GET"])
+def get_session_risks():
+    """Get risks from current session"""
+    return jsonify({"risks": session.get("risks", [])})
 
 if __name__ == "__main__":
     port = int(os.getenv('PORT', 5000))
