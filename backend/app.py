@@ -65,9 +65,13 @@ cache = Cache(app)
 allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,https://bioscope-project.vercel.app,https://*.vercel.app').split(',')
 CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
 
-# app.register_blueprint(account_bp, url_prefix="/account")
-# app.register_blueprint(location_bp, url_prefix="/locations")
-# Note: Commenting out blueprint registrations until routes are fixed
+# Import blueprints
+try:
+    from routes.location_routes import location_bp
+    app.register_blueprint(location_bp, url_prefix="/locations")
+    print("✅ Location routes registered successfully")
+except ImportError as e:
+    print(f"⚠️ Could not import location routes: {e}")
 
 # Use environment variable for secret key
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_change_in_production')
@@ -707,6 +711,21 @@ def init_database():
                 hotel_name VARCHAR(100) NOT NULL,
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password_hash VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        """)
+        
+        # Create hotel_locations table if it doesn't exist
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS hotel_locations (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                hotel_name VARCHAR(100) NOT NULL,
+                street_address VARCHAR(200) NOT NULL,
+                city VARCHAR(100) NOT NULL,
+                zip_code VARCHAR(10) NOT NULL,
+                latitude DECIMAL(10, 8),
+                longitude DECIMAL(11, 8),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         """)
