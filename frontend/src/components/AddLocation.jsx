@@ -27,7 +27,7 @@ const AddLocation = () => {
     setError(null);
 
     try {
-      const response = await axios.post("https://bioscope-project-production.up.railway.app/locations/add", formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/locations/add`, formData, {
         withCredentials: true
       });
 

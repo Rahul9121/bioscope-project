@@ -1,6 +1,10 @@
 import json
 import os
 import sys
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Add startup logging
 print("🚀 Starting Bioscope Backend...")
@@ -72,6 +76,13 @@ try:
     print("✅ Location routes registered successfully")
 except ImportError as e:
     print(f"⚠️ Could not import location routes: {e}")
+
+try:
+    from routes.account_routes import account_bp
+    app.register_blueprint(account_bp, url_prefix="/account")
+    print("✅ Account routes registered successfully")
+except ImportError as e:
+    print(f"⚠️ Could not import account routes: {e}")
 
 # Use environment variable for secret key
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_change_in_production')
