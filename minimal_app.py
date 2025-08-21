@@ -131,22 +131,40 @@ def query_biodiversity_risks(lat, lon, search_radius=0.1):
     risk_data = []
     
     try:
-        # Query invasive species
-        cursor.execute("""
-            SELECT latitude, longitude, common_name, scientific_name, threat_code 
-            FROM invasive_species 
-            WHERE ABS(latitude - %s) <= %s AND ABS(longitude - %s) <= %s
-        """, (lat, search_radius, lon, search_radius))
-        
-        for row in cursor.fetchall():
-            risk_data.append({
-                "latitude": float(row[0]) if row[0] else lat,
-                "longitude": float(row[1]) if row[1] else lon,
-                "risk_type": "Invasive Species",
-                "description": f"{row[2]} ({row[3] if row[3] else 'Unknown scientific name'})",
-                "threat_code": row[4] or "low",
-                "source": "invasive_species"
-            })
+        # Query invasive species (handle potential missing scientific_name column)
+        try:
+            cursor.execute("""
+                SELECT latitude, longitude, common_name, scientific_name, threat_code 
+                FROM invasive_species 
+                WHERE ABS(latitude - %s) <= %s AND ABS(longitude - %s) <= %s
+            """, (lat, search_radius, lon, search_radius))
+            
+            for row in cursor.fetchall():
+                risk_data.append({
+                    "latitude": float(row[0]) if row[0] else lat,
+                    "longitude": float(row[1]) if row[1] else lon,
+                    "risk_type": "Invasive Species",
+                    "description": f"{row[2]} ({row[3] if row[3] else 'Unknown scientific name'})",
+                    "threat_code": row[4] or "low",
+                    "source": "invasive_species"
+                })
+        except:
+            # Fallback query without scientific_name column
+            cursor.execute("""
+                SELECT latitude, longitude, common_name, threat_code 
+                FROM invasive_species 
+                WHERE ABS(latitude - %s) <= %s AND ABS(longitude - %s) <= %s
+            """, (lat, search_radius, lon, search_radius))
+            
+            for row in cursor.fetchall():
+                risk_data.append({
+                    "latitude": float(row[0]) if row[0] else lat,
+                    "longitude": float(row[1]) if row[1] else lon,
+                    "risk_type": "Invasive Species",
+                    "description": f"{row[2]}",
+                    "threat_code": row[3] or "low",
+                    "source": "invasive_species"
+                })
         
         # Query IUCN endangered species
         cursor.execute("""
@@ -437,19 +455,25 @@ def init_database():
             );
         """)
         
+        # Add missing columns to existing tables if needed
+        try:
+            cursor.execute("ALTER TABLE invasive_species ADD COLUMN IF NOT EXISTS scientific_name VARCHAR(255);")
+        except:
+            pass  # Column might already exist
+        
         # Insert sample biodiversity data for New Jersey
-        # Sample invasive species data
+        # Sample invasive species data (use only existing columns first)
         cursor.execute("""
-            INSERT INTO invasive_species (latitude, longitude, common_name, scientific_name, threat_code) 
+            INSERT INTO invasive_species (latitude, longitude, common_name, threat_code) 
             VALUES 
-            (40.0583, -74.4057, 'Purple Loosestrife', 'Lythrum salicaria', 'high'),
-            (40.7128, -74.0060, 'Japanese Knotweed', 'Fallopia japonica', 'high'),
-            (40.2206, -74.7563, 'Autumn Olive', 'Elaeagnus umbellata', 'moderate'),
-            (39.7267, -75.2835, 'Multiflora Rose', 'Rosa multiflora', 'moderate'),
-            (40.9176, -74.1718, 'Norway Maple', 'Acer platanoides', 'moderate'),
-            (40.3584, -74.6672, 'Japanese Barberry', 'Berberis thunbergii', 'moderate'),
-            (40.5895, -74.1560, 'Tree of Heaven', 'Ailanthus altissima', 'high'),
-            (39.9612, -75.1607, 'Oriental Bittersweet', 'Celastrus orbiculatus', 'moderate')
+            (40.0583, -74.4057, 'Purple Loosestrife', 'high'),
+            (40.7128, -74.0060, 'Japanese Knotweed', 'high'),
+            (40.2206, -74.7563, 'Autumn Olive', 'moderate'),
+            (39.7267, -75.2835, 'Multiflora Rose', 'moderate'),
+            (40.9176, -74.1718, 'Norway Maple', 'moderate'),
+            (40.3584, -74.6672, 'Japanese Barberry', 'moderate'),
+            (40.5895, -74.1560, 'Tree of Heaven', 'high'),
+            (39.9612, -75.1607, 'Oriental Bittersweet', 'moderate')
             ON CONFLICT DO NOTHING;
         """)
         
