@@ -38,7 +38,7 @@ const AccountSettings = () => {
 
   const handleProfileSave = async () => {
     try {
-      await axios.put("http://localhost:5001/account/update-profile", profile, {
+      await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/account/update-profile`, profile, {
           withCredentials: true,
         });
 
@@ -63,7 +63,7 @@ const AccountSettings = () => {
     }
 
     try {
-      await axios.post("http://localhost:5001/account/change-password", {
+      await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/account/change-password`, {
         currentPassword: current,
         newPassword: newPassword,
       }, {withCredentials: true});

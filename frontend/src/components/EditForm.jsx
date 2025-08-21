@@ -44,7 +44,7 @@ const EditForm = ({ locationData, onUpdate, onClose }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/locations/edit",
+        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/locations/edit`,
         { ...formData, id: locationData.id },
         { withCredentials: true }
       );

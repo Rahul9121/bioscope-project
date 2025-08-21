@@ -1,6 +1,6 @@
 from flask import Blueprint, request, session, jsonify
-from backend.services.db import connect_db
-from backend.utils.geocode import get_lat_lon_from_address
+from services.db import connect_db
+from utils.geocode import get_lat_lon_from_address
 from functools import wraps
 
 location_bp = Blueprint("location", __name__)
