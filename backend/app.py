@@ -689,7 +689,52 @@ def download_report_direct():
         return jsonify({"error": "Failed to generate report."}), 500
 
 
+# Initialize database tables if they don't exist
+@app.route("/init-db", methods=["GET"])
+def init_database():
+    """Initialize database tables if they don't exist"""
+    try:
+        conn = connect_db()
+        if conn is None:
+            return jsonify({"error": "Failed to connect to database"}), 500
+        
+        cursor = conn.cursor()
+        
+        # Create users table if it doesn't exist
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                hotel_name VARCHAR(100) NOT NULL,
+                email VARCHAR(100) UNIQUE NOT NULL,
+                password_hash VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        """)
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"message": "Database initialized successfully"}), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Database initialization failed: {str(e)}"}), 500
+
 if __name__ == "__main__":
     # Railway automatically sets PORT environment variable
     port = int(os.getenv('PORT', 5000))
+    print(f"🚀 Starting Flask app on 0.0.0.0:{port}")
+    
+    # Initialize database on startup
+    try:
+        with app.app_context():
+            conn = connect_db()
+            if conn:
+                print("✅ Database connection verified on startup")
+                conn.close()
+            else:
+                print("⚠️ Database connection failed on startup")
+    except Exception as e:
+        print(f"⚠️ Database check failed: {e}")
+    
     app.run(host='0.0.0.0', port=port, debug=False)
