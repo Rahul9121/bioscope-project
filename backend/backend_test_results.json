@@ -1,0 +1,110 @@
+[
+  {
+    "Timestamp": "2025-08-21 21:41:38",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "Health Check",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:38",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "Database Status",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:38",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "User Registration",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:39",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "User Login",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:39",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "Autocomplete 'New York'",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:40",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "Autocomplete 'Princeton, NJ'",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:40",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "Autocomplete 'Newark'",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:41",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "Autocomplete 'Atlantic City'",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:42",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "Search New York City",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:43",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "Search Princeton, NJ",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:44",
+    "Success": false,
+    "Details": {
+      "StatusCode": "NetworkError"
+    },
+    "Test": "Search Atlantic City, NJ",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  },
+  {
+    "Timestamp": "2025-08-21 21:41:45",
+    "Success": false,
+    "Details": {
+      "Error": "No such host is known. (bioscope-project-production.up.railway.app:443)"
+    },
+    "Test": "Report Generation",
+    "Message": "Request failed: No such host is known. (bioscope-project-production.up.railway.app:443)"
+  }
+]
