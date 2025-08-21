@@ -78,6 +78,159 @@ def connect_db():
         print(f"Database connection failed: {e}")
         return None
 
+# Biodiversity risk helper functions
+def standardize_threat_status(status):
+    """Standardize IUCN threat status to threat codes"""
+    if not status:
+        return "low"
+    
+    status = status.lower().strip()
+    mapping = {
+        "critically endangered": "high",
+        "endangered": "high", 
+        "vulnerable": "moderate",
+        "near threatened": "moderate",
+        "least concern": "low",
+        "data deficient": "low",
+        "not evaluated": "low"
+    }
+    return mapping.get(status, "low")
+
+def calculate_risk_from_hci(hci_value, hci_type="general"):
+    """Calculate risk level from HCI (Human-Coexistence Index) value"""
+    if hci_value is None:
+        return "low", 0.1
+    
+    # Different thresholds for different HCI types
+    if hci_type == "marine":
+        if hci_value >= 0.75:
+            return "high", min(hci_value, 1.0)
+        elif hci_value >= 0.4:
+            return "moderate", hci_value
+        else:
+            return "low", hci_value
+    else:
+        # Terrestrial and freshwater
+        if hci_value >= 2.0:
+            return "high", min(hci_value / 3.0, 1.0)
+        elif hci_value >= 1.5:
+            return "moderate", hci_value / 3.0
+        else:
+            return "low", max(hci_value / 3.0, 0.1)
+
+def query_biodiversity_risks(lat, lon, search_radius=0.1):
+    """Query all types of biodiversity risks around a location"""
+    if not DATABASE_AVAILABLE:
+        return []
+    
+    conn = connect_db()
+    if conn is None:
+        return []
+    
+    cursor = conn.cursor()
+    risk_data = []
+    
+    try:
+        # Query invasive species
+        cursor.execute("""
+            SELECT latitude, longitude, common_name, scientific_name, threat_code 
+            FROM invasive_species 
+            WHERE ABS(latitude - %s) <= %s AND ABS(longitude - %s) <= %s
+        """, (lat, search_radius, lon, search_radius))
+        
+        for row in cursor.fetchall():
+            risk_data.append({
+                "latitude": float(row[0]) if row[0] else lat,
+                "longitude": float(row[1]) if row[1] else lon,
+                "risk_type": "Invasive Species",
+                "description": f"{row[2]} ({row[3] if row[3] else 'Unknown scientific name'})",
+                "threat_code": row[4] or "low",
+                "source": "invasive_species"
+            })
+        
+        # Query IUCN endangered species
+        cursor.execute("""
+            SELECT latitude, longitude, species_name, threat_status, habitat 
+            FROM iucn_data 
+            WHERE ABS(latitude - %s) <= %s AND ABS(longitude - %s) <= %s
+        """, (lat, search_radius, lon, search_radius))
+        
+        for row in cursor.fetchall():
+            threat_code = standardize_threat_status(row[3])
+            risk_data.append({
+                "latitude": float(row[0]) if row[0] else lat,
+                "longitude": float(row[1]) if row[1] else lon,
+                "risk_type": "Endangered Species",
+                "description": f"{row[2]} ({row[3]}) in {row[4] if row[4] else 'Unknown habitat'}",
+                "threat_code": threat_code,
+                "source": "iucn_data"
+            })
+        
+        # Query freshwater risks
+        cursor.execute("""
+            SELECT x, y, freshwater_hci, normalized_risk, risk_level 
+            FROM freshwater_risk 
+            WHERE ABS(y - %s) <= %s AND ABS(x - %s) <= %s
+        """, (lat, search_radius, lon, search_radius))
+        
+        for row in cursor.fetchall():
+            hci_value = float(row[2]) if row[2] else 1.0
+            risk_level, normalized_risk = calculate_risk_from_hci(hci_value, "freshwater")
+            risk_data.append({
+                "latitude": float(row[1]) if row[1] else lat,
+                "longitude": float(row[0]) if row[0] else lon,
+                "risk_type": "Freshwater Ecosystem Risk",
+                "description": f"Freshwater HCI: {hci_value:.2f}, Risk Level: {row[4] or risk_level}",
+                "threat_code": risk_level,
+                "source": "freshwater_risk"
+            })
+        
+        # Query marine risks
+        cursor.execute("""
+            SELECT x, y, marine_hci 
+            FROM marine_hci 
+            WHERE ABS(y - %s) <= %s AND ABS(x - %s) <= %s
+        """, (lat, search_radius, lon, search_radius))
+        
+        for row in cursor.fetchall():
+            hci_value = float(row[2]) if row[2] else 0.1
+            risk_level, normalized_risk = calculate_risk_from_hci(hci_value, "marine")
+            risk_data.append({
+                "latitude": float(row[1]) if row[1] else lat,
+                "longitude": float(row[0]) if row[0] else lon,
+                "risk_type": "Marine Ecosystem Risk",
+                "description": f"Marine HCI: {hci_value:.2f}, Human-coexistence impact level: {risk_level}",
+                "threat_code": risk_level,
+                "source": "marine_hci"
+            })
+        
+        # Query terrestrial risks
+        cursor.execute("""
+            SELECT x, y, terrestrial_hci, normalized_risk, risk_level 
+            FROM terrestrial_risk 
+            WHERE ABS(y - %s) <= %s AND ABS(x - %s) <= %s
+        """, (lat, search_radius, lon, search_radius))
+        
+        for row in cursor.fetchall():
+            hci_value = float(row[2]) if row[2] else 1.0
+            risk_level, normalized_risk = calculate_risk_from_hci(hci_value, "terrestrial")
+            risk_data.append({
+                "latitude": float(row[1]) if row[1] else lat,
+                "longitude": float(row[0]) if row[0] else lon,
+                "risk_type": "Terrestrial Ecosystem Risk",
+                "description": f"Terrestrial HCI: {hci_value:.2f}, Risk Level: {row[4] or risk_level}",
+                "threat_code": row[4].lower() if row[4] else risk_level,
+                "source": "terrestrial_risk"
+            })
+        
+    except Exception as e:
+        print(f"Error querying biodiversity risks: {e}")
+    finally:
+        cursor.close()
+        conn.close()
+    
+    return risk_data
+
 # Geocoding helper functions
 def get_lat_lon_from_zip(zipcode):
     """Get coordinates from ZIP code"""
@@ -203,7 +356,7 @@ def db_status():
 
 @app.route("/init-db", methods=["GET"])
 def init_database():
-    """Initialize database tables"""
+    """Initialize database tables with biodiversity data"""
     if not DATABASE_AVAILABLE:
         return jsonify({"error": "Database dependencies not available"}), 500
     
@@ -225,11 +378,155 @@ def init_database():
             );
         """)
         
+        # Create biodiversity tables
+        # 1. Invasive Species table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS invasive_species (
+                id SERIAL PRIMARY KEY,
+                latitude DECIMAL(10, 8),
+                longitude DECIMAL(11, 8),
+                common_name VARCHAR(255),
+                scientific_name VARCHAR(255),
+                threat_code VARCHAR(50) DEFAULT 'low'
+            );
+        """)
+        
+        # 2. IUCN Data table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS iucn_data (
+                id SERIAL PRIMARY KEY,
+                latitude DECIMAL(10, 8),
+                longitude DECIMAL(11, 8),
+                species_name VARCHAR(255),
+                threat_status VARCHAR(100),
+                habitat VARCHAR(255)
+            );
+        """)
+        
+        # 3. Freshwater Risk table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS freshwater_risk (
+                id SERIAL PRIMARY KEY,
+                x DECIMAL(11, 8),
+                y DECIMAL(10, 8),
+                freshwater_hci DECIMAL(10, 6),
+                normalized_risk DECIMAL(5, 3),
+                risk_level VARCHAR(50) DEFAULT 'Low'
+            );
+        """)
+        
+        # 4. Marine HCI table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS marine_hci (
+                id SERIAL PRIMARY KEY,
+                x DECIMAL(11, 8),
+                y DECIMAL(10, 8),
+                marine_hci DECIMAL(5, 3) DEFAULT 0.0
+            );
+        """)
+        
+        # 5. Terrestrial Risk table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS terrestrial_risk (
+                id SERIAL PRIMARY KEY,
+                x DECIMAL(11, 8),
+                y DECIMAL(10, 8),
+                terrestrial_hci DECIMAL(10, 6),
+                normalized_risk DECIMAL(5, 3),
+                risk_level VARCHAR(50) DEFAULT 'low'
+            );
+        """)
+        
+        # Insert sample biodiversity data for New Jersey
+        # Sample invasive species data
+        cursor.execute("""
+            INSERT INTO invasive_species (latitude, longitude, common_name, scientific_name, threat_code) 
+            VALUES 
+            (40.0583, -74.4057, 'Purple Loosestrife', 'Lythrum salicaria', 'high'),
+            (40.7128, -74.0060, 'Japanese Knotweed', 'Fallopia japonica', 'high'),
+            (40.2206, -74.7563, 'Autumn Olive', 'Elaeagnus umbellata', 'moderate'),
+            (39.7267, -75.2835, 'Multiflora Rose', 'Rosa multiflora', 'moderate'),
+            (40.9176, -74.1718, 'Norway Maple', 'Acer platanoides', 'moderate'),
+            (40.3584, -74.6672, 'Japanese Barberry', 'Berberis thunbergii', 'moderate'),
+            (40.5895, -74.1560, 'Tree of Heaven', 'Ailanthus altissima', 'high'),
+            (39.9612, -75.1607, 'Oriental Bittersweet', 'Celastrus orbiculatus', 'moderate')
+            ON CONFLICT DO NOTHING;
+        """)
+        
+        # Sample IUCN endangered species data
+        cursor.execute("""
+            INSERT INTO iucn_data (latitude, longitude, species_name, threat_status, habitat) 
+            VALUES 
+            (40.0583, -74.4057, 'Bald Eagle', 'Least Concern', 'Wetland'),
+            (40.7128, -74.0060, 'Peregrine Falcon', 'Least Concern', 'Urban'),
+            (40.2206, -74.7563, 'Wood Turtle', 'Vulnerable', 'Forest Stream'),
+            (39.7267, -75.2835, 'Eastern Red-backed Salamander', 'Least Concern', 'Forest'),
+            (40.9176, -74.1718, 'Bog Turtle', 'Endangered', 'Wetland'),
+            (40.3584, -74.6672, 'Pine Barrens Treefrog', 'Near Threatened', 'Pine Barrens'),
+            (40.5895, -74.1560, 'Timber Rattlesnake', 'Near Threatened', 'Forest'),
+            (39.9612, -75.1607, 'Northern Copperhead', 'Least Concern', 'Forest'),
+            (40.1915, -74.7561, 'Bobcat', 'Least Concern', 'Forest'),
+            (40.4559, -74.3641, 'River Otter', 'Least Concern', 'Aquatic')
+            ON CONFLICT DO NOTHING;
+        """)
+        
+        # Sample freshwater risk data
+        cursor.execute("""
+            INSERT INTO freshwater_risk (x, y, freshwater_hci, normalized_risk, risk_level) 
+            VALUES 
+            (-74.4057, 40.0583, 1.62, 0.75, 'High'),
+            (-74.0060, 40.7128, 1.25, 0.45, 'Moderate'),
+            (-74.7563, 40.2206, 1.15, 0.25, 'Low'),
+            (-75.2835, 39.7267, 1.55, 0.60, 'High'),
+            (-74.1718, 40.9176, 1.35, 0.35, 'Moderate'),
+            (-74.6672, 40.3584, 1.45, 0.50, 'Moderate'),
+            (-74.1560, 40.5895, 1.70, 0.80, 'High'),
+            (-75.1607, 39.9612, 1.30, 0.40, 'Moderate')
+            ON CONFLICT DO NOTHING;
+        """)
+        
+        # Sample marine HCI data
+        cursor.execute("""
+            INSERT INTO marine_hci (x, y, marine_hci) 
+            VALUES 
+            (-74.4057, 40.0583, 0.80),
+            (-74.0060, 40.7128, 0.65),
+            (-74.7563, 40.2206, 0.45),
+            (-75.2835, 39.7267, 0.25),
+            (-74.1718, 40.9176, 0.55),
+            (-74.0059, 40.7589, 0.75),
+            (-74.0776, 40.7282, 0.85),
+            (-74.1745, 40.7348, 0.70)
+            ON CONFLICT DO NOTHING;
+        """)
+        
+        # Sample terrestrial risk data
+        cursor.execute("""
+            INSERT INTO terrestrial_risk (x, y, terrestrial_hci, normalized_risk, risk_level) 
+            VALUES 
+            (-74.4057, 40.0583, 2.15, 0.85, 'high'),
+            (-74.0060, 40.7128, 1.75, 0.55, 'moderate'),
+            (-74.7563, 40.2206, 1.25, 0.25, 'low'),
+            (-75.2835, 39.7267, 2.05, 0.70, 'high'),
+            (-74.1718, 40.9176, 1.65, 0.40, 'moderate'),
+            (-74.6672, 40.3584, 1.85, 0.60, 'moderate'),
+            (-74.1560, 40.5895, 2.25, 0.90, 'high'),
+            (-75.1607, 39.9612, 1.45, 0.35, 'moderate')
+            ON CONFLICT DO NOTHING;
+        """)
+        
+        # Create indexes for better performance
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_invasive_species_location ON invasive_species(latitude, longitude);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_iucn_data_location ON iucn_data(latitude, longitude);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_freshwater_risk_location ON freshwater_risk(x, y);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_marine_hci_location ON marine_hci(x, y);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_terrestrial_risk_location ON terrestrial_risk(x, y);")
+        
         conn.commit()
         cursor.close()
         conn.close()
         
-        return jsonify({"message": "Database initialized successfully"}), 200
+        return jsonify({"message": "Database and biodiversity tables initialized successfully"}), 200
         
     except Exception as e:
         return jsonify({"error": f"Database initialization failed: {str(e)}"}), 500
@@ -419,21 +716,33 @@ def search():
                 NJ_BOUNDS["west"] <= lon <= NJ_BOUNDS["east"]):
             return jsonify({"error": "The location is outside of New Jersey."}), 400
         
-        # For now, return basic location info (we'll add risk data in next step)
-        # This simulates risk data without requiring all the database tables
-        sample_risks = [
-            {
-                "latitude": lat + 0.01,
-                "longitude": lon + 0.01,
-                "risk_type": "Sample Risk",
-                "description": "This is sample risk data for testing",
-                "threat_code": "moderate"
-            }
-        ]
+        # Query real biodiversity risks from database
+        print(f"🔍 Searching biodiversity risks around lat: {lat}, lon: {lon}")
+        biodiversity_risks = query_biodiversity_risks(lat, lon, search_radius=0.1)
+        
+        # If no risks found in immediate area, expand search radius
+        if not biodiversity_risks:
+            print("🔍 Expanding search radius to 0.2 degrees")
+            biodiversity_risks = query_biodiversity_risks(lat, lon, search_radius=0.2)
+        
+        # If still no risks, provide general New Jersey biodiversity info
+        if not biodiversity_risks:
+            biodiversity_risks = [
+                {
+                    "latitude": lat,
+                    "longitude": lon,
+                    "risk_type": "General New Jersey Biodiversity",
+                    "description": "This area may contain undocumented biodiversity risks. Consider general conservation practices.",
+                    "threat_code": "low",
+                    "source": "general"
+                }
+            ]
         
         # Store in session for later use
-        session["risks"] = sample_risks
+        session["risks"] = biodiversity_risks
         session["last_search"] = {"lat": lat, "lon": lon, "zip": zip_code}
+        
+        print(f"✅ Found {len(biodiversity_risks)} biodiversity risks")
         
         return jsonify({
             "center": {
@@ -441,8 +750,9 @@ def search():
                 "longitude": lon,
                 "zipcode": zip_code
             },
-            "risks": sample_risks,
-            "message": "Location found successfully"
+            "risks": biodiversity_risks,
+            "total_risks": len(biodiversity_risks),
+            "message": f"Found {len(biodiversity_risks)} biodiversity risk(s) in the area"
         }), 200
         
     except Exception as e:
