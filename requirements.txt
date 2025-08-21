@@ -1,6 +1,5 @@
 Flask==2.2.3
 Flask-Cors==3.0.10
-Flask-SQLAlchemy==2.5.1
 Flask-Session==0.4.0
 Flask-Caching==2.0.2
 requests==2.31.0
@@ -9,11 +8,5 @@ reportlab==4.0.4
 pandas==2.0.3
 xlsxwriter==3.1.2
 Werkzeug==2.2.3
-numpy==1.24.3
-openpyxl==3.1.2
 gunicorn==21.2.0
-SQLAlchemy==2.0.25
 python-dotenv==1.0.0
-# ML Dependencies (optional - app works in fallback mode if missing)
-# chromadb==0.4.15
-# sentence-transformers==2.2.2
