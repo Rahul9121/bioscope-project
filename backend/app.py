@@ -62,7 +62,7 @@ app.config["CACHE_TYPE"] = "simple"
 cache = Cache(app)
 
 # Get allowed origins from environment or default to localhost and Vercel
-allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,https://bioscope-project.vercel.app').split(',')
+allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,https://bioscope-project.vercel.app,https://*.vercel.app').split(',')
 CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
 
 # app.register_blueprint(account_bp, url_prefix="/account")
