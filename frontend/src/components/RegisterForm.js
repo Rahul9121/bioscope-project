@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, TextField, Button, Typography, Link, Container } from "@mui/material";
 import { motion } from "framer-motion";
 import Layout from "./Layout";
-import axios from "axios";
+import { register } from "../services/api";
 
 const RegisterForm = () => {
   const [hotelName, setHotelName] = useState("");
@@ -39,26 +39,27 @@ const RegisterForm = () => {
     }
 
     setLoading(true);
-
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-    console.log('Attempting to connect to:', apiUrl);
+    console.log('🔄 Attempting registration...');
 
     try {
-      const response = await axios.post(
-        `${apiUrl}/register`,
-        { hotel_name: hotelName, email, password },
-        { 
-          headers: { "Content-Type": "application/json" }, 
-          withCredentials: true,
-          timeout: 10000 // 10 second timeout
-        }
-      );
+      const response = await register({ 
+        hotel_name: hotelName, 
+        email, 
+        password 
+      });
 
       setSuccess(true);
       setMessage(response.data.message || "Registration successful! You can now log in.");
+      console.log("✅ Registration successful!");
+      
+      // Optionally redirect to login page after successful registration
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+      
     } catch (err) {
       setSuccess(false);
-      console.error('Registration error:', err);
+      console.error('❌ Registration error:', err);
       
       let errorMessage = "An error occurred during registration.";
       
@@ -69,7 +70,7 @@ const RegisterForm = () => {
       } else if (err.response?.data?.error) {
         errorMessage = err.response.data.error;
       } else if (err.message && err.message.includes('Network Error')) {
-        errorMessage = "🌐 Cannot connect to server. Please check if the backend is running at: " + apiUrl;
+        errorMessage = "🌐 Cannot connect to server. Please check your internet connection and try again.";
       }
       
       setMessage(errorMessage);

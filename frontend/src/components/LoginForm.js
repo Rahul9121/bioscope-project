@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Box, TextField, Button, Typography, Link, Grid, Container } from "@mui/material";
 import Layout from "./Layout";
 import { login } from "../services/api";
-import axios from "axios";
 
 
 const LoginForm = () => {
@@ -29,30 +28,35 @@ const LoginForm = () => {
 
     setLoading(true);
 
-try {
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-  const response = await axios.post(
-    `${apiUrl}/login`,
-    { email, password },
-    {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
-  );
+    try {
+      const response = await login({ email, password });
 
-  if (response.data && response.data.user) {
-    localStorage.setItem("user", JSON.stringify(response.data.user));
-    window.location.href = "/account";
-  } else {
-    setError("Login failed. No user data received.");
-  }
-} catch (err) {
-  setError(err.response?.data?.error || "Invalid email or password");
-} finally {
-  setLoading(false);
-}
+      if (response.data && response.data.user) {
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        console.log("✅ Login successful, redirecting to account dashboard");
+        window.location.href = "/account";
+      } else {
+        setError("Login failed. No user data received.");
+      }
+    } catch (err) {
+      console.error("❌ Login failed:", err);
+      
+      let errorMessage = "An error occurred during login.";
+      
+      if (err.code === 'ECONNABORTED' || err.code === 'NETWORK_ERROR') {
+        errorMessage = "⚠️ Cannot connect to server. Please check if the backend is running.";
+      } else if (err.response?.status === 404) {
+        errorMessage = "⚠️ Login endpoint not found. Backend server may not be properly deployed.";
+      } else if (err.response?.data?.error) {
+        errorMessage = err.response.data.error;
+      } else if (err.message && err.message.includes('Network Error')) {
+        errorMessage = "🌐 Cannot connect to server. Please try again.";
+      }
+      
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
 
   };
 

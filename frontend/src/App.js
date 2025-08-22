@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useNavigate} from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
+import { logout } from "./services/api";
 import Dashboard from "./components/Dashboard";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
@@ -34,12 +34,15 @@ const SessionHandler = () => {
 
     const logoutUser = async () => {
       try {
-        await axios.post("http://localhost:5001/logout");
+        await logout();
         localStorage.clear();
         alert("Session expired. Please log in again.");
         navigate("/login");
       } catch (err) {
-        console.error("Logout failed:", err);
+        console.error("❌ Session timeout logout failed:", err);
+        // Still clear session locally even if backend logout fails
+        localStorage.clear();
+        navigate("/login");
       }
     };
 

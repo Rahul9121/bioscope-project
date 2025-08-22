@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Button } from "@mui/material"; // Fix incorrect import
 import { useNavigate } from "react-router-dom";
+import { sessionStatus, logout } from "../services/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -10,9 +10,10 @@ const Dashboard = () => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/session-status");
+        const response = await sessionStatus();
         setSessionActive(response.data.active);
       } catch (err) {
+        console.error("❌ Session check failed:", err);
         setSessionActive(false);
         localStorage.clear();
         alert("Session expired. Please log in again.");
@@ -28,12 +29,15 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5001/logout"); // Logout API
+      await logout();
       localStorage.clear(); // Clear user session data
       alert("Logged out successfully.");
       navigate("/login"); // Redirect to login page
     } catch (err) {
-      console.error("Logout failed:", err);
+      console.error("❌ Logout failed:", err);
+      // Still clear session locally even if backend logout fails
+      localStorage.clear();
+      navigate("/login");
     }
   };
 
