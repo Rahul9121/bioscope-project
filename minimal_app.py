@@ -45,38 +45,34 @@ app.secret_key = os.getenv('SECRET_KEY', 'bioscope_production_secret_key_2024')
 
 # Production-optimized session configuration
 app.config.update({
-    "SESSION_TYPE": "sqlalchemy",
+    "SESSION_TYPE": "filesystem",
     "SESSION_PERMANENT": True,
-    "PERMANENT_SESSION_LIFETIME": timedelta(hours=24),  # Longer session for better UX
+    "PERMANENT_SESSION_LIFETIME": timedelta(hours=24),  # 24-hour session
     "SESSION_COOKIE_SAMESITE": None,  # Allow cross-site cookies
     "SESSION_COOKIE_SECURE": True if os.getenv('FLASK_ENV') == 'production' else False,
-    "SESSION_COOKIE_HTTPONLY": False,  # Allow JavaScript access for debugging
+    "SESSION_COOKIE_HTTPONLY": False,  # Allow JS access for debugging
     "SESSION_COOKIE_NAME": "bioscope_session",
     "SESSION_USE_SIGNER": True,
     "SESSION_KEY_PREFIX": "bioscope:",
-    "SESSION_SQLALCHEMY_TABLE": "user_sessions",
+    "SESSION_FILE_DIR": "/tmp/flask_session",
+    "SESSION_FILE_THRESHOLD": 500,
+    "SESSION_COOKIE_DOMAIN": None,  # Auto-detect domain
 })
 
-# Fallback to filesystem if database not available
+# Create session directory and initialize sessions
 try:
-    from flask_sqlalchemy import SQLAlchemy
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', '').replace('postgresql://', 'postgresql+psycopg2://')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db = SQLAlchemy(app)
-    app.config['SESSION_SQLALCHEMY'] = db
-    Session(app)
-    print("✅ Using database-backed sessions")
-except Exception as e:
-    print(f"⚠️ Database sessions failed, using filesystem: {e}")
-    app.config.update({
-        "SESSION_TYPE": "filesystem",
-        "SESSION_FILE_DIR": "/tmp/flask_session",
-        "SESSION_FILE_THRESHOLD": 100,
-    })
-    # Create session directory
-    import tempfile
     os.makedirs("/tmp/flask_session", exist_ok=True)
     Session(app)
+    print("✅ Using filesystem-backed sessions with production settings")
+except Exception as e:
+    print(f"⚠️ Session initialization failed: {e}")
+    # Minimal fallback
+    app.config.update({
+        "SESSION_TYPE": "filesystem",
+        "SESSION_FILE_DIR": tempfile.gettempdir(),
+    })
+    Session(app)
+    print("✅ Using minimal session configuration")
 
 # CORS setup
 allowed_origins = os.getenv('ALLOWED_ORIGINS', 'https://bioscope-project.vercel.app,http://localhost:3000').split(',')
