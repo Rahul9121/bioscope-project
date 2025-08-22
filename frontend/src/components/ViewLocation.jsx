@@ -12,7 +12,7 @@ import {
   Paper,
   Button
 } from "@mui/material";
-import axios from "axios";
+import { viewLocations, searchRisks } from "../services/api";
 
 const ViewLocation = () => {
   const [locations, setLocations] = useState([]);
@@ -21,17 +21,28 @@ const ViewLocation = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch("http://localhost:5001/locations/view", {
-          credentials: "include"
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setLocations(data.locations);
+        console.log("🗺️ Fetching user locations...");
+        const response = await viewLocations();
+        
+        if (response.data.locations) {
+          setLocations(response.data.locations);
+          console.log(`✅ Loaded ${response.data.locations.length} locations`);
         } else {
-          setError(data.error || "Unable to fetch locations.");
+          setError("No locations found.");
         }
       } catch (err) {
-        setError("Server error. Please try again later.");
+        console.error("❌ Error fetching locations:", err);
+        
+        if (err.response?.status === 401) {
+          setError("🔒 Please login first. Your session may have expired.");
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 3000);
+        } else if (err.response?.data?.error) {
+          setError(err.response.data.error);
+        } else {
+          setError("🌐 Server error. Please try again later.");
+        }
       }
     };
 
@@ -41,25 +52,28 @@ const ViewLocation = () => {
   const handleReportClick = async (location) => {
     try {
       const { latitude, longitude } = location;
+      console.log(`🗺️ Generating report for: ${location.hotel_name}`);
 
-      const response = await axios.post(
-        "http://localhost:5001/search",
-        { input_text: `${latitude}, ${longitude}` },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const response = await searchRisks({ input_text: `${latitude}, ${longitude}` });
 
-      if (response.status === 200 && response.data.risks) {
+      if (response.data && response.data.risks) {
         localStorage.setItem("mitigation_risks", JSON.stringify(response.data.risks));
+        console.log("✅ Report data saved, opening report window");
         window.open("/mitigation-report", "_blank");
       } else {
-        alert("Failed to generate report.");
+        alert("⚠️ No biodiversity risks found for this location.");
       }
     } catch (error) {
-      console.error("Report generation error:", error);
-      alert("Error generating report.");
+      console.error("❌ Report generation error:", error);
+      
+      if (error.response?.status === 401) {
+        alert("🔒 Please login first to generate reports.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+      } else {
+        alert("❌ Error generating report. Please try again.");
+      }
     }
   };
 

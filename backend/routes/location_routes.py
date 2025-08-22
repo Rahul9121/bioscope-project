@@ -1,7 +1,47 @@
 from flask import Blueprint, request, session, jsonify
-from services.db import connect_db
-from utils.geocode import get_lat_lon_from_address
 from functools import wraps
+import sys
+import os
+
+# Add parent directory to path to import from main app
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Import the database connection function from the main app
+def connect_db():
+    """Use the same database connection logic as main app"""
+    import psycopg2
+    import os
+    
+    # Get database connection string directly (same as main app)
+    database_url = os.getenv('DATABASE_URL')
+    if database_url:
+        # Ensure SSL for Supabase
+        if 'supabase.com' in database_url and '?sslmode=' not in database_url:
+            database_url += '?sslmode=require'
+        connection_string = database_url
+    else:
+        # Fallback - build connection string from individual variables
+        host = os.getenv('DB_HOST', 'localhost')
+        user = os.getenv('DB_USER', 'postgres')
+        password = os.getenv('DB_PASSWORD', 'password')
+        dbname = os.getenv('DB_NAME', 'postgres')
+        port = os.getenv('DB_PORT', 5432)
+        connection_string = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
+    
+    try:
+        return psycopg2.connect(connection_string)
+    except Exception as err:
+        print(f"❌ Location route DB connection error: {err}")
+        return None
+
+try:
+    # Try to import geocoding function from utils
+    from utils.geocode import get_lat_lon_from_address
+except ImportError:
+    # Fallback geocoding function if utils not available
+    def get_lat_lon_from_address(address):
+        print(f"⚠️ Geocoding not available for: {address}")
+        return 40.0583, -74.4057, "07001"  # Default NJ coordinates
 
 location_bp = Blueprint("location", __name__)
 

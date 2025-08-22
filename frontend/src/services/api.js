@@ -47,6 +47,12 @@ export const addressAutocomplete = (query) => api.get('/address-autocomplete', {
 export const healthCheck = () => api.get('/health');
 export const dbStatus = () => api.get('/db-status');
 
+// Location endpoints
+export const addLocation = (locationData) => api.post('/locations/add', locationData);
+export const viewLocations = () => api.get('/locations/view');
+export const editLocation = (locationData) => api.post('/locations/edit', locationData);
+export const deleteLocation = (locationData) => api.post('/locations/delete', locationData);
+
 // Report endpoints
 export const downloadReport = (reportData) => api.post('/download-report-direct', reportData);
 

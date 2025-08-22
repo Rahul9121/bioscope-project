@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
+import { addLocation } from "../services/api";
 
 const AddLocation = () => {
   const [formData, setFormData] = useState({
@@ -27,12 +27,12 @@ const AddLocation = () => {
     setError(null);
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/locations/add`, formData, {
-        withCredentials: true
-      });
+      console.log("🗺️ Attempting to add location:", formData);
+      const response = await addLocation(formData);
 
       if (response.data.message) {
         setMessage(response.data.message);
+        console.log("✅ Location added successfully!");
         setFormData({
           hotel_name: "",
           street_address: "",
@@ -42,8 +42,23 @@ const AddLocation = () => {
         });
       }
     } catch (err) {
-      const msg = err.response?.data?.error || "Something went wrong.";
-      setError(msg);
+      console.error("❌ Add location failed:", err);
+      
+      let errorMessage = "Something went wrong.";
+      
+      if (err.response?.status === 401) {
+        errorMessage = "🔒 Please login first. Your session may have expired.";
+        // Optionally redirect to login
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 3000);
+      } else if (err.response?.data?.error) {
+        errorMessage = err.response.data.error;
+      } else if (err.message && err.message.includes('Network Error')) {
+        errorMessage = "🌐 Cannot connect to server. Please check your internet connection.";
+      }
+      
+      setError(errorMessage);
     }
   };
 
