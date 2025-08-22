@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -12,30 +12,16 @@ import {
 } from "@mui/material";
 import Layout from "./Layout";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import AddLocation from "./AddLocation";
 import DeleteLocation from "./DeleteLocation";
 import ViewLocation from "./ViewLocation";
 import EditLocation from "./EditLocation";
 
 const AccountDashboard = () => {
-  const [user, setUser] = useState(null);
   const [activeModule, setActiveModule] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
-        setUser(JSON.parse(storedUser));
-      } else {
-        setUser(null);
-      }
-    } catch (error) {
-      console.error("Error loading user data:", error);
-      localStorage.removeItem("user");
-      setUser(null);
-    }
-  }, []);
+  const { user, logout } = useAuth();
 
   const renderModule = () => {
     switch (activeModule) {

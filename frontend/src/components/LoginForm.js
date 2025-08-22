@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Box, TextField, Button, Typography, Link, Grid, Container } from "@mui/material";
 import Layout from "./Layout";
 import { login } from "../services/api";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 const LoginForm = () => {
@@ -9,6 +11,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login: authLogin } = useAuth();
+  const navigate = useNavigate();
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -32,9 +36,10 @@ const LoginForm = () => {
       const response = await login({ email, password });
 
       if (response.data && response.data.user) {
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        // Update AuthContext with user data
+        authLogin(response.data.user);
         console.log("✅ Login successful, redirecting to account dashboard");
-        window.location.href = "/account";
+        navigate("/account");
       } else {
         setError("Login failed. No user data received.");
       }
