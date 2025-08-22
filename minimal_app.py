@@ -166,42 +166,69 @@ def query_biodiversity_risks(lat, lon, search_radius=0.1):
                     "source": "invasive_species"
                 })
         
-        # Query IUCN endangered species
-        cursor.execute("""
-            SELECT latitude, longitude, species_name, threat_status, habitat 
-            FROM iucn_data 
-            WHERE ABS(latitude - %s) <= %s AND ABS(longitude - %s) <= %s
-        """, (lat, search_radius, lon, search_radius))
+        # Query IUCN endangered species (handle potential missing habitat column)
+        try:
+            cursor.execute("""
+                SELECT latitude, longitude, species_name, threat_status, habitat 
+                FROM iucn_data 
+                WHERE ABS(latitude - %s) <= %s AND ABS(longitude - %s) <= %s
+            """, (lat, search_radius, lon, search_radius))
+            
+            for row in cursor.fetchall():
+                threat_code = standardize_threat_status(row[3])
+                risk_data.append({
+                    "latitude": float(row[0]) if row[0] else lat,
+                    "longitude": float(row[1]) if row[1] else lon,
+                    "risk_type": "Endangered Species",
+                    "description": f"{row[2]} ({row[3]}) in {row[4] if row[4] else 'Unknown habitat'}",
+                    "threat_code": threat_code,
+                    "source": "iucn_data"
+                })
+        except Exception as e:
+            print(f"Error querying IUCN data with habitat column: {e}")
+            # Fallback query without habitat column
+            try:
+                cursor.execute("""
+                    SELECT latitude, longitude, species_name, threat_status 
+                    FROM iucn_data 
+                    WHERE ABS(latitude - %s) <= %s AND ABS(longitude - %s) <= %s
+                """, (lat, search_radius, lon, search_radius))
+                
+                for row in cursor.fetchall():
+                    threat_code = standardize_threat_status(row[3])
+                    risk_data.append({
+                        "latitude": float(row[0]) if row[0] else lat,
+                        "longitude": float(row[1]) if row[1] else lon,
+                        "risk_type": "Endangered Species",
+                        "description": f"{row[2]} ({row[3]})",
+                        "threat_code": threat_code,
+                        "source": "iucn_data"
+                    })
+            except Exception as e2:
+                print(f"Error querying IUCN data without habitat column: {e2}")
         
-        for row in cursor.fetchall():
-            threat_code = standardize_threat_status(row[3])
-            risk_data.append({
-                "latitude": float(row[0]) if row[0] else lat,
-                "longitude": float(row[1]) if row[1] else lon,
-                "risk_type": "Endangered Species",
-                "description": f"{row[2]} ({row[3]}) in {row[4] if row[4] else 'Unknown habitat'}",
-                "threat_code": threat_code,
-                "source": "iucn_data"
-            })
-        
-        # Query freshwater risks
-        cursor.execute("""
-            SELECT x, y, freshwater_hci, normalized_risk, risk_level 
-            FROM freshwater_risk 
-            WHERE ABS(y - %s) <= %s AND ABS(x - %s) <= %s
-        """, (lat, search_radius, lon, search_radius))
-        
-        for row in cursor.fetchall():
-            hci_value = float(row[2]) if row[2] else 1.0
-            risk_level, normalized_risk = calculate_risk_from_hci(hci_value, "freshwater")
-            risk_data.append({
-                "latitude": float(row[1]) if row[1] else lat,
-                "longitude": float(row[0]) if row[0] else lon,
-                "risk_type": "Freshwater Ecosystem Risk",
-                "description": f"Freshwater HCI: {hci_value:.2f}, Risk Level: {row[4] or risk_level}",
-                "threat_code": risk_level,
-                "source": "freshwater_risk"
-            })
+        # Query freshwater risks (handle potential missing columns)
+        try:
+            cursor.execute("""
+                SELECT x, y, normalized_risk, risk_level 
+                FROM freshwater_risk 
+                WHERE ABS(y - %s) <= %s AND ABS(x - %s) <= %s
+            """, (lat, search_radius, lon, search_radius))
+            
+            for row in cursor.fetchall():
+                normalized_risk = float(row[2]) if row[2] else 0.5
+                risk_level_db = row[3] if row[3] else "Low"
+                risk_level, _ = calculate_risk_from_hci(normalized_risk, "freshwater")
+                risk_data.append({
+                    "latitude": float(row[1]) if row[1] else lat,
+                    "longitude": float(row[0]) if row[0] else lon,
+                    "risk_type": "Freshwater Ecosystem Risk",
+                    "description": f"Normalized Risk: {normalized_risk:.2f}, Risk Level: {risk_level_db}",
+                    "threat_code": risk_level,
+                    "source": "freshwater_risk"
+                })
+        except Exception as e:
+            print(f"Error querying freshwater risks: {e}")
         
         # Query marine risks
         cursor.execute("""
@@ -222,24 +249,28 @@ def query_biodiversity_risks(lat, lon, search_radius=0.1):
                 "source": "marine_hci"
             })
         
-        # Query terrestrial risks
-        cursor.execute("""
-            SELECT x, y, terrestrial_hci, normalized_risk, risk_level 
-            FROM terrestrial_risk 
-            WHERE ABS(y - %s) <= %s AND ABS(x - %s) <= %s
-        """, (lat, search_radius, lon, search_radius))
-        
-        for row in cursor.fetchall():
-            hci_value = float(row[2]) if row[2] else 1.0
-            risk_level, normalized_risk = calculate_risk_from_hci(hci_value, "terrestrial")
-            risk_data.append({
-                "latitude": float(row[1]) if row[1] else lat,
-                "longitude": float(row[0]) if row[0] else lon,
-                "risk_type": "Terrestrial Ecosystem Risk",
-                "description": f"Terrestrial HCI: {hci_value:.2f}, Risk Level: {row[4] or risk_level}",
-                "threat_code": row[4].lower() if row[4] else risk_level,
-                "source": "terrestrial_risk"
-            })
+        # Query terrestrial risks (handle potential missing columns)
+        try:
+            cursor.execute("""
+                SELECT x, y, normalized_risk, risk_level 
+                FROM terrestrial_risk 
+                WHERE ABS(y - %s) <= %s AND ABS(x - %s) <= %s
+            """, (lat, search_radius, lon, search_radius))
+            
+            for row in cursor.fetchall():
+                normalized_risk = float(row[2]) if row[2] else 0.5
+                risk_level_db = row[3] if row[3] else "low"
+                risk_level, _ = calculate_risk_from_hci(normalized_risk, "terrestrial")
+                risk_data.append({
+                    "latitude": float(row[1]) if row[1] else lat,
+                    "longitude": float(row[0]) if row[0] else lon,
+                    "risk_type": "Terrestrial Ecosystem Risk",
+                    "description": f"Normalized Risk: {normalized_risk:.2f}, Risk Level: {risk_level_db}",
+                    "threat_code": risk_level_db.lower() if risk_level_db else risk_level,
+                    "source": "terrestrial_risk"
+                })
+        except Exception as e:
+            print(f"Error querying terrestrial risks: {e}")
         
     except Exception as e:
         print(f"Error querying biodiversity risks: {e}")
