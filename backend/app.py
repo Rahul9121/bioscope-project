@@ -66,8 +66,26 @@ app.config["CACHE_TYPE"] = "simple"
 cache = Cache(app)
 
 # Get allowed origins from environment or default to localhost and Vercel
-allowed_origins = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,https://bioscope-project.vercel.app,https://*.vercel.app').split(',')
-CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
+default_origins = [
+    'http://localhost:3000',
+    'http://localhost:3001', 
+    'https://bioscope-project.vercel.app',
+    'https://bioscope-project-rahul9121.vercel.app',
+    'https://bioscope-project-git-new-main-rahul9121.vercel.app',
+    'https://bioscope-project-git-main-rahul9121.vercel.app'
+]
+allowed_origins_str = os.getenv('ALLOWED_ORIGINS', ','.join(default_origins))
+allowed_origins = [origin.strip() for origin in allowed_origins_str.split(',')]
+print(f"🌐 CORS allowed origins: {allowed_origins}")
+
+CORS(app, resources={
+    r"/*": {
+        "origins": allowed_origins,
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "Accept"],
+        "expose_headers": ["Content-Type", "Authorization"]
+    }
+}, supports_credentials=True)
 
 # Import blueprints
 try:
