@@ -486,6 +486,23 @@ def init_database():
             );
         """)
         
+        # 6. Hotel Locations table (for location management)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS hotel_locations (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                hotel_name VARCHAR(255) NOT NULL,
+                street_address VARCHAR(255) NOT NULL,
+                city VARCHAR(100) NOT NULL,
+                zip_code VARCHAR(10) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                latitude DECIMAL(10, 8),
+                longitude DECIMAL(11, 8),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        """)
+        
         # Add missing columns to existing tables if needed
         try:
             cursor.execute("ALTER TABLE invasive_species ADD COLUMN IF NOT EXISTS scientific_name VARCHAR(255);")
@@ -503,6 +520,8 @@ def init_database():
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_freshwater_risk_location ON freshwater_risk(x, y);")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_marine_hci_location ON marine_hci(x, y);")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_terrestrial_risk_location ON terrestrial_risk(x, y);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_hotel_locations_user ON hotel_locations(user_id);")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_hotel_locations_coords ON hotel_locations(latitude, longitude);")
         
         conn.commit()
         cursor.close()
@@ -744,6 +763,247 @@ def search():
 def get_session_risks():
     """Get risks from current session"""
     return jsonify({"risks": session.get("risks", [])})
+
+# Location Management Routes
+@app.route("/locations/add", methods=["POST"])
+def add_location():
+    """Add a new hotel location"""
+    if not DATABASE_AVAILABLE:
+        return jsonify({"error": "Database not available"}), 500
+    
+    # Check if user is logged in
+    if 'user_id' not in session:
+        return jsonify({"error": "Please login first"}), 401
+    
+    try:
+        data = request.json
+        hotel_name = data.get('hotel_name')
+        street_address = data.get('street_address')
+        city = data.get('city')
+        zip_code = data.get('zip_code')
+        email = data.get('email')
+        
+        # Validate required fields
+        if not all([hotel_name, street_address, city, zip_code, email]):
+            return jsonify({"error": "All fields are required"}), 400
+        
+        # Get coordinates from address
+        full_address = f"{street_address}, {city}, NJ {zip_code}"
+        lat, lon, _ = get_lat_lon_from_address(full_address)
+        
+        if lat is None or lon is None:
+            return jsonify({"error": "Could not determine coordinates for this address"}), 400
+        
+        # Check if location is within New Jersey bounds
+        if not (NJ_BOUNDS["south"] <= lat <= NJ_BOUNDS["north"] and 
+                NJ_BOUNDS["west"] <= lon <= NJ_BOUNDS["east"]):
+            return jsonify({"error": "Location must be within New Jersey"}), 400
+        
+        # Connect to database
+        conn = connect_db()
+        if conn is None:
+            return jsonify({"error": "Failed to connect to database"}), 500
+        
+        cursor = conn.cursor()
+        
+        # Check if location already exists
+        cursor.execute("""
+            SELECT id FROM hotel_locations 
+            WHERE hotel_name = %s AND street_address = %s AND city = %s AND zip_code = %s
+        """, (hotel_name, street_address, city, zip_code))
+        
+        if cursor.fetchone():
+            cursor.close()
+            conn.close()
+            return jsonify({"error": "This location already exists"}), 400
+        
+        # Insert new location
+        cursor.execute("""
+            INSERT INTO hotel_locations 
+            (user_id, hotel_name, street_address, city, zip_code, email, latitude, longitude)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """, (session['user_id'], hotel_name, street_address, city, zip_code, email, lat, lon))
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"message": "Location added successfully!"}), 201
+        
+    except Exception as e:
+        return jsonify({"error": f"Failed to add location: {str(e)}"}), 500
+
+@app.route("/locations/view", methods=["GET"])
+def view_locations():
+    """View all hotel locations for the current user"""
+    if not DATABASE_AVAILABLE:
+        return jsonify({"error": "Database not available"}), 500
+    
+    # Check if user is logged in
+    if 'user_id' not in session:
+        return jsonify({"error": "Please login first"}), 401
+    
+    try:
+        conn = connect_db()
+        if conn is None:
+            return jsonify({"error": "Failed to connect to database"}), 500
+        
+        cursor = conn.cursor()
+        
+        # Get all locations for the current user
+        cursor.execute("""
+            SELECT hotel_name, street_address, city, zip_code, email, latitude, longitude, created_at
+            FROM hotel_locations 
+            WHERE user_id = %s
+            ORDER BY created_at DESC
+        """, (session['user_id'],))
+        
+        locations = []
+        for row in cursor.fetchall():
+            locations.append({
+                "hotel_name": row[0],
+                "street_address": row[1],
+                "city": row[2],
+                "zip_code": row[3],
+                "email": row[4],
+                "latitude": float(row[5]) if row[5] else 0,
+                "longitude": float(row[6]) if row[6] else 0,
+                "created_at": row[7].strftime('%Y-%m-%d %H:%M:%S') if row[7] else None
+            })
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"locations": locations}), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Failed to fetch locations: {str(e)}"}), 500
+
+@app.route("/locations/delete", methods=["POST"])
+def delete_location():
+    """Delete a hotel location"""
+    if not DATABASE_AVAILABLE:
+        return jsonify({"error": "Database not available"}), 500
+    
+    # Check if user is logged in
+    if 'user_id' not in session:
+        return jsonify({"error": "Please login first"}), 401
+    
+    try:
+        data = request.json
+        hotel_name = data.get('hotel_name')
+        street_address = data.get('street_address')
+        city = data.get('city')
+        zip_code = data.get('zip_code')
+        
+        # Validate required fields
+        if not all([hotel_name, street_address, city, zip_code]):
+            return jsonify({"error": "All location fields are required for deletion"}), 400
+        
+        conn = connect_db()
+        if conn is None:
+            return jsonify({"error": "Failed to connect to database"}), 500
+        
+        cursor = conn.cursor()
+        
+        # Delete the location (only for the current user)
+        cursor.execute("""
+            DELETE FROM hotel_locations 
+            WHERE user_id = %s AND hotel_name = %s AND street_address = %s 
+                  AND city = %s AND zip_code = %s
+        """, (session['user_id'], hotel_name, street_address, city, zip_code))
+        
+        if cursor.rowcount == 0:
+            cursor.close()
+            conn.close()
+            return jsonify({"error": "Location not found or you don't have permission to delete it"}), 404
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"message": "Location deleted successfully!"}), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Failed to delete location: {str(e)}"}), 500
+
+@app.route("/locations/edit", methods=["POST"])
+def edit_location():
+    """Edit a hotel location"""
+    if not DATABASE_AVAILABLE:
+        return jsonify({"error": "Database not available"}), 500
+    
+    # Check if user is logged in
+    if 'user_id' not in session:
+        return jsonify({"error": "Please login first"}), 401
+    
+    try:
+        data = request.json
+        
+        # Original location data (for identification)
+        original = data.get('original', {})
+        original_hotel_name = original.get('hotel_name')
+        original_street_address = original.get('street_address')
+        original_city = original.get('city')
+        original_zip_code = original.get('zip_code')
+        
+        # Updated location data
+        updated = data.get('updated', {})
+        new_hotel_name = updated.get('hotel_name')
+        new_street_address = updated.get('street_address')
+        new_city = updated.get('city')
+        new_zip_code = updated.get('zip_code')
+        new_email = updated.get('email')
+        
+        # Validate required fields
+        if not all([original_hotel_name, original_street_address, original_city, original_zip_code]):
+            return jsonify({"error": "Original location data is required"}), 400
+        
+        if not all([new_hotel_name, new_street_address, new_city, new_zip_code, new_email]):
+            return jsonify({"error": "All updated fields are required"}), 400
+        
+        # Get coordinates for new address
+        full_address = f"{new_street_address}, {new_city}, NJ {new_zip_code}"
+        lat, lon, _ = get_lat_lon_from_address(full_address)
+        
+        if lat is None or lon is None:
+            return jsonify({"error": "Could not determine coordinates for the new address"}), 400
+        
+        # Check if new location is within New Jersey bounds
+        if not (NJ_BOUNDS["south"] <= lat <= NJ_BOUNDS["north"] and 
+                NJ_BOUNDS["west"] <= lon <= NJ_BOUNDS["east"]):
+            return jsonify({"error": "New location must be within New Jersey"}), 400
+        
+        conn = connect_db()
+        if conn is None:
+            return jsonify({"error": "Failed to connect to database"}), 500
+        
+        cursor = conn.cursor()
+        
+        # Update the location (only for the current user)
+        cursor.execute("""
+            UPDATE hotel_locations 
+            SET hotel_name = %s, street_address = %s, city = %s, zip_code = %s, 
+                email = %s, latitude = %s, longitude = %s, updated_at = CURRENT_TIMESTAMP
+            WHERE user_id = %s AND hotel_name = %s AND street_address = %s 
+                  AND city = %s AND zip_code = %s
+        """, (new_hotel_name, new_street_address, new_city, new_zip_code, new_email, lat, lon,
+              session['user_id'], original_hotel_name, original_street_address, 
+              original_city, original_zip_code))
+        
+        if cursor.rowcount == 0:
+            cursor.close()
+            conn.close()
+            return jsonify({"error": "Location not found or you don't have permission to edit it"}), 404
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"message": "Location updated successfully!"}), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Failed to update location: {str(e)}"}), 500
 
 # Report Generation Routes
 @app.route("/download-report-direct", methods=["POST"])
