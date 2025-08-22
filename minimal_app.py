@@ -40,18 +40,43 @@ NJ_BOUNDS = {"north": 41.36, "south": 38.92, "west": -75.58, "east": -73.90}
 # Create Flask app
 app = Flask(__name__)
 
-# Configure app
-app.secret_key = os.getenv('SECRET_KEY', 'dev_secret_key')
+# Configure app for production
+app.secret_key = os.getenv('SECRET_KEY', 'bioscope_production_secret_key_2024')
+
+# Production-optimized session configuration
 app.config.update({
-    "SESSION_TYPE": "filesystem",
+    "SESSION_TYPE": "sqlalchemy",
     "SESSION_PERMANENT": True,
-    "PERMANENT_SESSION_LIFETIME": timedelta(minutes=15),
-    "SESSION_COOKIE_SAMESITE": "Lax",
-    "SESSION_COOKIE_SECURE": False,
-    "SESSION_COOKIE_HTTPONLY": True,
+    "PERMANENT_SESSION_LIFETIME": timedelta(hours=24),  # Longer session for better UX
+    "SESSION_COOKIE_SAMESITE": None,  # Allow cross-site cookies
+    "SESSION_COOKIE_SECURE": True if os.getenv('FLASK_ENV') == 'production' else False,
+    "SESSION_COOKIE_HTTPONLY": False,  # Allow JavaScript access for debugging
+    "SESSION_COOKIE_NAME": "bioscope_session",
+    "SESSION_USE_SIGNER": True,
+    "SESSION_KEY_PREFIX": "bioscope:",
+    "SESSION_SQLALCHEMY_TABLE": "user_sessions",
 })
 
-Session(app)
+# Fallback to filesystem if database not available
+try:
+    from flask_sqlalchemy import SQLAlchemy
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', '').replace('postgresql://', 'postgresql+psycopg2://')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db = SQLAlchemy(app)
+    app.config['SESSION_SQLALCHEMY'] = db
+    Session(app)
+    print("✅ Using database-backed sessions")
+except Exception as e:
+    print(f"⚠️ Database sessions failed, using filesystem: {e}")
+    app.config.update({
+        "SESSION_TYPE": "filesystem",
+        "SESSION_FILE_DIR": "/tmp/flask_session",
+        "SESSION_FILE_THRESHOLD": 100,
+    })
+    # Create session directory
+    import tempfile
+    os.makedirs("/tmp/flask_session", exist_ok=True)
+    Session(app)
 
 # CORS setup
 allowed_origins = os.getenv('ALLOWED_ORIGINS', 'https://bioscope-project.vercel.app,http://localhost:3000').split(',')
