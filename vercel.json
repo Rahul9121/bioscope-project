@@ -19,5 +19,8 @@
         }
       ]
     }
-  ]
+  ],
+  "env": {
+    "REACT_APP_API_URL": "https://bioscope-project-production.up.railway.app"
+  }
 }
