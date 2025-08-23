@@ -16,29 +16,33 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+import { logout as apiLogout } from "../services/api";
 
 const Layout = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    setIsLoggedIn(!!user);
-  }, []);
+  const { user, logout: authLogout, isAuthenticated, loading } = useAuth();
 
   const handleLogout = async () => {
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-      await axios.post(`${apiUrl}/logout`, {}, { withCredentials: true });
-      localStorage.removeItem("user");
-      setIsLoggedIn(false);
-      navigate("/");
+      // Call backend logout API
+      await apiLogout();
+      console.log("✅ Backend logout successful");
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error("⚠️ Logout API failed:", error);
+      // Continue with local logout even if API fails
+    } finally {
+      // Always clear local auth state
+      authLogout();
+      navigate("/");
+      console.log("✅ User logged out and redirected");
     }
+  };
+
+  const handleNavigation = (path) => {
+    navigate(path);
   };
 
   const toggleDrawer = () => {
@@ -98,14 +102,14 @@ const Layout = ({ children }) => {
           </Box>
 
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 4 }}>
-            <Button href="/" sx={navButtonStyle}>Home</Button>
-            <Button href="/about" sx={navButtonStyle}>About</Button>
-            <Button href="/how-it-works" sx={navButtonStyle}>How It Works</Button>
-            <Button href="/map" sx={navButtonStyle}>Risk Assessment</Button>
+            <Button onClick={() => handleNavigation("/")} sx={navButtonStyle}>Home</Button>
+            <Button onClick={() => handleNavigation("/about")} sx={navButtonStyle}>About</Button>
+            <Button onClick={() => handleNavigation("/how-it-works")} sx={navButtonStyle}>How It Works</Button>
+            <Button onClick={() => handleNavigation("/map")} sx={navButtonStyle}>Risk Assessment</Button>
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
-            {isLoggedIn ? (
+            {isAuthenticated() ? (
               <>
                 <Button
                   onClick={handleAccountClick}
@@ -146,10 +150,10 @@ const Layout = ({ children }) => {
               </>
             ) : (
               <>
-                <Button href="/login" sx={navButtonStyle}>Login</Button>
+                <Button onClick={() => handleNavigation("/login")} sx={navButtonStyle}>Login</Button>
                 <Button
                   variant="outlined"
-                  href="/register"
+                  onClick={() => handleNavigation("/register")}
                   sx={{
                     ...navButtonStyle,
                     border: "2px solid white",
