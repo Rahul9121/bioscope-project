@@ -18,6 +18,7 @@ import DeleteLocation from "./DeleteLocation";
 import ViewLocation from "./ViewLocation";
 import EditLocation from "./EditLocation";
 import AuthDebug from "./AuthDebug";
+import LocationDebug from "./LocationDebug";
 
 const AccountDashboard = () => {
   const [activeModule, setActiveModule] = useState(null);
@@ -66,9 +67,12 @@ const AccountDashboard = () => {
             <Typography variant="h5" sx={{ mb: 2 }}>
               🛠️ Select a tool from the sidebar to begin managing your hotel locations.
             </Typography>
-            <Typography variant="body1" sx={{ opacity: 0.9 }}>
+            <Typography variant="body1" sx={{ mb: 3, opacity: 0.9 }}>
               You can add a new hotel, view your registered locations, make updates, or remove old entries using the available options.
             </Typography>
+            
+            {/* COMPREHENSIVE DEBUG COMPONENT */}
+            <LocationDebug />
           </Box>
         );
     }
