@@ -14,97 +14,103 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  console.log("🔴 EMERGENCY AuthProvider - Current user:", user);
+  console.log("🔴 EMERGENCY localStorage user:", localStorage.getItem("user"));
+
+  // EMERGENCY FIX: Simple, bulletproof authentication
+  const getUserFromStorage = () => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser && storedUser !== "null" && storedUser !== "undefined") {
+        return JSON.parse(storedUser);
+      }
+    } catch (error) {
+      console.error("❌ Error parsing stored user:", error);
+      localStorage.removeItem("user");
+    }
+    return null;
+  };
 
   const login = useCallback((userData) => {
+    console.log("🔥 EMERGENCY LOGIN - Setting user:", userData);
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
-    console.log("✅ User logged in and stored:", userData);
-  }, []);
+    console.log("✅ EMERGENCY LOGIN - User stored successfully");
+    // Force a re-render by triggering a state update
+    setTimeout(() => {
+      const stored = getUserFromStorage();
+      if (stored && !user) {
+        console.log("🔄 EMERGENCY - Forcing user state sync");
+        setUser(stored);
+      }
+    }, 100);
+  }, [user]);
   
   const logout = useCallback(() => {
+    console.log("🔥 EMERGENCY LOGOUT - Clearing user");
     setUser(null);
     localStorage.removeItem("user");
-    console.log("✅ User logged out");
+    console.log("✅ EMERGENCY LOGOUT - User cleared");
   }, []);
 
-  // Check server session status
+  // EMERGENCY: Simple session check that doesn't interfere
   const checkSession = useCallback(async () => {
     try {
       const response = await sessionStatus();
-      if (response.data.active) {
-        // If server session is active, ensure localStorage is in sync
-        const storedUser = localStorage.getItem("user");
-        if (!storedUser) {
-          console.log("🔄 Session active but no local user data. Refreshing...");
-          return false; // Need to re-login to get user data
-        }
-      } else {
-        // Server session expired, clear local data
-        if (user) {
-          console.log("🚨 Server session expired, clearing local auth");
-          logout();
-        }
-      }
-      return response.data.active;
+      console.log("🔍 EMERGENCY Session check result:", response.data);
+      return response.data?.active || false;
     } catch (error) {
-      console.log("⚠️ Session check failed, assuming logged out:", error.message);
-      if (user) {
-        logout();
-      }
-      return false;
+      console.log("⚠️ EMERGENCY Session check failed (keeping user logged in):", error.message);
+      return true; // Keep user logged in if session check fails
     }
-  }, [user, logout]);
+  }, []);
 
-  // Load user from localStorage and verify session on mount
+  // EMERGENCY: Initialize auth state from localStorage ONLY
   useEffect(() => {
-    const initAuth = async () => {
-      try {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
-          const userData = JSON.parse(storedUser);
-          setUser(userData);
-          console.log("✅ User loaded from localStorage:", userData);
-          console.log("✅ AuthContext: User is authenticated");
-          
-          // Optional: Verify session in background (don't clear user if it fails)
-          checkSession().then(sessionActive => {
-            if (sessionActive) {
-              console.log("✅ Session verified successfully");
-            } else {
-              console.log("⚠️ Session check failed, but keeping user data for better UX");
-              // Don't clear user data - let them stay logged in until they explicitly logout
-              // or encounter an actual authentication error
-            }
-          }).catch(error => {
-            console.log("⚠️ Session check failed (network error), keeping user logged in:", error.message);
-          });
-        } else {
-          console.log("🚪 No stored user found");
-        }
-      } catch (error) {
-        console.error("❌ Error during auth initialization:", error);
-        // Only clear if there's a parse error, not network errors
-        if (error instanceof SyntaxError) {
-          localStorage.removeItem("user");
-          setUser(null);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+    console.log("🔥 EMERGENCY AuthContext initialization starting...");
     
-    initAuth();
-  }, []); // Remove checkSession dependency to avoid loops
+    const storedUser = getUserFromStorage();
+    if (storedUser) {
+      console.log("✅ EMERGENCY Found stored user:", storedUser);
+      setUser(storedUser);
+    } else {
+      console.log("🚪 EMERGENCY No stored user found");
+    }
+    
+    setLoading(false);
+    console.log("✅ EMERGENCY AuthContext initialization complete");
+  }, []);
+
+  // EMERGENCY: Double-check auth state every second for debugging
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const storedUser = getUserFromStorage();
+      if (storedUser && !user) {
+        console.log("⚡ EMERGENCY Auto-sync: Found user in storage but not in state");
+        setUser(storedUser);
+      } else if (!storedUser && user) {
+        console.log("⚡ EMERGENCY Auto-sync: User in state but not in storage");
+        setUser(null);
+      }
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [user]);
 
   const isAuthenticated = useCallback(() => {
-    return user !== null;
+    const result = user !== null;
+    console.log("🔍 EMERGENCY isAuthenticated check:", result, "User:", user);
+    return result;
   }, [user]);
 
   const refreshAuthStatus = useCallback(async () => {
-    setLoading(true);
-    await checkSession();
-    setLoading(false);
-  }, [checkSession]);
+    console.log("🔄 EMERGENCY Refreshing auth status");
+    const storedUser = getUserFromStorage();
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ 

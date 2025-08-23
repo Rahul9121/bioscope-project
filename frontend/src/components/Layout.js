@@ -25,13 +25,23 @@ const Layout = ({ children }) => {
   const navigate = useNavigate();
   const { user, logout: authLogout, isAuthenticated, loading } = useAuth();
   
-  // Debug authentication state
-  console.log("🏢 Layout Debug:");
+  // EMERGENCY DEBUG: Track all auth state
+  console.log("🔥 EMERGENCY Layout Debug:");
   console.log("- User from AuthContext:", user);
   console.log("- Loading state:", loading);
-  console.log("- isAuthenticated():", isAuthenticated());
+  console.log("- isAuthenticated() result:", isAuthenticated());
   console.log("- localStorage user:", localStorage.getItem("user"));
+  console.log("- User object exists:", !!user);
   console.log("- Should show authenticated nav:", isAuthenticated());
+  
+  // EMERGENCY: Also check localStorage directly as fallback
+  const hasStoredUser = !!localStorage.getItem("user");
+  console.log("- Has stored user:", hasStoredUser);
+  
+  // EMERGENCY: Force re-render when user changes
+  useEffect(() => {
+    console.log("🔄 EMERGENCY Layout: User state changed to:", user);
+  }, [user]);
 
   const handleLogout = async () => {
     try {
