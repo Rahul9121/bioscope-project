@@ -106,27 +106,35 @@ except ImportError as e:
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_change_in_production')
 logging.basicConfig(level=logging.DEBUG)
 
-# Update session configuration for production deployment
-# Detect if we're in production (Railway environment)
-is_production = bool(os.getenv('RAILWAY_ENVIRONMENT')) or 'railway.app' in os.getenv('RAILWAY_PUBLIC_DOMAIN', '')
-print(f"🔧 Production mode: {is_production}")
-print(f"🍪 Session config: SameSite={'None' if is_production else 'Lax'}, Secure={is_production}")
+# ULTIMATE SESSION FIX: More aggressive cross-domain settings
+is_production = bool(os.getenv('RAILWAY_ENVIRONMENT')) or 'railway.app' in os.getenv('RAILWAY_PUBLIC_DOMAIN', '') or 'railway' in str(os.getenv('PORT', ''))
+print(f"🔧 Production mode detected: {is_production}")
+print(f"🌍 Environment vars: RAILWAY_ENV={os.getenv('RAILWAY_ENVIRONMENT')}, PORT={os.getenv('PORT')}")
 
+# ULTIMATE cross-domain session configuration
 app.config.update({
-    "SECRET_KEY": os.getenv('SECRET_KEY', 'your_secret_key_change_in_production_2024_biodiv'),
-    "SESSION_TYPE": "redis" if os.getenv('REDIS_URL') else "filesystem",
-    "SESSION_FILE_DIR": "/tmp/flask_session" if is_production else "./flask_session",
+    "SECRET_KEY": os.getenv('SECRET_KEY', 'biodiv_session_key_2024_cross_domain_fix'),
+    "SESSION_TYPE": "filesystem",  # Force filesystem to avoid Redis issues
+    "SESSION_FILE_DIR": "/tmp/flask_session",
     "SESSION_PERMANENT": True,
-    "PERMANENT_SESSION_LIFETIME": timedelta(hours=24),  # Extend session time
+    "PERMANENT_SESSION_LIFETIME": timedelta(hours=48),  # Extra long sessions
     
-    # CRITICAL: Cross-domain session settings
-    "SESSION_COOKIE_SAMESITE": "None" if is_production else "Lax",  # Allow cross-domain
-    "SESSION_COOKIE_SECURE": is_production,  # HTTPS required for SameSite=None
-    "SESSION_COOKIE_HTTPONLY": False,  # Allow JS access for debugging
-    "SESSION_COOKIE_NAME": "biodiv_session",
-    "SESSION_COOKIE_DOMAIN": None,  # Don't restrict domain
-    "SESSION_USE_SIGNER": True  # Add extra security
+    # ULTIMATE cross-domain cookie settings
+    "SESSION_COOKIE_SAMESITE": None,  # Most permissive for cross-domain
+    "SESSION_COOKIE_SECURE": True,   # Required for production HTTPS  
+    "SESSION_COOKIE_HTTPONLY": False, # Allow JavaScript access
+    "SESSION_COOKIE_NAME": "biodiv_session_v2",
+    "SESSION_COOKIE_DOMAIN": None,   # No domain restriction
+    "SESSION_COOKIE_PATH": "/",      # Available on all paths
+    "SESSION_USE_SIGNER": False,     # Disable signing for debugging
+    "SESSION_REFRESH_EACH_REQUEST": True  # Refresh session on each request
 })
+
+print(f"🍪 Session config applied:")
+print(f"   - SameSite: {app.config['SESSION_COOKIE_SAMESITE']}")
+print(f"   - Secure: {app.config['SESSION_COOKIE_SECURE']}")
+print(f"   - HttpOnly: {app.config['SESSION_COOKIE_HTTPONLY']}")
+print(f"   - Cookie Name: {app.config['SESSION_COOKIE_NAME']}")
 
 Session(app)
 
