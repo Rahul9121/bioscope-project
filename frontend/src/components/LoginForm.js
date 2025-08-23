@@ -34,10 +34,30 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
+      console.log("🔍 LOGIN DEBUG: Starting login request...");
+      console.log("🔍 LOGIN DEBUG: Email:", email);
+      console.log("🔍 LOGIN DEBUG: API URL being used:", process.env.NODE_ENV === 'production' ? 'https://bioscope-project-production.up.railway.app' : 'http://localhost:5000');
+      
       const response = await login({ email, password });
+      
+      console.log("🔍 LOGIN DEBUG: Full API response:", response);
+      console.log("🔍 LOGIN DEBUG: Response status:", response.status);
+      console.log("🔍 LOGIN DEBUG: Response headers:", response.headers);
+      console.log("🔍 LOGIN DEBUG: Response data:", response.data);
+      
+      if (response.data) {
+        console.log("🔍 LOGIN DEBUG: Checking response data structure:");
+        console.log("- Has user:", !!response.data.user);
+        console.log("- Has token:", !!response.data.token);
+        console.log("- User data:", response.data.user);
+        console.log("- Token data:", response.data.token ? `${response.data.token.substring(0, 20)}...` : "NULL");
+        console.log("- Message:", response.data.message);
+        console.log("- Error:", response.data.error);
+      }
 
       if (response.data && response.data.user && response.data.token) {
         // Update AuthContext with user data and JWT token
+        console.log("✅ LOGIN DEBUG: Both user and token present - proceeding with login");
         authLogin(response.data.user, response.data.token);
         console.log("✅ JWT Login successful, user:", response.data.user.email);
         console.log("✅ JWT Token received:", response.data.token ? "[PRESENT]" : "[MISSING]");
@@ -47,11 +67,24 @@ const LoginForm = () => {
         console.log("✅ Redirecting to:", redirectTo);
         navigate(redirectTo, { replace: true });
       } else if (response.data && response.data.user && !response.data.token) {
-        setError("Login failed. No authentication token received from server.");
-        console.error("❌ JWT Login failed: No token in response", response.data);
+        console.error("❌ LOGIN DEBUG: User present but token missing!");
+        console.error("- User:", response.data.user);
+        console.error("- Token:", response.data.token);
+        console.error("- Full response:", response.data);
+        setError("Login failed. No authentication token received from server. Check browser console for details.");
+      } else if (response.data && !response.data.user && response.data.token) {
+        console.error("❌ LOGIN DEBUG: Token present but user missing!");
+        console.error("- User:", response.data.user);
+        console.error("- Token:", response.data.token);
+        setError("Login failed. No user data received from server.");
+      } else if (response.data && response.data.error) {
+        console.error("❌ LOGIN DEBUG: Server returned error:", response.data.error);
+        setError(response.data.error);
       } else {
-        setError("Login failed. No user data received.");
-        console.error("❌ JWT Login failed: No user data in response", response.data);
+        console.error("❌ LOGIN DEBUG: Unexpected response structure:");
+        console.error("- Full response:", response);
+        console.error("- Response data:", response.data);
+        setError("Login failed. Unexpected server response. Check browser console for details.");
       }
     } catch (err) {
       console.error("❌ Login failed:", err);

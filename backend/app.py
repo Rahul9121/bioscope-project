@@ -426,6 +426,7 @@ except ImportError as e:
 def login():
     # Handle CORS preflight
     if request.method == "OPTIONS":
+        print("🔍 LOGIN DEBUG: Handling CORS preflight")
         response = jsonify({"message": "CORS preflight success"})
         origin = request.headers.get('Origin', 'http://localhost:3000')
         allowed_origin = origin if origin in allowed_origins else allowed_origins[0]
@@ -434,6 +435,13 @@ def login():
         response.headers.add("Access-Control-Allow-Headers", "Content-Type")
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
         return response, 200
+    
+    print("🔍 LOGIN DEBUG: Starting login endpoint...")
+    print(f"- Request method: {request.method}")
+    print(f"- Content-Type: {request.headers.get('Content-Type')}")
+    print(f"- Origin: {request.headers.get('Origin')}")
+    print(f"- User-Agent: {request.headers.get('User-Agent')[:50]}...") 
+    print(f"- Request is JSON: {request.is_json}")
         
     try:
         # Enhanced request validation
@@ -487,8 +495,8 @@ def login():
             
         print("✅ Session after login:", dict(session))
 
-        # ✅ Build response with JWT token
-        response = jsonify({
+        # 🎯 Build response with JWT token
+        response_data = {
             "message": "Login successful",
             "token": jwt_token,  # Add JWT token to response
             "user": {
@@ -496,13 +504,30 @@ def login():
                 "hotel_name": hotel_name,
                 "email": user_email
             }
-        })
+        }
+        
+        print("🔍 LOGIN DEBUG: Building response...")
+        print(f"- Response has message: {'message' in response_data}")
+        print(f"- Response has token: {'token' in response_data}")
+        print(f"- Response has user: {'user' in response_data}")
+        print(f"- Token is not None: {response_data['token'] is not None}")
+        print(f"- Token type: {type(response_data['token'])}")
+        print(f"- User data: {response_data['user']}")
+        print(f"- Full response data: {response_data}")
+        
+        response = jsonify(response_data)
 
         # ✅ Explicit CORS headers
         origin = request.headers.get('Origin', 'http://localhost:3000')
         allowed_origin = origin if origin in allowed_origins else allowed_origins[0]
         response.headers.add("Access-Control-Allow-Origin", allowed_origin)
         response.headers.add("Access-Control-Allow-Credentials", "true")
+        
+        print(f"🔍 LOGIN DEBUG: Response ready to send with status 200")
+        print(f"- CORS Origin: {allowed_origin}")
+        
+        cursor.close()
+        conn.close()
 
         return response, 200
 
