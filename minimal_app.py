@@ -43,13 +43,18 @@ app = Flask(__name__)
 # Configure app for production
 app.secret_key = os.getenv('SECRET_KEY', 'bioscope_production_secret_key_2024')
 
+# 🔧 CRITICAL FIX: Railway production detection  
+is_production = bool(os.getenv('RAILWAY_ENVIRONMENT')) or 'railway.app' in os.getenv('RAILWAY_PUBLIC_DOMAIN', '') or 'railway' in str(os.getenv('PORT', ''))
+print(f"🔧 Production mode detected: {is_production}")
+print(f"🌍 Environment vars: RAILWAY_ENV={os.getenv('RAILWAY_ENVIRONMENT')}, PORT={os.getenv('PORT')}")
+
 # Production-optimized session configuration
 app.config.update({
     "SESSION_TYPE": "filesystem",
     "SESSION_PERMANENT": True,
     "PERMANENT_SESSION_LIFETIME": timedelta(hours=24),  # 24-hour session
-    "SESSION_COOKIE_SAMESITE": None,  # Allow cross-site cookies
-    "SESSION_COOKIE_SECURE": True if os.getenv('FLASK_ENV') == 'production' else False,
+    "SESSION_COOKIE_SAMESITE": "None" if is_production else "Lax",  # 🔧 CRITICAL: None for cross-origin HTTPS
+    "SESSION_COOKIE_SECURE": is_production,  # 🔧 CRITICAL: True for HTTPS production, False for HTTP dev
     "SESSION_COOKIE_HTTPONLY": False,  # Allow JS access for debugging
     "SESSION_COOKIE_NAME": "bioscope_session",
     "SESSION_USE_SIGNER": True,
@@ -58,6 +63,12 @@ app.config.update({
     "SESSION_FILE_THRESHOLD": 500,
     "SESSION_COOKIE_DOMAIN": None,  # Auto-detect domain
 })
+
+print(f"🍪 Session config applied:")
+print(f"   - SameSite: {app.config['SESSION_COOKIE_SAMESITE']}")
+print(f"   - Secure: {app.config['SESSION_COOKIE_SECURE']}")
+print(f"   - HttpOnly: {app.config['SESSION_COOKIE_HTTPONLY']}")
+print(f"   - Cookie Name: {app.config['SESSION_COOKIE_NAME']}")
 
 # Create session directory and initialize sessions
 try:
