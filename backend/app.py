@@ -164,6 +164,33 @@ GEOCODING_API_URL = "https://nominatim.openstreetmap.org/search"
 def health_check():
     return jsonify({"status": "healthy", "message": "Bioscope API is running"}), 200
 
+# JWT Token test endpoint
+@app.route("/test-jwt", methods=["GET"])
+def test_jwt():
+    """Test JWT token generation"""
+    try:
+        print("🔍 Testing JWT token generation...")
+        test_token = generate_token(999, "test@example.com")
+        print(f"✅ Test token generated: {test_token[:30]}...")
+        
+        response_data = {
+            "message": "JWT test successful",
+            "token": test_token,
+            "token_type": type(test_token).__name__,
+            "token_length": len(test_token) if test_token else 0,
+            "has_token": test_token is not None
+        }
+        
+        print(f"🔍 Test response: {response_data}")
+        return jsonify(response_data), 200
+        
+    except Exception as e:
+        print(f"❌ JWT test failed: {e}")
+        return jsonify({
+            "error": str(e),
+            "message": "JWT test failed"
+        }), 500
+
 # Database debug endpoint
 @app.route("/db-status", methods=["GET"])
 def db_status():
