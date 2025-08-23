@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Button, Alert } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
-import { sessionStatus, viewLocations, addLocation } from '../services/api';
+import { viewLocations, addLocation } from '../services/api';
 
 const LocationDebug = () => {
-  const { user, loading, isAuthenticated } = useAuth();
+  const { user, token, loading, isAuthenticated } = useAuth();
   const [debugInfo, setDebugInfo] = useState({
-    sessionCheck: null,
+    tokenCheck: null,
     locationCheck: null,
     addTest: null,
     apiUrl: null
@@ -22,26 +22,35 @@ const LocationDebug = () => {
     }));
   }, []);
 
-  const testSession = async () => {
+  const testToken = async () => {
     try {
-      console.log('🔍 Testing session status...');
-      const response = await sessionStatus();
+      console.log('🔑 Testing JWT token status...');
+      const tokenFromStorage = localStorage.getItem('auth_token');
+      const userFromStorage = localStorage.getItem('user');
+      
       setDebugInfo(prev => ({
         ...prev,
-        sessionCheck: {
+        tokenCheck: {
           success: true,
-          data: response.data,
-          status: response.status
+          data: {
+            hasToken: !!token,
+            hasStoredToken: !!tokenFromStorage,
+            hasUser: !!user,
+            hasStoredUser: !!userFromStorage,
+            tokenPresent: token ? '[PRESENT]' : '[MISSING]',
+            storedTokenPresent: tokenFromStorage ? '[PRESENT]' : '[MISSING]'
+          },
+          status: 200
         }
       }));
     } catch (error) {
-      console.error('❌ Session check failed:', error);
+      console.error('❌ Token check failed:', error);
       setDebugInfo(prev => ({
         ...prev,
-        sessionCheck: {
+        tokenCheck: {
           success: false,
-          error: error.response?.data || error.message,
-          status: error.response?.status || 'Network Error'
+          error: error.message,
+          status: 'Client Error'
         }
       }));
     }
@@ -156,10 +165,10 @@ const LocationDebug = () => {
       <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         <Button 
           variant="contained" 
-          onClick={testSession}
+          onClick={testToken}
           sx={{ bgcolor: 'orange' }}
         >
-          🔍 Test Session Status
+          🔑 Test JWT Token
         </Button>
         <Button 
           variant="contained" 
@@ -179,9 +188,9 @@ const LocationDebug = () => {
 
       {/* Debug Results */}
       {renderDebugSection(
-        '🔍 SESSION STATUS CHECK',
-        debugInfo.sessionCheck,
-        debugInfo.sessionCheck?.success ? 'success' : 'error'
+        '🔑 JWT TOKEN CHECK',
+        debugInfo.tokenCheck,
+        debugInfo.tokenCheck?.success ? 'success' : 'error'
       )}
 
       {renderDebugSection(
@@ -200,9 +209,9 @@ const LocationDebug = () => {
       <Alert severity="info" sx={{ mt: 2 }}>
         <Typography variant="body2">
           <strong>DEBUG INSTRUCTIONS:</strong><br/>
-          1. Click "Test Session Status" first - this shows if your login session is working<br/>
-          2. Click "Test View Locations" - this tests if you can fetch data<br/>
-          3. Click "Test Add Location" - this tests if you can add data<br/>
+          1. Click "Test JWT Token" first - this shows if your JWT authentication is working<br/>
+          2. Click "Test View Locations" - this tests if you can fetch data with JWT auth<br/>
+          3. Click "Test Add Location" - this tests if you can add data with JWT auth<br/>
           4. Share the JSON results with the developer to identify the exact problem
         </Typography>
       </Alert>
