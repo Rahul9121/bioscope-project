@@ -752,7 +752,7 @@ def address_autocomplete():
 def search():
     """Main search endpoint for location-based risk analysis"""
     if not DATABASE_AVAILABLE:
-        return jsonify({"error": "Database not available"}), 500
+        return jsonify({"error": "Database not available - please check database connection"}), 500
     
     try:
         data = request.json
@@ -761,47 +761,76 @@ def search():
         if not input_text:
             return jsonify({"error": "Input text is required"}), 400
         
+        input_text = input_text.strip()
         lat, lon, zip_code = None, None, ""
+        location_type = "unknown"
         
-        # Determine if input is coordinates, ZIP code, or address
-        if input_text.replace(",", "").replace(".", "").replace(" ", "").isdigit():
+        print(f"🔍 Processing search input: '{input_text}'")
+        
+        # Enhanced input parsing logic
+        if input_text.replace(",", "").replace(".", "").replace(" ", "").replace("-", "").isdigit():
             if "," in input_text:
-                # Coordinates input
-                lat, lon = map(float, input_text.split(","))
-                zip_code = "Unknown"
+                # Coordinates input (lat,lon)
+                try:
+                    lat, lon = map(float, input_text.split(","))
+                    zip_code = "Unknown"
+                    location_type = "coordinates"
+                    print(f"📍 Parsed as coordinates: {lat}, {lon}")
+                except ValueError:
+                    return jsonify({"error": "Invalid coordinates format. Use: latitude,longitude"}), 400
             elif len(input_text) == 5:
                 # ZIP code input
+                print(f"📮 Processing ZIP code: {input_text}")
                 lat, lon = get_lat_lon_from_zip(input_text)
                 zip_code = input_text
+                location_type = "zip_code"
+                print(f"📮 ZIP code {input_text} resolved to: {lat}, {lon}")
         else:
             # Address input
+            print(f"🏠 Processing address: {input_text}")
             lat, lon, zip_code = get_lat_lon_from_address(input_text)
+            location_type = "address"
+            print(f"🏠 Address resolved to: {lat}, {lon}, ZIP: {zip_code}")
         
+        # Enhanced error handling for geocoding failures
         if lat is None or lon is None:
-            return jsonify({"error": "Could not determine location."}), 400
+            error_msg = f"Could not determine location for '{input_text}'. "
+            if location_type == "zip_code":
+                error_msg += "Please try a different ZIP code or check if it's a valid New Jersey ZIP code."
+            elif location_type == "address":
+                error_msg += "Please try a more specific address or include city and state (e.g., 'City, NJ')."
+            else:
+                error_msg += "Please check your input format."
+            return jsonify({"error": error_msg}), 400
         
         # Check if location is within New Jersey bounds
         if not (NJ_BOUNDS["south"] <= lat <= NJ_BOUNDS["north"] and 
                 NJ_BOUNDS["west"] <= lon <= NJ_BOUNDS["east"]):
-            return jsonify({"error": "The location is outside of New Jersey."}), 400
+            return jsonify({
+                "error": f"The location ({lat:.4f}, {lon:.4f}) is outside of New Jersey. This tool only supports New Jersey locations."
+            }), 400
         
         # Query real biodiversity risks from database
         print(f"🔍 Searching biodiversity risks around lat: {lat}, lon: {lon}")
         biodiversity_risks = query_biodiversity_risks(lat, lon, search_radius=0.1)
         
-        # If no risks found in immediate area, expand search radius
-        if not biodiversity_risks:
-            print("🔍 Expanding search radius to 0.2 degrees")
-            biodiversity_risks = query_biodiversity_risks(lat, lon, search_radius=0.2)
+        # If no risks found in immediate area, expand search radius progressively
+        search_radii = [0.1, 0.2, 0.5]
+        for radius in search_radii:
+            if biodiversity_risks:
+                break
+            print(f"🔍 Expanding search radius to {radius} degrees")
+            biodiversity_risks = query_biodiversity_risks(lat, lon, search_radius=radius)
         
-        # If still no risks, provide general New Jersey biodiversity info
+        # If still no risks, create a general New Jersey biodiversity entry
         if not biodiversity_risks:
+            print("ℹ️  No specific risks found in database, providing general guidance")
             biodiversity_risks = [
                 {
                     "latitude": lat,
                     "longitude": lon,
-                    "risk_type": "General New Jersey Biodiversity",
-                    "description": "This area may contain undocumented biodiversity risks. Consider general conservation practices.",
+                    "risk_type": "General New Jersey Biodiversity Area",
+                    "description": "This area is within New Jersey and may contain undocumented biodiversity. General conservation practices recommended.",
                     "threat_code": "low",
                     "source": "general"
                 }
@@ -809,10 +838,17 @@ def search():
         
         # Store in session for later use
         session["risks"] = biodiversity_risks
-        session["last_search"] = {"lat": lat, "lon": lon, "zip": zip_code}
+        session["last_search"] = {
+            "lat": lat, 
+            "lon": lon, 
+            "zip": zip_code, 
+            "input": input_text, 
+            "type": location_type
+        }
         
-        print(f"✅ Found {len(biodiversity_risks)} biodiversity risks")
+        print(f"✅ Found {len(biodiversity_risks)} biodiversity risks for {location_type}: '{input_text}'")
         
+        # Enhanced response with more metadata
         return jsonify({
             "center": {
                 "latitude": lat,
@@ -821,11 +857,25 @@ def search():
             },
             "risks": biodiversity_risks,
             "total_risks": len(biodiversity_risks),
-            "message": f"Found {len(biodiversity_risks)} biodiversity risk(s) in the area"
+            "search_metadata": {
+                "input_text": input_text,
+                "location_type": location_type,
+                "search_successful": True
+            },
+            "message": f"Found {len(biodiversity_risks)} biodiversity risk(s) in the area around {input_text}"
         }), 200
         
     except Exception as e:
-        return jsonify({"error": f"Search failed: {str(e)}"}), 500
+        print(f"❌ Search error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "error": f"Search failed: {str(e)}",
+            "search_metadata": {
+                "input_text": data.get("input_text", "unknown"),
+                "search_successful": False
+            }
+        }), 500
 
 @app.route("/session-risks", methods=["GET"])
 def get_session_risks():
