@@ -23,31 +23,21 @@ const AccountDashboard = () => {
   const navigate = useNavigate();
   const { user, logout, loading, isAuthenticated } = useAuth();
   
-  // Debug logging
-  console.log("🔍 AccountDashboard Debug:");
+  console.log("🔥 DEFINITIVE AccountDashboard Debug:");
   console.log("- User from AuthContext:", user);
   console.log("- Loading state:", loading);
   console.log("- isAuthenticated():", isAuthenticated());
-  console.log("- localStorage user:", localStorage.getItem("user"));
+  console.log("- localStorage user exists:", !!localStorage.getItem("user"));
   console.log("- User exists check:", !!user);
   console.log("- User hotel_name:", user?.hotel_name);
   
-  // Get user data from AuthContext or localStorage fallback
-  const getUserData = () => {
-    if (user) return user;
-    try {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser && storedUser !== "null" && storedUser !== "undefined") {
-        return JSON.parse(storedUser);
-      }
-    } catch (error) {
-      console.error("❌ Error parsing stored user:", error);
-    }
-    return null;
-  };
+  // DEFINITIVE FIX: Use exact same logic as ProtectedRoute
+  // ProtectedRoute uses: if (!user) redirect
+  // So we should use: if (user) show content
+  // This ensures 100% consistency
   
-  const userData = getUserData();
-  console.log("📊 Final userData:", userData);
+  console.log("🎯 DEFINITIVE CHECK - Will show content:", !!user);
+  console.log("🎯 DEFINITIVE CHECK - Loading:", loading);
 
   const renderModule = () => {
     switch (activeModule) {
@@ -173,10 +163,10 @@ const AccountDashboard = () => {
                 <Typography variant="h5" sx={{ textAlign: "center" }}>
                   🔄 Loading your account information...
                 </Typography>
-              ) : userData ? (
+              ) : user ? (
                 <>
                   <Typography variant="h3" fontWeight="bold" sx={{ mb: 2, fontSize: "clamp(2.2rem, 4vw, 2.8rem)" }}>
-                    Welcome, {userData.hotel_name || "User"}!
+                    Welcome, {user.hotel_name || "User"}!
                   </Typography>
                   <Typography variant="h6" sx={{ mb: 3, opacity: 0.9 }}>
                     Use the panel to manage your hotel's biodiversity monitoring locations.
