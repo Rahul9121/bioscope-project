@@ -507,10 +507,13 @@ def login():
         session.permanent = True
 
         # 🎯 Generate JWT token for cross-domain authentication
+        jwt_token = None
         try:
             jwt_token = generate_token(user_id, email)
             print(f"✅ JWT token generated successfully for user {user_id}")
             print(f"🔑 JWT token preview: {jwt_token[:50] if jwt_token else 'None'}...")
+            print(f"🔑 JWT token type: {type(jwt_token)}")
+            print(f"🔑 JWT token length: {len(jwt_token) if jwt_token else 0}")
         except Exception as token_error:
             print(f"❌ JWT token generation failed: {token_error}")
             # Fallback to basic token
@@ -519,6 +522,15 @@ def login():
             token_data = {"user_id": user_id, "email": email, "exp": "24h"}
             jwt_token = base64.b64encode(json.dumps(token_data).encode()).decode()
             print(f"🔄 Using fallback token for user {user_id}")
+            print(f"🔄 Fallback token: {jwt_token[:50]}...")
+        
+        # CRITICAL: Ensure token is not None
+        if jwt_token is None:
+            print("❌ CRITICAL: JWT token is None after generation!")
+            # Emergency fallback
+            import time
+            jwt_token = f"emergency_token_{user_id}_{int(time.time())}"
+            print(f"🚨 Using emergency token: {jwt_token}")
             
         print("✅ Session after login:", dict(session))
 
