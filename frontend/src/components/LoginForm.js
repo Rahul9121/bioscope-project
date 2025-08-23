@@ -38,43 +38,7 @@ const LoginForm = () => {
       console.log("🔍 LOGIN DEBUG: Email:", email);
       console.log("🔍 LOGIN DEBUG: API URL being used:", process.env.NODE_ENV === 'production' ? 'https://bioscope-project-production.up.railway.app' : 'http://localhost:5000');
       
-      let response;
-      let useMockAuth = false;
-      
-      try {
-        response = await login({ email, password });
-      } catch (networkError) {
-        console.warn("⚠️ Backend unavailable, using mock authentication");
-        useMockAuth = true;
-        
-        // Generate mock JWT token
-        const mockUser = {
-          id: 1,
-          email: email,
-          hotel_name: "Demo Hotel"
-        };
-        
-        const mockToken = btoa(JSON.stringify({
-          user_id: mockUser.id,
-          email: mockUser.email,
-          exp: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
-        }));
-        
-        response = {
-          status: 200,
-          data: {
-            message: "Mock login successful",
-            user: mockUser,
-            token: mockToken,
-            debug_info: {
-              mock_mode: true,
-              backend_available: false
-            }
-          }
-        };
-        
-        console.log("🎭 MOCK AUTH: Generated mock response", response.data);
-      }
+      const response = await login({ email, password });
       
       console.log("🔍 LOGIN DEBUG: Full API response:", response);
       console.log("🔍 LOGIN DEBUG: Response status:", response.status);
@@ -91,28 +55,16 @@ const LoginForm = () => {
         console.log("- Error:", response.data.error);
       }
 
-      if (response.data && response.data.user && response.data.token) {
-        // Update AuthContext with user data and JWT token
-        console.log("✅ LOGIN DEBUG: Both user and token present - proceeding with login");
-        authLogin(response.data.user, response.data.token);
-        console.log("✅ JWT Login successful, user:", response.data.user.email);
-        console.log("✅ JWT Token received:", response.data.token ? "[PRESENT]" : "[MISSING]");
+      if (response.data && response.data.user) {
+        // SESSION-based login - only need user data
+        console.log("✅ LOGIN DEBUG: User present - proceeding with session login");
+        authLogin(response.data.user);
+        console.log("✅ SESSION Login successful, user:", response.data.user.email);
         
         // Redirect to intended page or account dashboard
         const redirectTo = location.state?.from?.pathname || "/account";
         console.log("✅ Redirecting to:", redirectTo);
         navigate(redirectTo, { replace: true });
-      } else if (response.data && response.data.user && !response.data.token) {
-        console.error("❌ LOGIN DEBUG: User present but token missing!");
-        console.error("- User:", response.data.user);
-        console.error("- Token:", response.data.token);
-        console.error("- Full response:", response.data);
-        setError("Login failed. No authentication token received from server. Check browser console for details.");
-      } else if (response.data && !response.data.user && response.data.token) {
-        console.error("❌ LOGIN DEBUG: Token present but user missing!");
-        console.error("- User:", response.data.user);
-        console.error("- Token:", response.data.token);
-        setError("Login failed. No user data received from server.");
       } else if (response.data && response.data.error) {
         console.error("❌ LOGIN DEBUG: Server returned error:", response.data.error);
         setError(response.data.error);
