@@ -17,6 +17,7 @@ import AddLocation from "./AddLocation";
 import DeleteLocation from "./DeleteLocation";
 import ViewLocation from "./ViewLocation";
 import EditLocation from "./EditLocation";
+import AuthDebug from "./AuthDebug";
 
 const AccountDashboard = () => {
   const [activeModule, setActiveModule] = useState(null);
@@ -159,6 +160,8 @@ const AccountDashboard = () => {
                 color: "white"
               }}
             >
+              {/* DEBUG COMPONENT - TEMPORARY */}
+              <AuthDebug />
               {loading ? (
                 <Typography variant="h5" sx={{ textAlign: "center" }}>
                   🔄 Loading your account information...
