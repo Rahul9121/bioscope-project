@@ -31,6 +31,23 @@ const AccountDashboard = () => {
   console.log("- localStorage user:", localStorage.getItem("user"));
   console.log("- User exists check:", !!user);
   console.log("- User hotel_name:", user?.hotel_name);
+  
+  // Get user data from AuthContext or localStorage fallback
+  const getUserData = () => {
+    if (user) return user;
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser && storedUser !== "null" && storedUser !== "undefined") {
+        return JSON.parse(storedUser);
+      }
+    } catch (error) {
+      console.error("❌ Error parsing stored user:", error);
+    }
+    return null;
+  };
+  
+  const userData = getUserData();
+  console.log("📊 Final userData:", userData);
 
   const renderModule = () => {
     switch (activeModule) {
@@ -152,13 +169,17 @@ const AccountDashboard = () => {
                 color: "white"
               }}
             >
-              {user || localStorage.getItem("user") ? (
+              {loading ? (
+                <Typography variant="h5" sx={{ textAlign: "center" }}>
+                  🔄 Loading your account information...
+                </Typography>
+              ) : userData ? (
                 <>
                   <Typography variant="h3" fontWeight="bold" sx={{ mb: 2, fontSize: "clamp(2.2rem, 4vw, 2.8rem)" }}>
-                    Welcome, {user?.hotel_name || JSON.parse(localStorage.getItem("user") || '{}')?.hotel_name || "Test Hotel"}!
+                    Welcome, {userData.hotel_name || "User"}!
                   </Typography>
                   <Typography variant="h6" sx={{ mb: 3, opacity: 0.9 }}>
-                    Use the panel to manage your hotel’s biodiversity monitoring locations.
+                    Use the panel to manage your hotel's biodiversity monitoring locations.
                   </Typography>
 
                   {renderModule()}
@@ -181,9 +202,25 @@ const AccountDashboard = () => {
                   </Button>
                 </>
               ) : (
-                <Typography variant="h5" color="error">
-                  ⚠️ Unable to retrieve user information. Please log in again.
-                </Typography>
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography variant="h5" color="error" sx={{ mb: 2 }}>
+                    ⚠️ Unable to retrieve user information
+                  </Typography>
+                  <Typography variant="body1" sx={{ mb: 3, opacity: 0.8 }}>
+                    Your session may have expired. Please log in again.
+                  </Typography>
+                  <Button 
+                    variant="contained" 
+                    onClick={() => navigate("/login")}
+                    sx={{
+                      background: "linear-gradient(90deg, #4CAF50, #388E3C)",
+                      color: "white",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Go to Login
+                  </Button>
+                </Box>
               )}
             </Box>
           </Grid>
