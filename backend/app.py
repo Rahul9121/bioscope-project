@@ -1,4 +1,4 @@
-# Updated: 08/22/2025 02:26:12 - Force Railway redeployment
+# FORCE REDEPLOY: 08/23/2025 15:52 - CRITICAL JWT TOKEN FIX VERSION 3.0
 import os
 import sys
 from dotenv import load_dotenv
