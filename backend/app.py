@@ -501,67 +501,26 @@ def login():
         if not check_password_hash(hashed_password, password):
             return jsonify({"error": "Invalid email or password"}), 401
 
-        # ✅ Set session (keep for backwards compatibility)
+        # ✅ Set session for authentication
         session['user_id'] = user_id
         session['email'] = email
         session.permanent = True
-
-        # 🎯 Generate JWT token for cross-domain authentication
-        jwt_token = None
-        try:
-            jwt_token = generate_token(user_id, email)
-            print(f"✅ JWT token generated successfully for user {user_id}")
-            print(f"🔑 JWT token preview: {jwt_token[:50] if jwt_token else 'None'}...")
-            print(f"🔑 JWT token type: {type(jwt_token)}")
-            print(f"🔑 JWT token length: {len(jwt_token) if jwt_token else 0}")
-        except Exception as token_error:
-            print(f"❌ JWT token generation failed: {token_error}")
-            # Fallback to basic token
-            import base64
-            import json
-            token_data = {"user_id": user_id, "email": email, "exp": "24h"}
-            jwt_token = base64.b64encode(json.dumps(token_data).encode()).decode()
-            print(f"🔄 Using fallback token for user {user_id}")
-            print(f"🔄 Fallback token: {jwt_token[:50]}...")
-        
-        # CRITICAL: Ensure token is not None
-        if jwt_token is None:
-            print("❌ CRITICAL: JWT token is None after generation!")
-            # Emergency fallback
-            import time
-            jwt_token = f"emergency_token_{user_id}_{int(time.time())}"
-            print(f"🚨 Using emergency token: {jwt_token}")
             
         print("✅ Session after login:", dict(session))
 
-        # 🎯 Build response with JWT token - FORCED VERSION
-        # EMERGENCY: Force token to exist no matter what
-        if not jwt_token:
-            jwt_token = f"FORCE_TOKEN_{user_id}_{int(__import__('time').time())}"
-            print(f"🚨 FORCE: Creating forced token: {jwt_token}")
-            
+        # 🎯 Build simple session-based response
         response_data = {
             "message": "Login successful",
-            "token": jwt_token,  # Add JWT token to response
             "user": {
                 "id": user_id,
                 "hotel_name": hotel_name,
                 "email": user_email
-            },
-            "debug_info": {
-                "token_exists": bool(jwt_token),
-                "token_type": str(type(jwt_token)),
-                "token_length": len(str(jwt_token)) if jwt_token else 0,
-                "backend_version": "v2.1-force-token"
             }
         }
         
         print("🔍 LOGIN DEBUG: Building response...")
         print(f"- Response has message: {'message' in response_data}")
-        print(f"- Response has token: {'token' in response_data}")
         print(f"- Response has user: {'user' in response_data}")
-        print(f"- Token is not None: {response_data['token'] is not None}")
-        print(f"- Token type: {type(response_data['token'])}")
         print(f"- User data: {response_data['user']}")
         print(f"- Full response data: {response_data}")
         
