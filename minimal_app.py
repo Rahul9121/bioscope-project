@@ -435,6 +435,42 @@ def db_status():
             "database_url_configured": bool(os.getenv('DATABASE_URL'))
         }), 500
 
+@app.route("/migrate-db", methods=["GET"])
+def migrate_database():
+    """Migrate database schema - add missing columns"""
+    if not DATABASE_AVAILABLE:
+        return jsonify({"error": "Database dependencies not available"}), 500
+    
+    try:
+        conn = connect_db()
+        if conn is None:
+            return jsonify({"error": "Failed to connect to database"}), 500
+        
+        cursor = conn.cursor()
+        
+        # Add missing email column to hotel_locations table
+        try:
+            cursor.execute("ALTER TABLE hotel_locations ADD COLUMN IF NOT EXISTS email VARCHAR(255);")
+            print("✅ Added email column to hotel_locations table")
+        except Exception as e:
+            print(f"⚠️ Could not add email column: {e}")
+        
+        # Add missing updated_at column if needed
+        try:
+            cursor.execute("ALTER TABLE hotel_locations ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;")
+            print("✅ Added updated_at column to hotel_locations table")
+        except Exception as e:
+            print(f"⚠️ Could not add updated_at column: {e}")
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return jsonify({"message": "Database migration completed successfully"}), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Database migration failed: {str(e)}"}), 500
+
 @app.route("/init-db", methods=["GET"])
 def init_database():
     """Initialize database tables with biodiversity data"""
