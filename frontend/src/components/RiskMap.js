@@ -13,7 +13,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
 import axios from "axios";
 import Layout from "./Layout";
-import { getMockLocationFromZip, getMockBiodiversityRisks, checkBackendAvailability } from "../services/mockDataService";
+// Removed mock data service - now using backend API only
 import AdvancedRiskAnalysis from "./AdvancedRiskAnalysis";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -330,76 +330,47 @@ const downloadReport = async () => {
       setOffset(0);
       setLoadedAreas([]);
       
-      // Check if input is a ZIP code (5 digits)
-      const zipMatch = inputText.match(/\b\d{5}\b/);
+      console.log('🔍 Searching for input:', inputText);
       
-      if (zipMatch) {
-        const zipCode = zipMatch[0];
-        console.log('🔍 Searching for ZIP code:', zipCode);
-        
-        // Try mock data first for ZIP codes
-        const mockLocationResult = getMockLocationFromZip(zipCode);
-        
-        if (mockLocationResult.success) {
-          const locationData = mockLocationResult.data;
-          setLocation({
-            latitude: locationData.latitude,
-            longitude: locationData.longitude
-          });
-          
-          // Get biodiversity risks for this location
-          const mockRisksResult = getMockBiodiversityRisks(
-            locationData.latitude, 
-            locationData.longitude, 
-            5
-          );
-          
-          if (mockRisksResult.success) {
-            setRisks(mockRisksResult.data.risks);
-            localStorage.setItem("mitigation_risks", JSON.stringify(mockRisksResult.data.risks));
-            localStorage.setItem("current_location", JSON.stringify(locationData));
-            console.log('✅ Using mock data for ZIP:', zipCode);
-            console.log('📍 Location:', locationData);
-            console.log('🦋 Risks found:', mockRisksResult.data.risks.length);
-            setError(""); // Clear any previous errors
-            return;
-          }
-        } else {
-          setError(mockLocationResult.error);
-          return;
-        }
-      }
-      
-      // Try backend API if not a ZIP code or mock data failed
+      // Use backend API for all searches (ZIP codes, addresses, coordinates)
       const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5001';
       
-      try {
-        const response = await axios.post(`${apiUrl}/search`, { input_text: inputText }, {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-          timeout: 10000
-        });
-        
+      const response = await axios.post(`${apiUrl}/search`, { input_text: inputText }, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+        timeout: 15000
+      });
+      
+      if (response.data.center && response.data.risks) {
         setLocation(response.data.center);
         setRisks(response.data.risks);
         localStorage.setItem("mitigation_risks", JSON.stringify(response.data.risks));
-        console.log("✅ Using backend data");
-        
-      } catch (backendError) {
-        console.log('❌ Backend unavailable, falling back to mock data');
-        
-        // If backend fails, show helpful error with instructions
-        setError(
-          "🌐 Backend server unavailable. Try these New Jersey ZIP codes for demo: " +
-          "07001 (Avenel), 08540 (Princeton), 08701 (Lakewood), 08902 (North Brunswick)"
-        );
-        setLocation(null);
-        setRisks([]);
+        localStorage.setItem("current_location", JSON.stringify(response.data.center));
+        console.log('✅ Search successful!');
+        console.log('📍 Location:', response.data.center);
+        console.log('🦋 Risks found:', response.data.risks.length);
+        setError(""); // Clear any previous errors
+      } else {
+        setError("No data found for this location. Please try a different New Jersey location.");
       }
       
     } catch (err) {
-      console.error('Search error:', err);
-      setError("An error occurred while searching. Please try a New Jersey ZIP code like 08540.");
+      console.error('❌ Search error:', err);
+      
+      let errorMessage = "Search failed. ";
+      
+      if (err.response) {
+        // Server responded with an error
+        errorMessage += err.response.data?.error || `Server error: ${err.response.status}`;
+      } else if (err.request) {
+        // Network error - server not reachable
+        errorMessage += "Cannot connect to the backend server. Please make sure the backend is running on the correct port.";
+      } else {
+        // Other error
+        errorMessage += err.message;
+      }
+      
+      setError(errorMessage);
       setLocation(null);
       setRisks([]);
     }
@@ -411,13 +382,14 @@ const downloadReport = async () => {
         <Box sx={{ width: { xs: "100%", md: "25%" }, maxHeight: "calc(100vh - 64px)", overflowY: "auto", backgroundColor: "#f9f9f9", padding: 3, borderRight: "2px solid #ddd", boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)" }}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>Search for Biodiversity Risk</Typography>
           
-          <Box sx={{ mb: 2, p: 2, backgroundColor: "#e3f2fd", borderRadius: 2 }}>
-            <Typography variant="body2" sx={{ fontWeight: "bold", color: "#1976d2" }}>
-              🎆 Try these New Jersey ZIP codes:
+          <Box sx={{ mb: 2, p: 2, backgroundColor: "#e8f5e8", borderRadius: 2 }}>
+            <Typography variant="body2" sx={{ fontWeight: "bold", color: "#2e7d32" }}>
+              🌿 Try any New Jersey location:
             </Typography>
             <Typography variant="body2" sx={{ mt: 0.5 }}>
-              • 08540 (Princeton) • 07001 (Avenel)<br/>
-              • 08701 (Lakewood) • 08902 (North Brunswick)
+              • ZIP codes: 08037, 08540, 07001, 08701<br/>
+              • Addresses: "123 Main St, Trenton, NJ"<br/>
+              • Cities: "Princeton, NJ" or "Newark, NJ"
             </Typography>
           </Box>
           
