@@ -107,16 +107,24 @@ app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_change_in_production')
 logging.basicConfig(level=logging.DEBUG)
 
 # Update session configuration for production deployment
+# Detect if we're in production (Railway environment)
+is_production = bool(os.getenv('RAILWAY_ENVIRONMENT')) or 'railway.app' in os.getenv('RAILWAY_PUBLIC_DOMAIN', '')
+print(f"🔧 Production mode: {is_production}")
+print(f"🍪 Session config: SameSite={'None' if is_production else 'Lax'}, Secure={is_production}")
+
 app.config.update({
-    "SECRET_KEY": os.getenv('SECRET_KEY', 'your_secret_key_change_in_production'),
+    "SECRET_KEY": os.getenv('SECRET_KEY', 'your_secret_key_change_in_production_2024_biodiv'),
     "SESSION_TYPE": "redis" if os.getenv('REDIS_URL') else "filesystem",
-    "SESSION_FILE_DIR": "/tmp/flask_session" if os.getenv('RAILWAY_ENVIRONMENT') else "./flask_session",
+    "SESSION_FILE_DIR": "/tmp/flask_session" if is_production else "./flask_session",
     "SESSION_PERMANENT": True,
     "PERMANENT_SESSION_LIFETIME": timedelta(hours=24),  # Extend session time
-    "SESSION_COOKIE_SAMESITE": "None" if os.getenv('RAILWAY_ENVIRONMENT') else "Lax",
-    "SESSION_COOKIE_SECURE": True if os.getenv('RAILWAY_ENVIRONMENT') else False,
-    "SESSION_COOKIE_HTTPONLY": True,
+    
+    # CRITICAL: Cross-domain session settings
+    "SESSION_COOKIE_SAMESITE": "None" if is_production else "Lax",  # Allow cross-domain
+    "SESSION_COOKIE_SECURE": is_production,  # HTTPS required for SameSite=None
+    "SESSION_COOKIE_HTTPONLY": False,  # Allow JS access for debugging
     "SESSION_COOKIE_NAME": "biodiv_session",
+    "SESSION_COOKIE_DOMAIN": None,  # Don't restrict domain
     "SESSION_USE_SIGNER": True  # Add extra security
 })
 
