@@ -97,8 +97,12 @@ def add_location():
         city = data.get("city")
         zip_code = data.get("zip_code")
 
-        if not zip_code or not zip_code.isdigit() or len(zip_code) != 5 or not zip_code.startswith("07"):
-            return jsonify({"error": "Invalid New Jersey zipcode"}), 400
+        # 🔧 FIX: Proper New Jersey zip code validation (starts with 07, 08, or 09)
+        if not zip_code or not zip_code.isdigit() or len(zip_code) != 5:
+            return jsonify({"error": "Invalid zipcode format (must be 5 digits)"}), 400
+        
+        if not zip_code.startswith(("07", "08", "09")):
+            return jsonify({"error": "Invalid New Jersey zipcode (must start with 07, 08, or 09)"}), 400
 
         full_address = f"{street_address}, {city}, NJ {zip_code}"
         lat, lon, _ = get_lat_lon_from_address(full_address)
