@@ -83,7 +83,19 @@ def add_location():
     # Handle CORS preflight
     if request.method == "OPTIONS":
         response = jsonify({"message": "CORS preflight accepted"})
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        # 🔧 CRITICAL FIX: Cannot use * with credentials - must specify exact origin
+        origin = request.headers.get('Origin', 'http://localhost:3000')
+        # Get allowed origins from main app configuration
+        default_origins = [
+            'http://localhost:3000',
+            'http://localhost:3001', 
+            'https://bioscope-project.vercel.app',
+            'https://bioscope-project-rahul9121.vercel.app',
+            'https://bioscope-project-git-new-main-rahul9121.vercel.app',
+            'https://bioscope-project-git-main-rahul9121.vercel.app'
+        ]
+        allowed_origin = origin if origin in default_origins else default_origins[0]
+        response.headers.add("Access-Control-Allow-Origin", allowed_origin)
         response.headers.add("Access-Control-Allow-Credentials", "true")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type")
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
@@ -119,11 +131,37 @@ def add_location():
         cursor.close()
         conn.close()
 
-        return jsonify({"message": "Location added successfully"}), 201
+        response = jsonify({"message": "Location added successfully"})
+        # Add CORS headers for successful response
+        origin = request.headers.get('Origin', 'http://localhost:3000')
+        default_origins = [
+            'http://localhost:3000', 'http://localhost:3001', 
+            'https://bioscope-project.vercel.app',
+            'https://bioscope-project-rahul9121.vercel.app',
+            'https://bioscope-project-git-new-main-rahul9121.vercel.app',
+            'https://bioscope-project-git-main-rahul9121.vercel.app'
+        ]
+        allowed_origin = origin if origin in default_origins else default_origins[0]
+        response.headers.add("Access-Control-Allow-Origin", allowed_origin)
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        return response, 201
 
     except Exception as e:
         print(f"⚠️ Add location error: {e}")
-        return jsonify({"error": "Something went wrong"}), 500
+        error_response = jsonify({"error": "Something went wrong"})
+        # Add CORS headers for error response
+        origin = request.headers.get('Origin', 'http://localhost:3000')
+        default_origins = [
+            'http://localhost:3000', 'http://localhost:3001', 
+            'https://bioscope-project.vercel.app',
+            'https://bioscope-project-rahul9121.vercel.app',
+            'https://bioscope-project-git-new-main-rahul9121.vercel.app',
+            'https://bioscope-project-git-main-rahul9121.vercel.app'
+        ]
+        allowed_origin = origin if origin in default_origins else default_origins[0]
+        error_response.headers.add("Access-Control-Allow-Origin", allowed_origin)
+        error_response.headers.add("Access-Control-Allow-Credentials", "true")
+        return error_response, 500
 
 # 🔍 View Locations
 @location_bp.route("/view", methods=["GET"])
@@ -152,7 +190,21 @@ def view_locations():
                 "city": r[3], "zip_code": r[4], "latitude": r[5], "longitude": r[6]
             } for r in rows
         ]
-        return jsonify({"locations": locations})
+        
+        response = jsonify({"locations": locations})
+        # Add CORS headers for successful response
+        origin = request.headers.get('Origin', 'http://localhost:3000')
+        default_origins = [
+            'http://localhost:3000', 'http://localhost:3001', 
+            'https://bioscope-project.vercel.app',
+            'https://bioscope-project-rahul9121.vercel.app',
+            'https://bioscope-project-git-new-main-rahul9121.vercel.app',
+            'https://bioscope-project-git-main-rahul9121.vercel.app'
+        ]
+        allowed_origin = origin if origin in default_origins else default_origins[0]
+        response.headers.add("Access-Control-Allow-Origin", allowed_origin)
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        return response
 
     except Exception as e:
         print(f"⚠️ View location error: {e}")
