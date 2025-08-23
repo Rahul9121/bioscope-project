@@ -45,21 +45,55 @@ except ImportError:
 
 location_bp = Blueprint("location", __name__)
 
-# Session auth decorator
+# JWT Token auth decorator
 def login_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        print(f"🔍 Session Debug in {f.__name__}:")
-        print(f"- Session keys: {list(session.keys())}")
-        print(f"- Session contents: {dict(session)}")
-        print(f"- user_id in session: {'user_id' in session}")
+        print(f"🔍 Token Auth Debug in {f.__name__}:")
         
-        if 'user_id' not in session:
-            print("❌ Session validation failed - no user_id")
-            return jsonify({"error": "🔒 Please login first. Your session may have expired."}), 401
+        # Get token from Authorization header
+        auth_header = request.headers.get('Authorization')
+        print(f"- Authorization header: {auth_header}")
         
-        print(f"✅ Session validation passed for user_id: {session.get('user_id')}")
+        if not auth_header:
+            print("❌ No Authorization header")
+            return jsonify({"error": "🔒 Please login first. No authorization token provided."}), 401
+            
+        try:
+            # Extract token from "Bearer <token>"
+            token = auth_header.split(' ')[1]
+            print(f"- Token extracted: {token[:20]}...")
+        except IndexError:
+            print("❌ Invalid Authorization header format")
+            return jsonify({"error": "🔒 Please login first. Invalid authorization header format."}), 401
+            
+        # Import token verification
+        try:
+            from utils.token_auth import verify_token
+        except ImportError:
+            # Fallback token verification
+            import base64
+            import json
+            def verify_token(token):
+                try:
+                    token_data = json.loads(base64.b64decode(token).decode())
+                    return token_data
+                except:
+                    return None
+        
+        # Verify token
+        payload = verify_token(token)
+        if not payload:
+            print("❌ Token verification failed")
+            return jsonify({"error": "🔒 Please login first. Invalid or expired token."}), 401
+            
+        # Add user info to request context
+        request.user_id = payload['user_id']
+        request.user_email = payload['email']
+        
+        print(f"✅ Token auth successful for user {payload['user_id']}")
         return f(*args, **kwargs)
+        
     return wrapper
 
 # ✅ Add Location
@@ -98,7 +132,7 @@ def _add_location_impl():
         cursor.execute("""
             INSERT INTO hotel_locations (user_id, hotel_name, street_address, city, zip_code, latitude, longitude)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """, (session['user_id'], hotel_name, street_address, city, zip_code, lat, lon))
+        """, (request.user_id, hotel_name, street_address, city, zip_code, lat, lon))
         conn.commit()
         cursor.close()
         conn.close()
@@ -114,7 +148,7 @@ def _add_location_impl():
 @login_required
 def view_locations():
     try:
-        user_id = session.get("user_id")
+        user_id = request.user_id
         print("📦 Viewing for user_id:", user_id)
 
         conn = connect_db()
@@ -155,7 +189,7 @@ def delete_location():
             DELETE FROM hotel_locations
             WHERE user_id = %s AND hotel_name = %s AND street_address = %s AND city = %s AND zip_code = %s
         """, (
-            session['user_id'], data.get("hotel_name"), data.get("street_address"),
+            request.user_id, data.get("hotel_name"), data.get("street_address"),
             data.get("city"), data.get("zip_code")
         ))
         deleted = cursor.rowcount
@@ -195,7 +229,7 @@ def edit_location():
             SET hotel_name = %s, street_address = %s, city = %s, zip_code = %s,
                 latitude = %s, longitude = %s
             WHERE id = %s AND user_id = %s
-        """, (hotel_name, street_address, city, zip_code, lat, lon, location_id, session['user_id']))
+        """, (hotel_name, street_address, city, zip_code, lat, lon, location_id, request.user_id))
         updated = cursor.rowcount
         conn.commit()
         cursor.close()

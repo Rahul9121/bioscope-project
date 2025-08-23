@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+// Get JWT token from localStorage
+const getAuthToken = () => {
+  return localStorage.getItem('auth_token');
+};
+
 // Determine the correct API URL
 const getApiUrl = () => {
   const envUrl = process.env.REACT_APP_API_URL;
@@ -28,10 +33,20 @@ const api = axios.create({
   timeout: 15000 // 15 second timeout for Railway
 });
 
-// API request interceptor (for debugging/logging)
+// API request interceptor (add JWT token and logging)
 api.interceptors.request.use(
   (config) => {
     console.log(`🌐 API Request: ${config.method?.toUpperCase()} ${config.url}`);
+    
+    // Add JWT token to Authorization header if available
+    const token = getAuthToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      console.log('🔑 JWT token added to request');
+    } else {
+      console.log('🚫 No JWT token available');
+    }
+    
     return config;
   },
   (error) => {
@@ -52,9 +67,7 @@ api.interceptors.response.use(
 // Auth endpoints
 export const login = (credentials) => api.post('/login', credentials);
 export const register = (userData) => api.post('/register', userData);
-export const logout = () => api.post('/logout', {});
 export const forgotPassword = (data) => api.post('/forgot_password', data);
-export const sessionStatus = () => api.get('/session-status');
 
 // Data endpoints
 export const fetchRiskData = () => api.get('/risk-data');

@@ -36,17 +36,22 @@ const LoginForm = () => {
     try {
       const response = await login({ email, password });
 
-      if (response.data && response.data.user) {
-        // Update AuthContext with user data
-        authLogin(response.data.user);
-        console.log("✅ Login successful, user data:", response.data.user);
+      if (response.data && response.data.user && response.data.token) {
+        // Update AuthContext with user data and JWT token
+        authLogin(response.data.user, response.data.token);
+        console.log("✅ JWT Login successful, user:", response.data.user.email);
+        console.log("✅ JWT Token received:", response.data.token ? "[PRESENT]" : "[MISSING]");
         
         // Redirect to intended page or account dashboard
         const redirectTo = location.state?.from?.pathname || "/account";
         console.log("✅ Redirecting to:", redirectTo);
         navigate(redirectTo, { replace: true });
+      } else if (response.data && response.data.user && !response.data.token) {
+        setError("Login failed. No authentication token received from server.");
+        console.error("❌ JWT Login failed: No token in response", response.data);
       } else {
         setError("Login failed. No user data received.");
+        console.error("❌ JWT Login failed: No user data in response", response.data);
       }
     } catch (err) {
       console.error("❌ Login failed:", err);

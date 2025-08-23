@@ -409,6 +409,19 @@ def _build_cors_response(response, status_code=200):
     response.headers.add("Access-Control-Allow-Credentials", "true")
     return response, status_code
 
+# Import JWT token utilities
+try:
+    from utils.token_auth import generate_token, verify_token
+    print("✅ JWT token utilities loaded successfully")
+except ImportError as e:
+    print(f"⚠️ Could not import JWT utilities: {e}")
+    # Fallback - basic token generation
+    import base64
+    import json
+    def generate_token(user_id, email):
+        token_data = {"user_id": user_id, "email": email}
+        return base64.b64encode(json.dumps(token_data).encode()).decode()
+
 @app.route('/login', methods=['POST', 'OPTIONS'])
 def login():
     # Handle CORS preflight
@@ -453,17 +466,20 @@ def login():
         if not check_password_hash(hashed_password, password):
             return jsonify({"error": "Invalid email or password"}), 401
 
-        # ✅ Set session
+        # ✅ Set session (keep for backwards compatibility)
         session['user_id'] = user_id
         session['email'] = email
         session.permanent = True
 
-        # ✅ Debug
+        # 🎯 Generate JWT token for cross-domain authentication
+        jwt_token = generate_token(user_id, email)
+        print(f"✅ Generated JWT token for user {user_id}")
         print("✅ Session after login:", dict(session))
 
-        # ✅ Build response
+        # ✅ Build response with JWT token
         response = jsonify({
             "message": "Login successful",
+            "token": jwt_token,  # Add JWT token to response
             "user": {
                 "id": user_id,
                 "hotel_name": hotel_name,

@@ -1,126 +1,125 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { sessionStatus } from '../services/api';
 
 const AuthContext = createContext({
   user: null,
+  token: null,
   login: () => {},
   logout: () => {},
   isAuthenticated: () => false,
   loading: false,
-  refreshAuthStatus: () => {},
-  checkSession: () => {}
+  getAuthHeader: () => ({})
 });
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  console.log("🔴 EMERGENCY AuthProvider - Current user:", user);
-  console.log("🔴 EMERGENCY localStorage user:", localStorage.getItem("user"));
+  console.log("🔑 JWT AuthProvider - Current user:", user);
+  console.log("🔑 JWT AuthProvider - Has token:", !!token);
 
-  // EMERGENCY FIX: Simple, bulletproof authentication
-  const getUserFromStorage = () => {
+  // Get user and token from localStorage
+  const getAuthDataFromStorage = () => {
     try {
       const storedUser = localStorage.getItem("user");
-      if (storedUser && storedUser !== "null" && storedUser !== "undefined") {
-        return JSON.parse(storedUser);
-      }
+      const storedToken = localStorage.getItem("auth_token");
+      
+      const userData = storedUser && storedUser !== "null" && storedUser !== "undefined" 
+        ? JSON.parse(storedUser) : null;
+      const tokenData = storedToken && storedToken !== "null" && storedToken !== "undefined" 
+        ? storedToken : null;
+        
+      return { user: userData, token: tokenData };
     } catch (error) {
-      console.error("❌ Error parsing stored user:", error);
+      console.error("❌ Error parsing stored auth data:", error);
       localStorage.removeItem("user");
+      localStorage.removeItem("auth_token");
+      return { user: null, token: null };
     }
-    return null;
   };
 
-  const login = useCallback((userData) => {
-    console.log("🔥 EMERGENCY LOGIN - Setting user:", userData);
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    console.log("✅ EMERGENCY LOGIN - User stored successfully");
-    // Force a re-render by triggering a state update
-    setTimeout(() => {
-      const stored = getUserFromStorage();
-      if (stored && !user) {
-        console.log("🔄 EMERGENCY - Forcing user state sync");
-        setUser(stored);
-      }
-    }, 100);
-  }, [user]);
-  
-  const logout = useCallback(() => {
-    console.log("🔥 EMERGENCY LOGOUT - Clearing user");
-    setUser(null);
-    localStorage.removeItem("user");
-    console.log("✅ EMERGENCY LOGOUT - User cleared");
-  }, []);
-
-  // EMERGENCY: Simple session check that doesn't interfere
-  const checkSession = useCallback(async () => {
-    try {
-      const response = await sessionStatus();
-      console.log("🔍 EMERGENCY Session check result:", response.data);
-      return response.data?.active || false;
-    } catch (error) {
-      console.log("⚠️ EMERGENCY Session check failed (keeping user logged in):", error.message);
-      return true; // Keep user logged in if session check fails
-    }
-  }, []);
-
-  // EMERGENCY: Initialize auth state from localStorage ONLY
-  useEffect(() => {
-    console.log("🔥 EMERGENCY AuthContext initialization starting...");
+  // JWT-based login function
+  const login = useCallback((userData, authToken) => {
+    console.log("🔑 JWT LOGIN - Setting user:", userData);
+    console.log("🔑 JWT LOGIN - Setting token:", authToken ? "[PRESENT]" : "[MISSING]");
     
-    const storedUser = getUserFromStorage();
-    if (storedUser) {
-      console.log("✅ EMERGENCY Found stored user:", storedUser);
+    setUser(userData);
+    setToken(authToken);
+    
+    // Store in localStorage
+    localStorage.setItem("user", JSON.stringify(userData));
+    if (authToken) {
+      localStorage.setItem("auth_token", authToken);
+    }
+    
+    console.log("✅ JWT LOGIN - User and token stored successfully");
+  }, []);
+  
+  // JWT-based logout function
+  const logout = useCallback(() => {
+    console.log("🔑 JWT LOGOUT - Clearing user and token");
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("auth_token");
+    console.log("✅ JWT LOGOUT - User and token cleared");
+  }, []);
+
+  // Get Authorization header for API requests
+  const getAuthHeader = useCallback(() => {
+    if (token) {
+      return { Authorization: `Bearer ${token}` };
+    }
+    return {};
+  }, [token]);
+
+  // Initialize JWT auth state from localStorage
+  useEffect(() => {
+    console.log("🔑 JWT AuthContext initialization starting...");
+    
+    const { user: storedUser, token: storedToken } = getAuthDataFromStorage();
+    if (storedUser && storedToken) {
+      console.log("✅ JWT Found stored user and token:", storedUser.email);
       setUser(storedUser);
+      setToken(storedToken);
     } else {
-      console.log("🚪 EMERGENCY No stored user found");
+      console.log("🚶 JWT No stored auth data found");
     }
     
     setLoading(false);
-    console.log("✅ EMERGENCY AuthContext initialization complete");
+    console.log("✅ JWT AuthContext initialization complete");
   }, []);
 
-  // EMERGENCY: Double-check auth state every second for debugging
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const storedUser = getUserFromStorage();
-      if (storedUser && !user) {
-        console.log("⚡ EMERGENCY Auto-sync: Found user in storage but not in state");
-        setUser(storedUser);
-      } else if (!storedUser && user) {
-        console.log("⚡ EMERGENCY Auto-sync: User in state but not in storage");
-        setUser(null);
-      }
-    }, 1000);
-    
-    return () => clearInterval(interval);
-  }, [user]);
-
+  // Check if user is authenticated (has both user data and token)
   const isAuthenticated = useCallback(() => {
-    const result = user !== null;
-    console.log("🔍 EMERGENCY isAuthenticated check:", result, "User:", user);
+    const result = user !== null && token !== null;
+    console.log("🔍 JWT isAuthenticated check:", result, "User:", !!user, "Token:", !!token);
     return result;
-  }, [user]);
+  }, [user, token]);
 
-  const refreshAuthStatus = useCallback(async () => {
-    console.log("🔄 EMERGENCY Refreshing auth status");
-    const storedUser = getUserFromStorage();
-    if (storedUser) {
+  // Refresh auth status from storage
+  const refreshAuthStatus = useCallback(() => {
+    console.log("🔄 JWT Refreshing auth status");
+    const { user: storedUser, token: storedToken } = getAuthDataFromStorage();
+    if (storedUser && storedToken) {
       setUser(storedUser);
+      setToken(storedToken);
+    } else {
+      setUser(null);
+      setToken(null);
     }
   }, []);
 
   return (
     <AuthContext.Provider value={{ 
       user, 
+      token,
       login, 
       logout, 
       isAuthenticated, 
       loading, 
       refreshAuthStatus,
-      checkSession
+      getAuthHeader
     }}>
       {children}
     </AuthContext.Provider>

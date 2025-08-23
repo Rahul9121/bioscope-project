@@ -1,51 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "@mui/material"; // Fix incorrect import
+import React from "react";
+import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { sessionStatus, logout } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [sessionActive, setSessionActive] = useState(true);
+  const { user, isAuthenticated, logout } = useAuth();
 
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const response = await sessionStatus();
-        setSessionActive(response.data.active);
-      } catch (err) {
-        console.error("❌ Session check failed:", err);
-        setSessionActive(false);
-        localStorage.clear();
-        alert("Session expired. Please log in again.");
-        navigate("/login");
-      }
-    };
-
-    // Check session status every 5 minutes
-    const interval = setInterval(checkSession, 5 * 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, [navigate]);
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      localStorage.clear(); // Clear user session data
-      alert("Logged out successfully.");
-      navigate("/login"); // Redirect to login page
-    } catch (err) {
-      console.error("❌ Logout failed:", err);
-      // Still clear session locally even if backend logout fails
-      localStorage.clear();
-      navigate("/login");
-    }
+  const handleLogout = () => {
+    logout(); // Clear JWT token and user data
+    alert("Logged out successfully.");
+    navigate("/login"); // Redirect to login page
   };
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
-      {sessionActive ? (
+      {isAuthenticated() ? (
         <>
-          <h1>Welcome to the Dashboard!</h1>
+          <h1>Welcome to the Dashboard, {user?.email || 'User'}!</h1>
           <Button
             onClick={handleLogout}
             variant="contained"
@@ -55,7 +27,10 @@ const Dashboard = () => {
           </Button>
         </>
       ) : (
-        <h1>Session Expired</h1>
+        <>
+          <h1>Authentication Required</h1>
+          <p>Please log in to access the dashboard.</p>
+        </>
       )}
     </div>
   );
