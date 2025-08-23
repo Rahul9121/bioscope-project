@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { healthCheck } from '../services/api';
 
 const AuthContext = createContext({
   user: null,
