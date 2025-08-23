@@ -45,59 +45,40 @@ except ImportError:
 
 location_bp = Blueprint("location", __name__)
 
-# JWT Token auth decorator
+# 🔧 Fixed session-based auth decorator
 def login_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        print(f"🔍 Token Auth Debug in {f.__name__}:")
-        
-        # Get token from Authorization header
-        auth_header = request.headers.get('Authorization')
-        print(f"- Authorization header: {auth_header}")
-        
-        if not auth_header:
-            print("❌ No Authorization header")
-            return jsonify({"error": "🔒 Please login first. No authorization token provided."}), 401
+        # 🔧 FIX: Skip authentication for CORS preflight requests
+        if request.method == "OPTIONS":
+            return f(*args, **kwargs)
             
-        try:
-            # Extract token from "Bearer <token>"
-            token = auth_header.split(' ')[1]
-            print(f"- Token extracted: {token[:20]}...")
-        except IndexError:
-            print("❌ Invalid Authorization header format")
-            return jsonify({"error": "🔒 Please login first. Invalid authorization header format."}), 401
-            
-        # Import token verification
-        try:
-            from utils.token_auth import verify_token
-        except ImportError:
-            # Fallback token verification
-            import base64
-            import json
-            def verify_token(token):
-                try:
-                    token_data = json.loads(base64.b64decode(token).decode())
-                    return token_data
-                except:
-                    return None
+        print(f"🔍 Session Auth Debug in {f.__name__}:")
         
-        # Verify token
-        payload = verify_token(token)
-        if not payload:
-            print("❌ Token verification failed")
-            return jsonify({"error": "🔒 Please login first. Invalid or expired token."}), 401
+        # Check if user_id exists in session
+        user_id = session.get('user_id')
+        user_email = session.get('email')
+        
+        print(f"- Session user_id: {user_id}")
+        print(f"- Session email: {user_email}")
+        print(f"- Session keys: {list(session.keys())}")
+        
+        if not user_id:
+            print("❌ No user_id in session")
+            return jsonify({"error": "🔒 Please login first. Your session may have expired."}), 401
             
         # Add user info to request context
-        request.user_id = payload['user_id']
-        request.user_email = payload['email']
+        request.user_id = user_id
+        request.user_email = user_email
         
-        print(f"✅ Token auth successful for user {payload['user_id']}")
+        print(f"✅ Session auth successful for user {user_id}")
         return f(*args, **kwargs)
         
     return wrapper
 
 # ✅ Add Location
 @location_bp.route("/add", methods=["POST", "OPTIONS"])
+@login_required  # 🔧 FIX: Apply decorator directly to the route handler
 def add_location():
     # Handle CORS preflight
     if request.method == "OPTIONS":
@@ -108,10 +89,7 @@ def add_location():
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
         return response, 200
     
-    return _add_location_impl()
-
-@login_required
-def _add_location_impl():
+    # 🔧 Moved the actual implementation inline
     try:
         data = request.get_json()
         hotel_name = data.get("hotel_name")

@@ -106,12 +106,12 @@ except ImportError as e:
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_change_in_production')
 logging.basicConfig(level=logging.DEBUG)
 
-# ULTIMATE SESSION FIX: More aggressive cross-domain settings
+# 🔧 ULTIMATE SESSION FIX: Environment-aware session configuration
 is_production = bool(os.getenv('RAILWAY_ENVIRONMENT')) or 'railway.app' in os.getenv('RAILWAY_PUBLIC_DOMAIN', '') or 'railway' in str(os.getenv('PORT', ''))
 print(f"🔧 Production mode detected: {is_production}")
 print(f"🌍 Environment vars: RAILWAY_ENV={os.getenv('RAILWAY_ENVIRONMENT')}, PORT={os.getenv('PORT')}")
 
-# ULTIMATE cross-domain session configuration
+# Environment-aware session configuration
 app.config.update({
     "SECRET_KEY": os.getenv('SECRET_KEY', 'biodiv_session_key_2024_cross_domain_fix'),
     "SESSION_TYPE": "filesystem",  # Force filesystem to avoid Redis issues
@@ -119,11 +119,11 @@ app.config.update({
     "SESSION_PERMANENT": True,
     "PERMANENT_SESSION_LIFETIME": timedelta(hours=48),  # Extra long sessions
     
-    # ULTIMATE cross-domain cookie settings
-    "SESSION_COOKIE_SAMESITE": None,  # Most permissive for cross-domain
-    "SESSION_COOKIE_SECURE": True,   # Required for production HTTPS  
-    "SESSION_COOKIE_HTTPONLY": False, # Allow JavaScript access
-    "SESSION_COOKIE_NAME": "biodiv_session_v2",
+    # 🔧 FIXED: Environment-aware cookie settings
+    "SESSION_COOKIE_SAMESITE": "Lax" if is_production else None,  # Lax for production, None for dev
+    "SESSION_COOKIE_SECURE": is_production,  # Only require HTTPS in production
+    "SESSION_COOKIE_HTTPONLY": True,  # Security: prevent XSS attacks
+    "SESSION_COOKIE_NAME": "biodiv_session_v3",
     "SESSION_COOKIE_DOMAIN": None,   # No domain restriction
     "SESSION_COOKIE_PATH": "/",      # Available on all paths
     "SESSION_USE_SIGNER": False,     # Disable signing for debugging
