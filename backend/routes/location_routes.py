@@ -76,9 +76,9 @@ def login_required(f):
         
     return wrapper
 
-# ✅ Add Location
+# ✅ Add Location (NO AUTHENTICATION REQUIRED)
 @location_bp.route("/add", methods=["POST", "OPTIONS"])
-@login_required  # 🔧 FIX: Apply decorator directly to the route handler
+# @login_required  # 🚫 REMOVED: No authentication required
 def add_location():
     # Handle CORS preflight
     if request.method == "OPTIONS":
@@ -114,7 +114,7 @@ def add_location():
         cursor.execute("""
             INSERT INTO hotel_locations (user_id, hotel_name, street_address, city, zip_code, latitude, longitude)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """, (request.user_id, hotel_name, street_address, city, zip_code, lat, lon))
+        """, (1, hotel_name, street_address, city, zip_code, lat, lon))  # 🚫 Use default user_id=1
         conn.commit()
         cursor.close()
         conn.close()
@@ -125,24 +125,22 @@ def add_location():
         print(f"⚠️ Add location error: {e}")
         return jsonify({"error": "Something went wrong"}), 500
 
-# 🔍 View Locations
+# 🔍 View Locations (NO AUTHENTICATION REQUIRED)
 @location_bp.route("/view", methods=["GET"])
-@login_required
+# @login_required  # 🚫 REMOVED: No authentication required
 def view_locations():
     try:
-        user_id = request.user_id
-        print("📦 Viewing for user_id:", user_id)
+        print("📦 Viewing all locations (no authentication)")
 
         conn = connect_db()
         cursor = conn.cursor()
         cursor.execute("""
             SELECT id, hotel_name, street_address, city, zip_code, latitude, longitude
             FROM hotel_locations
-            WHERE user_id = %s
             ORDER BY id DESC
-        """, (user_id,))
+        """)
         rows = cursor.fetchall()
-        print(f"✅ Retrieved {len(rows)} locations for user {user_id}")
+        print(f"✅ Retrieved {len(rows)} locations (all public)")
         cursor.close()
         conn.close()
 
@@ -159,9 +157,9 @@ def view_locations():
         return jsonify({"error": "Could not fetch locations"}), 500
 
 
-# ❌ Delete Location
+# ❌ Delete Location (NO AUTHENTICATION REQUIRED)
 @location_bp.route("/delete", methods=["POST"])
-@login_required
+# @login_required  # 🚫 REMOVED: No authentication required
 def delete_location():
     try:
         data = request.json
@@ -169,9 +167,9 @@ def delete_location():
         cursor = conn.cursor()
         cursor.execute("""
             DELETE FROM hotel_locations
-            WHERE user_id = %s AND hotel_name = %s AND street_address = %s AND city = %s AND zip_code = %s
+            WHERE hotel_name = %s AND street_address = %s AND city = %s AND zip_code = %s
         """, (
-            request.user_id, data.get("hotel_name"), data.get("street_address"),
+            data.get("hotel_name"), data.get("street_address"),
             data.get("city"), data.get("zip_code")
         ))
         deleted = cursor.rowcount
@@ -187,9 +185,9 @@ def delete_location():
         print(f"⚠️ Delete location error: {e}")
         return jsonify({"error": "Something went wrong"}), 500
 
-# ✏️ Edit Location
+# ✏️ Edit Location (NO AUTHENTICATION REQUIRED)
 @location_bp.route("/edit", methods=["POST"])
-@login_required
+# @login_required  # 🚫 REMOVED: No authentication required
 def edit_location():
     try:
         data = request.get_json()
@@ -210,8 +208,8 @@ def edit_location():
             UPDATE hotel_locations
             SET hotel_name = %s, street_address = %s, city = %s, zip_code = %s,
                 latitude = %s, longitude = %s
-            WHERE id = %s AND user_id = %s
-        """, (hotel_name, street_address, city, zip_code, lat, lon, location_id, request.user_id))
+            WHERE id = %s
+        """, (hotel_name, street_address, city, zip_code, lat, lon, location_id))
         updated = cursor.rowcount
         conn.commit()
         cursor.close()
