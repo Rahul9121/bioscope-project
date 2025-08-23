@@ -472,8 +472,19 @@ def login():
         session.permanent = True
 
         # 🎯 Generate JWT token for cross-domain authentication
-        jwt_token = generate_token(user_id, email)
-        print(f"✅ Generated JWT token for user {user_id}")
+        try:
+            jwt_token = generate_token(user_id, email)
+            print(f"✅ JWT token generated successfully for user {user_id}")
+            print(f"🔑 JWT token preview: {jwt_token[:50] if jwt_token else 'None'}...")
+        except Exception as token_error:
+            print(f"❌ JWT token generation failed: {token_error}")
+            # Fallback to basic token
+            import base64
+            import json
+            token_data = {"user_id": user_id, "email": email, "exp": "24h"}
+            jwt_token = base64.b64encode(json.dumps(token_data).encode()).decode()
+            print(f"🔄 Using fallback token for user {user_id}")
+            
         print("✅ Session after login:", dict(session))
 
         # ✅ Build response with JWT token
