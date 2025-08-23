@@ -111,24 +111,31 @@ is_production = bool(os.getenv('RAILWAY_ENVIRONMENT')) or 'railway.app' in os.ge
 print(f"🔧 Production mode detected: {is_production}")
 print(f"🌍 Environment vars: RAILWAY_ENV={os.getenv('RAILWAY_ENVIRONMENT')}, PORT={os.getenv('PORT')}")
 
-# Environment-aware session configuration
+# 🔧 CRITICAL FIX: Windows-compatible session configuration
+import tempfile
+session_dir = os.path.join(tempfile.gettempdir(), 'flask_session')
+if not os.path.exists(session_dir):
+    os.makedirs(session_dir)
+    
 app.config.update({
     "SECRET_KEY": os.getenv('SECRET_KEY', 'biodiv_session_key_2024_cross_domain_fix'),
     "SESSION_TYPE": "filesystem",  # Force filesystem to avoid Redis issues
-    "SESSION_FILE_DIR": "/tmp/flask_session",
+    "SESSION_FILE_DIR": session_dir,  # 🔧 Windows-compatible path
     "SESSION_PERMANENT": True,
     "PERMANENT_SESSION_LIFETIME": timedelta(hours=48),  # Extra long sessions
     
     # 🔧 FIXED: Environment-aware cookie settings
-    "SESSION_COOKIE_SAMESITE": "Lax" if is_production else None,  # Lax for production, None for dev
+    "SESSION_COOKIE_SAMESITE": None,  # 🔧 CRITICAL: None for cross-origin in dev
     "SESSION_COOKIE_SECURE": is_production,  # Only require HTTPS in production
-    "SESSION_COOKIE_HTTPONLY": True,  # Security: prevent XSS attacks
-    "SESSION_COOKIE_NAME": "biodiv_session_v3",
+    "SESSION_COOKIE_HTTPONLY": False,  # 🔧 CRITICAL: Allow JS access for debugging
+    "SESSION_COOKIE_NAME": "biodiv_session_v4",
     "SESSION_COOKIE_DOMAIN": None,   # No domain restriction
     "SESSION_COOKIE_PATH": "/",      # Available on all paths
     "SESSION_USE_SIGNER": False,     # Disable signing for debugging
     "SESSION_REFRESH_EACH_REQUEST": True  # Refresh session on each request
 })
+
+print(f"💾 Session directory: {session_dir}")
 
 print(f"🍪 Session config applied:")
 print(f"   - SameSite: {app.config['SESSION_COOKIE_SAMESITE']}")
