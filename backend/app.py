@@ -738,7 +738,8 @@ def search():
             WHERE ABS(y - %s) <= 0.5 AND ABS(x - %s) <= 0.1
         """, (lat, lon))
         for row in cursor.fetchall():
-            threat_code = row[3].lower()
+            # Fix case sensitivity: "Low Risk" -> "low", "Moderate Risk" -> "moderate", "High Risk" -> "high"
+            threat_code = row[3].lower().replace(" risk", "").strip()
             risk_data.append({
                 "latitude": row[1], "longitude": row[0],
                 "risk_type": "Freshwater Risk",
@@ -771,7 +772,8 @@ def search():
 
         for row in cursor.fetchall():
             score = float(row[2])
-            level = row[3].lower() if row[3] else "low"
+            # Fix case sensitivity: "Low Risk" -> "low", "Moderate Risk" -> "moderate", "High Risk" -> "high"
+            level = row[3].lower().replace(" risk", "").strip() if row[3] else "low"
 
             risk_data.append({
                 "latitude": row[1],  # y = latitude
