@@ -393,10 +393,28 @@ def _build_cors_response(response, status_code=200):
     response.headers.add("Access-Control-Allow-Credentials", "true")
     return response, status_code
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST', 'OPTIONS'])
 def login():
+    # Handle CORS preflight
+    if request.method == "OPTIONS":
+        response = jsonify({"message": "CORS preflight success"})
+        origin = request.headers.get('Origin', 'http://localhost:3000')
+        allowed_origin = origin if origin in allowed_origins else allowed_origins[0]
+        response.headers.add("Access-Control-Allow-Origin", allowed_origin)
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+        response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
+        return response, 200
+        
     try:
-        data = request.json
+        # Enhanced request validation
+        if not request.is_json:
+            return jsonify({"error": "Request must be JSON"}), 400
+            
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No JSON data received"}), 400
+            
         email = data.get('email')
         password = data.get('password')
 
@@ -404,6 +422,9 @@ def login():
             return jsonify({"error": "Email and password are required."}), 400
 
         conn = connect_db()
+        if conn is None:
+            return jsonify({"error": "Database connection failed"}), 500
+            
         cursor = conn.cursor()
         cursor.execute("SELECT id, hotel_name, email, password_hash FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
