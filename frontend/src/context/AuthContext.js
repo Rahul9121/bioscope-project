@@ -64,29 +64,37 @@ export const AuthProvider = ({ children }) => {
           const userData = JSON.parse(storedUser);
           setUser(userData);
           console.log("✅ User loaded from localStorage:", userData);
+          console.log("✅ AuthContext: User is authenticated");
           
-          // Verify session is still valid
-          const sessionActive = await checkSession();
-          if (!sessionActive) {
-            console.log("🚨 Stored user found but session invalid, clearing auth");
-            setUser(null);
-            localStorage.removeItem("user");
-          }
+          // Optional: Verify session in background (don't clear user if it fails)
+          checkSession().then(sessionActive => {
+            if (sessionActive) {
+              console.log("✅ Session verified successfully");
+            } else {
+              console.log("⚠️ Session check failed, but keeping user data for better UX");
+              // Don't clear user data - let them stay logged in until they explicitly logout
+              // or encounter an actual authentication error
+            }
+          }).catch(error => {
+            console.log("⚠️ Session check failed (network error), keeping user logged in:", error.message);
+          });
         } else {
-          // No stored user, check if there's an active session we missed
-          await checkSession();
+          console.log("🚪 No stored user found");
         }
       } catch (error) {
         console.error("❌ Error during auth initialization:", error);
-        localStorage.removeItem("user");
-        setUser(null);
+        // Only clear if there's a parse error, not network errors
+        if (error instanceof SyntaxError) {
+          localStorage.removeItem("user");
+          setUser(null);
+        }
       } finally {
         setLoading(false);
       }
     };
     
     initAuth();
-  }, [checkSession]);
+  }, []); // Remove checkSession dependency to avoid loops
 
   const isAuthenticated = useCallback(() => {
     return user !== null;

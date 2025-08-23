@@ -24,6 +24,14 @@ const Layout = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const { user, logout: authLogout, isAuthenticated, loading } = useAuth();
+  
+  // Debug authentication state
+  console.log("🏢 Layout Debug:");
+  console.log("- User from AuthContext:", user);
+  console.log("- Loading state:", loading);
+  console.log("- isAuthenticated():", isAuthenticated());
+  console.log("- localStorage user:", localStorage.getItem("user"));
+  console.log("- Should show authenticated nav:", isAuthenticated());
 
   const handleLogout = async () => {
     try {
