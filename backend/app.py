@@ -125,8 +125,8 @@ app.config.update({
     "PERMANENT_SESSION_LIFETIME": timedelta(hours=48),  # Extra long sessions
     
     # 🔧 ULTIMATE FIX: Browser-compatible cookie settings
-    "SESSION_COOKIE_SAMESITE": "Lax",  # 🔧 CRITICAL: Lax allows cross-origin but is more secure than None
-    "SESSION_COOKIE_SECURE": False,    # 🔧 CRITICAL: Must be False for HTTP in development
+    "SESSION_COOKIE_SAMESITE": "None" if is_production else "Lax",  # 🔧 CRITICAL: None for cross-origin HTTPS in production
+    "SESSION_COOKIE_SECURE": is_production,    # 🔧 CRITICAL: Secure=True for HTTPS in production, False for HTTP in dev
     "SESSION_COOKIE_HTTPONLY": False,  # 🔧 CRITICAL: Allow JS access for debugging
     "SESSION_COOKIE_NAME": "biodiv_session_v5",
     "SESSION_COOKIE_DOMAIN": None,   # 🔧 CRITICAL: No domain restriction for all environments
