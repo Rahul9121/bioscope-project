@@ -14,10 +14,9 @@ import ForgotPassword from "./components/ForgotPassword";
 import WelcomePage from "./components/WelcomePage";
 import MitigationReport from "./components/MitigationReport.jsx";
 import AccountSettings from "./components/AccountSettings.js";
-
-
-
 import AccountDashboard from "./components/AccountDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 const SessionHandler = () => {
   const navigate = useNavigate();
@@ -70,26 +69,32 @@ const theme = createTheme();
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <SessionHandler /> {/* Automatically logs out inactive users */}
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/forgot_password" element={<ForgotPassword/>} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/register" element={<RegisterForm />} />
-          <Route path="/map" element={<RiskMap />} />
-          <Route path="/welcome" element={<WelcomePage />} />
-          <Route path="/account" element={<AccountDashboard />} />
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <SessionHandler /> {/* Automatically logs out inactive users */}
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/forgot_password" element={<ForgotPassword/>} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/map" element={<RiskMap />} />
+            <Route path="/welcome" element={<WelcomePage />} />
+            <Route path="/account" element={
+              <ProtectedRoute>
+                <AccountDashboard />
+              </ProtectedRoute>
+            } />
 
-          <Route path="/mitigation-report" element={<MitigationReport />} />
-          <Route path="/account-settings" element={<AccountSettings />} />
-          <Route path="/how-it-works" element={<HowItWorks />} /> {/* Added How It Works Page */}
-        </Routes>
-      </Router>
-    </ThemeProvider>
+            <Route path="/mitigation-report" element={<MitigationReport />} />
+            <Route path="/account-settings" element={<AccountSettings />} />
+            <Route path="/how-it-works" element={<HowItWorks />} /> {/* Added How It Works Page */}
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
