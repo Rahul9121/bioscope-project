@@ -49,15 +49,35 @@ location_bp = Blueprint("location", __name__)
 def login_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
+        print(f"🔍 Session Debug in {f.__name__}:")
+        print(f"- Session keys: {list(session.keys())}")
+        print(f"- Session contents: {dict(session)}")
+        print(f"- user_id in session: {'user_id' in session}")
+        
         if 'user_id' not in session:
-            return jsonify({"error": "Unauthorized"}), 401
+            print("❌ Session validation failed - no user_id")
+            return jsonify({"error": "🔒 Please login first. Your session may have expired."}), 401
+        
+        print(f"✅ Session validation passed for user_id: {session.get('user_id')}")
         return f(*args, **kwargs)
     return wrapper
 
 # ✅ Add Location
-@location_bp.route("/add", methods=["POST"])
-@login_required
+@location_bp.route("/add", methods=["POST", "OPTIONS"])
 def add_location():
+    # Handle CORS preflight
+    if request.method == "OPTIONS":
+        response = jsonify({"message": "CORS preflight accepted"})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+        response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
+        return response, 200
+    
+    return _add_location_impl()
+
+@login_required
+def _add_location_impl():
     try:
         data = request.get_json()
         hotel_name = data.get("hotel_name")
