@@ -1,13 +1,31 @@
 import axios from 'axios';
 
+// Determine the correct API URL
+const getApiUrl = () => {
+  const envUrl = process.env.REACT_APP_API_URL;
+  console.log('🔍 Environment API URL:', envUrl);
+  console.log('🔍 NODE_ENV:', process.env.NODE_ENV);
+  
+  // Production: use Railway URL
+  if (process.env.NODE_ENV === 'production' || window.location.hostname.includes('vercel.app')) {
+    return 'https://bioscope-project-production.up.railway.app';
+  }
+  
+  // Development: use env or localhost
+  return envUrl || 'http://localhost:5000';
+};
+
+const apiUrl = getApiUrl();
+console.log('🌐 Using API URL:', apiUrl);
+
 // Create centralized API instance with proper configuration
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5001',
+  baseURL: apiUrl,
   withCredentials: true, // Important for CORS with credentials
   headers: {
     'Content-Type': 'application/json'
   },
-  timeout: 10000 // 10 second timeout
+  timeout: 15000 // 15 second timeout for Railway
 });
 
 // API request interceptor (for debugging/logging)

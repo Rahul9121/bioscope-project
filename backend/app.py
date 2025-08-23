@@ -494,9 +494,29 @@ def logout():
 
 @app.route('/session-status', methods=['GET'])
 def session_status():
+    print(f"🔍 Session Status Debug:")
+    print(f"- Session keys: {list(session.keys())}")
+    print(f"- Session contents: {dict(session)}")
+    print(f"- user_id in session: {'user_id' in session}")
+    
     if 'user_id' in session:
-        return jsonify({"active": True, "message": "Session is active"}), 200
-    return jsonify({"active": False, "message": "Session expired"}), 401
+        return jsonify({
+            "active": True, 
+            "message": "Session is active",
+            "debug": {
+                "session_keys": list(session.keys()),
+                "user_id": session.get('user_id'),
+                "email": session.get('email')
+            }
+        }), 200
+    return jsonify({
+        "active": False, 
+        "message": "Session expired",
+        "debug": {
+            "session_keys": list(session.keys()),
+            "session_empty": len(session) == 0
+        }
+    }), 401
 @app.route('/forgot_password', methods=['POST'])
 def forgot_password():
     try:
