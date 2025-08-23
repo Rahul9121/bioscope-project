@@ -3,7 +3,7 @@ import { Box, TextField, Button, Typography, Link, Grid, Container } from "@mui/
 import Layout from "./Layout";
 import { login } from "../services/api";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 const LoginForm = () => {
@@ -13,6 +13,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const { login: authLogin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -38,8 +39,12 @@ const LoginForm = () => {
       if (response.data && response.data.user) {
         // Update AuthContext with user data
         authLogin(response.data.user);
-        console.log("✅ Login successful, redirecting to account dashboard");
-        navigate("/account");
+        console.log("✅ Login successful, user data:", response.data.user);
+        
+        // Redirect to intended page or account dashboard
+        const redirectTo = location.state?.from?.pathname || "/account";
+        console.log("✅ Redirecting to:", redirectTo);
+        navigate(redirectTo, { replace: true });
       } else {
         setError("Login failed. No user data received.");
       }

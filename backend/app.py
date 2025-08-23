@@ -106,16 +106,18 @@ except ImportError as e:
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_change_in_production')
 logging.basicConfig(level=logging.DEBUG)
 
+# Update session configuration for production deployment
 app.config.update({
-    "SECRET_KEY": "your_secret_key",
-    "SESSION_FILE_DIR": "./flask_session",
-    "SESSION_TYPE": "filesystem",
+    "SECRET_KEY": os.getenv('SECRET_KEY', 'your_secret_key_change_in_production'),
+    "SESSION_TYPE": "redis" if os.getenv('REDIS_URL') else "filesystem",
+    "SESSION_FILE_DIR": "/tmp/flask_session" if os.getenv('RAILWAY_ENVIRONMENT') else "./flask_session",
     "SESSION_PERMANENT": True,
-    "PERMANENT_SESSION_LIFETIME": timedelta(minutes=15),
-    "SESSION_COOKIE_SAMESITE": "Lax",
-    "SESSION_COOKIE_SECURE": False,
+    "PERMANENT_SESSION_LIFETIME": timedelta(hours=24),  # Extend session time
+    "SESSION_COOKIE_SAMESITE": "None" if os.getenv('RAILWAY_ENVIRONMENT') else "Lax",
+    "SESSION_COOKIE_SECURE": True if os.getenv('RAILWAY_ENVIRONMENT') else False,
     "SESSION_COOKIE_HTTPONLY": True,
-    "SESSION_COOKIE_NAME": "biodiv_session"
+    "SESSION_COOKIE_NAME": "biodiv_session",
+    "SESSION_USE_SIGNER": True  # Add extra security
 })
 
 Session(app)
@@ -434,7 +436,7 @@ def login():
 
         # ✅ Explicit CORS headers
         origin = request.headers.get('Origin', 'http://localhost:3000')
-        allowed_origin = origin if origin in ['http://localhost:3000', 'https://bioscope-project.vercel.app'] else 'http://localhost:3000'
+        allowed_origin = origin if origin in allowed_origins else allowed_origins[0]
         response.headers.add("Access-Control-Allow-Origin", allowed_origin)
         response.headers.add("Access-Control-Allow-Credentials", "true")
 

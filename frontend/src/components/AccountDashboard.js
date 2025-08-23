@@ -21,7 +21,16 @@ import EditLocation from "./EditLocation";
 const AccountDashboard = () => {
   const [activeModule, setActiveModule] = useState(null);
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, loading, isAuthenticated } = useAuth();
+  
+  // Debug logging
+  console.log("🔍 AccountDashboard Debug:");
+  console.log("- User from AuthContext:", user);
+  console.log("- Loading state:", loading);
+  console.log("- isAuthenticated():", isAuthenticated());
+  console.log("- localStorage user:", localStorage.getItem("user"));
+  console.log("- User exists check:", !!user);
+  console.log("- User hotel_name:", user?.hotel_name);
 
   const renderModule = () => {
     switch (activeModule) {
@@ -143,10 +152,10 @@ const AccountDashboard = () => {
                 color: "white"
               }}
             >
-              {user ? (
+              {user || localStorage.getItem("user") ? (
                 <>
                   <Typography variant="h3" fontWeight="bold" sx={{ mb: 2, fontSize: "clamp(2.2rem, 4vw, 2.8rem)" }}>
-                    Welcome, {user.hotel_name || "User"}!
+                    Welcome, {user?.hotel_name || JSON.parse(localStorage.getItem("user") || '{}')?.hotel_name || "Test Hotel"}!
                   </Typography>
                   <Typography variant="h6" sx={{ mb: 3, opacity: 0.9 }}>
                     Use the panel to manage your hotel’s biodiversity monitoring locations.
