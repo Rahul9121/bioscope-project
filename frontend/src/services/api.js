@@ -1,10 +1,5 @@
 import axios from 'axios';
 
-// Get JWT token from localStorage
-const getAuthToken = () => {
-  return localStorage.getItem('auth_token');
-};
-
 // Determine the correct API URL
 const getApiUrl = () => {
   const envUrl = process.env.REACT_APP_API_URL;
@@ -33,19 +28,11 @@ const api = axios.create({
   timeout: 15000 // 15 second timeout for Railway
 });
 
-// API request interceptor (add JWT token and logging)
+// API request interceptor (session-based logging)
 api.interceptors.request.use(
   (config) => {
-    console.log(`🌐 API Request: ${config.method?.toUpperCase()} ${config.url}`);
-    
-    // Add JWT token to Authorization header if available
-    const token = getAuthToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-      console.log('🔑 JWT token added to request');
-    } else {
-      console.log('🚫 No JWT token available');
-    }
+    console.log(`🌐 SESSION API Request: ${config.method?.toUpperCase()} ${config.url}`);
+    console.log('🍪 Using session-based authentication (cookies)');
     
     return config;
   },
