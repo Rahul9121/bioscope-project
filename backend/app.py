@@ -124,14 +124,14 @@ app.config.update({
     "SESSION_PERMANENT": True,
     "PERMANENT_SESSION_LIFETIME": timedelta(hours=48),  # Extra long sessions
     
-    # 🔧 FIXED: Environment-aware cookie settings
-    "SESSION_COOKIE_SAMESITE": None,  # 🔧 CRITICAL: None for cross-origin in dev
-    "SESSION_COOKIE_SECURE": is_production,  # Only require HTTPS in production
+    # 🔧 ULTIMATE FIX: Browser-compatible cookie settings
+    "SESSION_COOKIE_SAMESITE": "Lax",  # 🔧 CRITICAL: Lax allows cross-origin but is more secure than None
+    "SESSION_COOKIE_SECURE": False,    # 🔧 CRITICAL: Must be False for HTTP in development
     "SESSION_COOKIE_HTTPONLY": False,  # 🔧 CRITICAL: Allow JS access for debugging
-    "SESSION_COOKIE_NAME": "biodiv_session_v4",
-    "SESSION_COOKIE_DOMAIN": None,   # No domain restriction
-    "SESSION_COOKIE_PATH": "/",      # Available on all paths
-    "SESSION_USE_SIGNER": False,     # Disable signing for debugging
+    "SESSION_COOKIE_NAME": "biodiv_session_v5",
+    "SESSION_COOKIE_DOMAIN": None,   # 🔧 CRITICAL: No domain restriction for all environments
+    "SESSION_COOKIE_PATH": "/",        # Available on all paths
+    "SESSION_USE_SIGNER": False,       # Disable signing for debugging
     "SESSION_REFRESH_EACH_REQUEST": True  # Refresh session on each request
 })
 
