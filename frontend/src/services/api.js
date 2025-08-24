@@ -5,14 +5,26 @@ const getApiUrl = () => {
   const envUrl = process.env.REACT_APP_API_URL;
   console.log('🔍 Environment API URL:', envUrl);
   console.log('🔍 NODE_ENV:', process.env.NODE_ENV);
+  console.log('🔍 Hostname:', window.location?.hostname);
   
-  // Production: use Railway URL
-  if (process.env.NODE_ENV === 'production' || window.location.hostname.includes('vercel.app')) {
-    return 'https://bioscope-project-production.up.railway.app';
+  // If environment URL is explicitly set, use it
+  if (envUrl) {
+    console.log('📡 Using explicit REACT_APP_API_URL:', envUrl);
+    return envUrl;
   }
   
-  // Development: use env or localhost
-  return envUrl || 'http://localhost:5000';
+  // Production: detect deployment and use appropriate backend URL
+  if (process.env.NODE_ENV === 'production' || (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app'))) {
+    // You'll need to update this with your actual Railway backend URL after deployment
+    const railwayUrl = 'https://your-backend-app-production.up.railway.app';
+    console.log('🚀 Production mode - using Railway backend:', railwayUrl);
+    return railwayUrl;
+  }
+  
+  // Development: use localhost
+  const devUrl = 'http://localhost:5001';
+  console.log('🛠️ Development mode - using localhost:', devUrl);
+  return devUrl;
 };
 
 const apiUrl = getApiUrl();
@@ -52,14 +64,14 @@ api.interceptors.response.use(
 );
 
 // Auth endpoints
-export const login = (credentials) => api.post('/login', credentials);
-export const register = (userData) => api.post('/register', userData);
+export const login = (credentials) => api.post('/account/login', credentials);
+export const register = (userData) => api.post('/account/register', userData);
 export const logout = () => api.post('/logout', {});
 export const forgotPassword = (data) => api.post('/forgot_password', data);
 
 // Data endpoints
 export const fetchRiskData = () => api.get('/risk-data');
-export const searchRisks = (searchData) => api.post('/search', searchData);
+export const searchRisks = (searchData) => api.post('/locations/search', searchData);
 export const addressAutocomplete = (query) => api.get('/address-autocomplete', { params: { query } });
 
 // Health endpoints
